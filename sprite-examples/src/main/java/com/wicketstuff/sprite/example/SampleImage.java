@@ -1,7 +1,10 @@
 package com.wicketstuff.sprite.example;
 
 import org.apache.wicket.markup.html.image.Image;
+import org.wicketstuff.sprite.ImageBundle;
 
+
+@ImageBundle
 public interface SampleImage
 {
 
