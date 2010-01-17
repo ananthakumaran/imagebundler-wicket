@@ -3,7 +3,7 @@ package com.wicketstuff.sprite.example;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.image.Image;
 
-public class SampleImageBundle implements SampleImage
+public class SampleImageBundleTest implements SampleImage
 {
 
 	public Image boldImage(String id, String fileName)

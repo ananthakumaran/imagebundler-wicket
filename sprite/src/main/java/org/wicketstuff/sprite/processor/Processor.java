@@ -18,8 +18,15 @@ import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic.Kind;
 
 import org.wicketstuff.sprite.ImageBundle;
+import org.wicketstuff.sprite.util.BundleClass;
 
 
+/**
+ * generates source files
+ * 
+ * @author Ananth
+ * 
+ */
 @SupportedAnnotationTypes( { "org.wicketstuff.sprite.ImageBundle" })
 @SupportedSourceVersion(RELEASE_6)
 public class Processor extends AbstractProcessor
@@ -32,16 +39,18 @@ public class Processor extends AbstractProcessor
 		{
 			for (Element element : roundEnv.getElementsAnnotatedWith(ImageBundle.class))
 			{
-				// handle  interface only
+				// handle interface only
 				if (element.getKind() == ElementKind.INTERFACE)
 				{
-					String genClassName = element.getSimpleName()+"Bundle";
-					
-					Writer writer = getFiler().createSourceFile(genClassName).openWriter();
-					writer.write("public class " + genClassName + "{}" );
+					// TODO clean up
+
+					BundleClass bundleClass = new BundleClass(Class.forName(element.asType()
+							.toString()));
+					Writer writer = getFiler().createSourceFile(bundleClass.getBinaryName())
+							.openWriter();
+					writer.write(bundleClass.toCode());
 					writer.close();
-					
-					getMessager().printMessage(Kind.NOTE, genClassName + " created");
+					getMessager().printMessage(Kind.NOTE, bundleClass.getClassName() + " created");
 				}
 				else
 				{
