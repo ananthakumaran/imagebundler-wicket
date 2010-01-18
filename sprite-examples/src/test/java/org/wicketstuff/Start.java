@@ -1,4 +1,4 @@
-package com.wicketstuff;
+package org.wicketstuff;
 
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;

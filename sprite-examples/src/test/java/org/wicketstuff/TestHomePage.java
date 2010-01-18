@@ -1,10 +1,10 @@
-package com.wicketstuff;
+package org.wicketstuff;
 
 import junit.framework.TestCase;
 import org.apache.wicket.util.tester.WicketTester;
+import org.wicketstuff.sprite.example.HomePage;
+import org.wicketstuff.sprite.example.WicketApplication;
 
-import com.wicketstuff.sprite.example.HomePage;
-import com.wicketstuff.sprite.example.WicketApplication;
 
 /**
  * Simple test using the WicketTester
