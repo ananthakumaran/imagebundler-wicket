@@ -8,17 +8,19 @@
 		<version>1.4-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>sprite-parent</artifactId>
+	<artifactId>imagebundler-parent</artifactId>
 	<packaging>pom</packaging>
 
-	<name>sprite - Parent</name>
+	<name>imagebundler - Parent</name>
 	<description>
 		
 	</description>
 
 	
   <modules>
-    <module>sprite</module>
-    <module>sprite-examples</module>
+    <module>imagebundler</module>
+    <module>imagebundler-examples</module>
   </modules>
+  
+ 
 </project>
