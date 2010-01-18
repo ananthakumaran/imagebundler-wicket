@@ -1,4 +1,4 @@
-package org.wicketstuff.imagebundler.example;
+package org.wicketstuff.util;
 
 import org.apache.wicket.markup.html.image.Image;
 import org.wicketstuff.imagebundler.ImageBundle;
@@ -8,6 +8,4 @@ import org.wicketstuff.imagebundler.ImageBundle;
 public interface SampleImage
 {
 	public Image buttons(String a, String fileName);
-
-	public Image course(String a, String fileName);
 }

@@ -29,7 +29,7 @@ import org.wicketstuff.imagebundler.ImageBundle;
  * @author Ananth
  * 
  */
-@SupportedAnnotationTypes( { "org.wicketstuff.sprite.ImageBundle" })
+@SupportedAnnotationTypes( { "org.wicketstuff.imagebundler.ImageBundle" })
 @SupportedSourceVersion(RELEASE_6)
 public class Processor extends AbstractProcessor
 {
@@ -45,7 +45,7 @@ public class Processor extends AbstractProcessor
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
 	{
-		CurrentEnv.getMessager().printMessage(Kind.NOTE, " 1started");
+		CurrentEnv.getMessager().printMessage(Kind.NOTE, "ImageBundle processing started");
 		try
 		{
 			for (Element element : roundEnv.getElementsAnnotatedWith(ImageBundle.class))
@@ -60,7 +60,6 @@ public class Processor extends AbstractProcessor
 				{
 					warnElementIsUnhadled(element);
 				}
-
 			}
 		}
 		catch (Exception e)
