@@ -58,7 +58,7 @@
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
-					<compilerArgument>-proc:none</compilerArgument>
+					 <compilerArgument>-proc:none</compilerArgument>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -71,12 +71,6 @@
 							<goal>process</goal>
 						</goals>
 						<phase>generate-sources</phase>
-						<configuration>
-							<processors>
-								<!-- list of processors to use -->
-								<processor>org.wicketstuff.sprite.processor.Processor</processor>
-							</processors>
-						</configuration>
 					</execution>
 				</executions>
 				<dependencies />
@@ -117,9 +111,9 @@ org.eclipse.jdt.apt.reconcileEnabled=true]]>
 	</build>
 	<dependencies>
 		<dependency>
-		<groupId>org.wicketstuff</groupId>
-		<artifactId>sprite</artifactId>
-		<version>${sprite.version}</version>
+			<groupId>org.wicketstuff</groupId>
+			<artifactId>sprite</artifactId>
+			<version>${sprite.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
@@ -173,4 +167,18 @@ org.eclipse.jdt.apt.reconcileEnabled=true]]>
 			<url>http://maven-annotation-plugin.googlecode.com/svn/trunk/mavenrepo</url>
 		</pluginRepository>
 	</pluginRepositories>
+	<repositories>
+		<repository>
+			<id>org.bindgen</id>
+			<name>Bindgen Repository</name>
+			<url>http://repo.joist.ws</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+			<repository>
+			<id>jboss</id>
+			<url>http://repository.jboss.org/maven2/</url>
+		</repository>
+	</repositories>
 </project>

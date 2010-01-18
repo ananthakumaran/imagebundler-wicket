@@ -5,7 +5,6 @@
   <classpathentry kind="src" path="target/generated-sources/apt/main/java"/>
   <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-  <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty/6.1.4/jetty-6.1.4.jar" sourcepath="M2_REPO/org/mortbay/jetty/jetty/6.1.4/jetty-6.1.4-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty-management/6.1.4/jetty-management-6.1.4.jar" sourcepath="M2_REPO/org/mortbay/jetty/jetty-management/6.1.4/jetty-management-6.1.4-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty-util/6.1.4/jetty-util-6.1.4.jar" sourcepath="M2_REPO/org/mortbay/jetty/jetty-util/6.1.4/jetty-util-6.1.4-sources.jar"/>
