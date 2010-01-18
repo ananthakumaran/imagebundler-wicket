@@ -1,11 +1,13 @@
 package org.wicketstuff.sprite.util;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 
 import org.apache.wicket.markup.html.image.Image;
 
@@ -66,18 +68,40 @@ public class BundleClass
 	 * @param clazz
 	 *            class of the interface
 	 */
-	public BundleClass(Class<?> clazz)
+	public BundleClass(String fullClazzName)
 	{
-		this.className = clazz.getSimpleName() + "Bundle";
-		this.interfaceName = clazz.getSimpleName();
-		this.packageName = clazz.getPackage().getName();
+		this.className = getSimpleName(fullClazzName) + "Bundle";
+		this.interfaceName = getSimpleName(fullClazzName);
+		this.packageName = getPackageName(fullClazzName);
 		this.binaryName = packageName + "." + className;
 
 		// add import for the wicket image class
 		addImports(Image.class);
 
-		// add methods
-		addMethods(clazz.getMethods());
+	}
+
+	/**
+	 * get the class name only
+	 * 
+	 * @param fullClazzName
+	 *            binary name of the class eg java.lang.Object
+	 * @return class Name
+	 */
+	public String getSimpleName(String fullClazzName)
+	{
+		return fullClazzName.substring(fullClazzName.lastIndexOf('.') + 1);
+	}
+
+	/**
+	 * get the package name
+	 * 
+	 * @param fullClazzName
+	 *            binary name of the class eg java.lang.Object
+	 * @return package name
+	 */
+	public String getPackageName(String fullClazzName)
+	{
+		return fullClazzName.substring(0, fullClazzName.lastIndexOf('.'));
 	}
 
 	/**
@@ -103,11 +127,14 @@ public class BundleClass
 	 *            methods
 	 * @return {@link BundleClass}
 	 */
-	public BundleClass addMethods(Method... methods)
+	public BundleClass addMethods(List<? extends Element> methodElements)
 	{
-		for (Method method : methods)
+		for (Element method : methodElements)
 		{
-			this.methods.add(new BundleMethod(method));
+			if (method.getKind() == ElementKind.METHOD)
+			{
+				this.methods.add(new BundleMethod(method));
+			}
 		}
 		return this;
 	}

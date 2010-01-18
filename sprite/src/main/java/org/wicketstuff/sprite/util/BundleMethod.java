@@ -1,6 +1,6 @@
 package org.wicketstuff.sprite.util;
 
-import java.lang.reflect.Method;
+import javax.lang.model.element.Element;
 
 /**
  * used to create a bundle method
@@ -16,9 +16,9 @@ public class BundleMethod
 	/**
 	 * constructor
 	 */
-	public BundleMethod(Method method)
+	public BundleMethod(Element methodElement)
 	{
-		this.methodName = method.getName();
+		this.methodName = methodElement.getSimpleName().toString();
 	}
 
 	/**
