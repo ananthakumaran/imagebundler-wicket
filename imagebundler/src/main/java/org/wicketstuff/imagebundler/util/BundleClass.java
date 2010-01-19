@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.image.Image;
 import org.wicketstuff.imagebundler.ImageBundleBuilder;
 
@@ -85,7 +86,7 @@ public class BundleClass
 
 		// add import for the wicket image class
 		addImports(Image.class);
-
+		addImports(SimpleAttributeModifier.class);
 	}
 
 	/**

@@ -1,37 +1,25 @@
 package org.wicketstuff.imagebundler.example;
 
+import org.apache.wicket.Application;
+import org.apache.wicket.Resource;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.PackageResourceReference;
 import org.apache.wicket.markup.html.image.Image;
 
-public abstract class SampleImageBundleTest implements SampleImage
+public  class SampleImageBundleTest implements SampleImage
 {
-	public Image boldImage(String id, String fileName)
+	public Image buttons(String id, String fileName)
 	{
-		Image image = new Image(id, "spacer.gif");
-
-		// this should contain the new created image name
-		fileName = String.format("resources/%s/%s", this.getClass().getName(), fileName);
-		// image button
-		String style = String
-				.format(
-						"background-image: url(%s); background-position:-%dpx -%dpx; width:%dpx; height:%dpx;",
-						fileName, 0, 0, 20, 20);
-		image.add(new SimpleAttributeModifier("style", style));
+		Image image = new Image(id, "spacer.gif");		
+		image.add(new SimpleAttributeModifier("style", "background-image: url(resources/org.wicketstuff.imagebundler.example.SampleImageBundle/SampleImageBundle.png); background-position:-0px -125px; width:260px; height:60px;"));
 		return image;
 	}
 
-	public Image codeImage(String id, String fileName)
+	public Image course(String id, String fileName)
 	{
 		Image image = new Image(id, "spacer.gif");
-
-		// this should contain the new created image name
-		fileName = String.format("resources/%s/%s", this.getClass().getName(), fileName);
-		// image button
-		String style = String
-				.format(
-						"background-image: url(%s); background-position:-%dpx -%dpx; width:%dpx; height:%dpx;",
-						fileName, 80, 120, 20, 20);
-		image.add(new SimpleAttributeModifier("style", style));
+		image.add(new SimpleAttributeModifier("style", "background-image: url(resources/org.wicketstuff.imagebundler.example.SampleImageBundle/SampleImageBundle.png); background-position:-0px -0px; width:125px; height:125px;"));
 		return image;
 	}
 

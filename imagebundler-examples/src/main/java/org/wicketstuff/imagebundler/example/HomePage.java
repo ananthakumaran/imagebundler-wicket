@@ -23,11 +23,11 @@ public class HomePage extends WebPage
 	{
 
 
-		// SampleImageBundle bundle = new SampleImageBundle();
+		 SampleImageBundle bundle = new SampleImageBundle();
 
 		// send the orginal file name
-		// add(bundle.boldImage("bold" , "bns.png"));
-		// add(bundle.codeImage("code" , "buttons.png"));
+		 add(bundle.buttons("bold" , "bns.png"));
+		 add(bundle.course("code" , "buttons.png"));
 		// TODO Add your page's components here
 	}
 }

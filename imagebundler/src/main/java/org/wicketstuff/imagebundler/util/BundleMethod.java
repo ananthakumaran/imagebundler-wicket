@@ -51,12 +51,12 @@ public class BundleMethod
 		// method signature
 		str.append("public Image ").append(methodName).append("(String id,String fileName)").open();
 
-		//
-		str.append("//").append(getImageRect().getLeft() + "" + getImageRect().getName()).line();
-		str.append("//").append("" + getImageRect().getTop() + getImageRect().getLeft()).line();
-		// TODO: orginal code should come here
-		// for now add return null;
-		str.append("return null").semicolon().close();
+		// declare the image
+		str.append("Image image = new Image(id, \"spacer.gif\")").semicolon();
+		// set the style element
+		str.append("image.add(new SimpleAttributeModifier(\"style\", \"").append(
+				getStyle(getImageRect())).append("\"))").semicolon();
+		str.append("return image").semicolon().close();
 		return str;
 	}
 
@@ -95,6 +95,18 @@ public class BundleMethod
 	public ImageRect getImageRect()
 	{
 		return clazz.getImageBundleBuilder().getMapping(getImageURL());
+	}
+
+	public String getStyle(ImageRect imageRect)
+	{
+		// TODO may change on the future
+		String fileName = String.format("resources/%s/%s.png", clazz.getBinaryName(), clazz
+				.getClassName());
+		return String
+				.format(
+						"background-image: url(%s); background-position:-%dpx -%dpx; width:%dpx; height:%dpx;",
+						fileName, imageRect.getLeft(), imageRect.getTop(), imageRect.getWidth(),
+						imageRect.getHeight());
 	}
 
 }
