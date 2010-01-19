@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import javax.lang.model.element.Element;
 
+import org.wicketstuff.imagebundler.Resource;
 import org.wicketstuff.imagebundler.ImageBundleBuilder.ImageRect;
 
 /**
@@ -17,11 +18,11 @@ public class BundleMethod
 
 	private final Logger logger = Logger.getLogger(getClass().getName());
 	/** simple method name */
-	private String methodName;
+	private final String methodName;
 	/** image url */
-	private String imageURL;
+	private final String imageURL;
 	/** The eclosing class of this method */
-	private BundleClass clazz;
+	private final BundleClass clazz;
 
 	/**
 	 * constructor
@@ -30,10 +31,7 @@ public class BundleMethod
 	{
 		this.methodName = methodElement.getSimpleName().toString();
 		this.clazz = clazz;
-
-		// TODO get the filename using annotation
-		this.imageURL = clazz.getPackageName().replace('.', '/') + "/" + methodName + ".png";
-
+		this.imageURL = buildImageURL(methodElement);
 		addToBundle();
 	}
 
@@ -62,6 +60,31 @@ public class BundleMethod
 		return str;
 	}
 
+	/**
+	 * creates the image url for the given method.Returns null if it cannot
+	 * build the image url
+	 * 
+	 * @return
+	 */
+	public String buildImageURL(Element element)
+	{
+		Resource resource = element.getAnnotation(Resource.class);
+		String imageName;
+		if (resource == null)
+		{
+			// This method is not annotated with @Resource.So fall back and
+			// check for any image with methodname
+
+			// TODO add support for other extension also
+			imageName = methodName + ".png";
+		}
+		else
+		{
+			imageName = resource.value();
+		}
+
+		return clazz.getPackageName().replace('.', '/') + "/" + imageName;
+	}
 
 	/**
 	 * getter for imageUrl
