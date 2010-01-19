@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -57,6 +59,7 @@ import org.wicketstuff.imagebundler.ImageBundleBuilder;
 public class BundleClass
 {
 
+	private final Logger logger = Logger.getLogger(getClass().getName());
 	/** utility to create the bundle image */
 	private ImageBundleBuilder imageBundleBuilder = new ImageBundleBuilder();
 
@@ -210,17 +213,16 @@ public class BundleClass
 		return imageBundleBuilder;
 	}
 
-	public void drawBundleImage(OutputStream outStream)
+
+	public void drawBundleImage(OutputStream outputStream)
 	{
 		try
 		{
-			imageBundleBuilder.setOutputStream(outStream);
-			imageBundleBuilder.writeBundledImage();
+			imageBundleBuilder.writeBundledImage(outputStream);
 		}
 		catch (Exception e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "could not draw bundle image", e);
 		}
 	}
 }

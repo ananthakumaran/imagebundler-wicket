@@ -23,8 +23,6 @@ import javax.imageio.ImageIO;
  */
 public class ImageBundleBuilder
 {
-	/** The final image will be written to this stream */
-	private OutputStream outputStream;
 
 	public static Logger logger = Logger.getLogger(ImageBundleBuilder.class.getName());
 
@@ -343,28 +341,27 @@ public class ImageBundleBuilder
 		return imageNameToImageRectMap.get(imageName);
 	}
 
-	public void writeBundledImage() throws Exception
+	/**
+	 * draw the bundle image and write it to the given inputstream
+	 * 
+	 * @param outputStream
+	 *            the bundledImage will we written to the outputstream
+	 * @throws Exception
+	 */
+	public void writeBundledImage(OutputStream outputStream) throws Exception
 	{
 		// Create the bundled image from all of the constituent images.
 		BufferedImage bundledImage = drawBundledImage();
 
-		if (outputStream != null)
+		try
 		{
-			try
-			{
-				ImageIO.write(bundledImage, BUNDLE_FILE_TYPE, outputStream);
-			}
-			catch (IOException e)
-			{
-				logger.log(Level.SEVERE, "Failed while writing the image to the outputstreamF", e);
-				throw new Exception();
-			}
+			ImageIO.write(bundledImage, BUNDLE_FILE_TYPE, outputStream);
 		}
-		else
+		catch (IOException e)
 		{
-			logger.log(Level.WARNING, " No outputstream is present to write the image");
+			logger.log(Level.SEVERE, "Failed while writing the image to the outputstreamF", e);
+			throw new Exception();
 		}
-
 	}
 
 	private ImageRect addImage(String imageName) throws Exception
@@ -487,15 +484,4 @@ public class ImageBundleBuilder
 	{
 		imageNameToImageRectMap.put(imageName, rect);
 	}
-
-	/**
-	 * setter for the outputstream
-	 * NOTE: don't call the {@link #writeBundledImage()} without setting the outputstreamF
-	 * @param outputStream the image will be written to this stream
-	 */
-	public void setOutputStream(OutputStream outputStream)
-	{
-		this.outputStream = outputStream;
-	}
-
 }
