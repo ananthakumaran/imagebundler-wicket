@@ -3,7 +3,8 @@ package org.wicketstuff.imagebundler.util;
 import java.util.Collection;
 
 /**
- * string wrapper
+ * string wrapper. provides some utility function to create source code and also
+ * provide method chaining
  * 
  * @author Ananth
  */

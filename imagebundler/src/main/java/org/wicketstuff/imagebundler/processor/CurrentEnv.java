@@ -14,13 +14,11 @@ import javax.lang.model.util.Types;
  * parameter, but a whole lot of places need it, so putting it in one static
  * location cut down on the parameter cruft.
  * 
- * This also installs several default options, specifically fixRawTypes and
- * skipAttribute settings to remove any warnings from pre-1.5 classes in the
- * {@code javax.servlet} classes.
  */
 public class CurrentEnv
 {
 
+	/** current environment */
 	private static ProcessingEnvironment current;
 
 	public static void set(ProcessingEnvironment env)

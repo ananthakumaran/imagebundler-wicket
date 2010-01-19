@@ -63,12 +63,17 @@ public class BundleClass
 	private final Logger logger = Logger.getLogger(getClass().getName());
 	/** utility to create the bundle image */
 	private ImageBundleBuilder imageBundleBuilder = new ImageBundleBuilder();
-
+	/** full package name */
 	private final String packageName;
+	/** simple class name */
 	private final String className;
+	/** full class name including the package eg: java.lang.String */
 	private final String binaryName;
+	/** The implemented interface name */
 	private final String interfaceName;
+	/** imports list */
 	private final Set<String> imports = new TreeSet<String>();
+	/** method list */
 	private final List<BundleMethod> methods = new ArrayList<BundleMethod>();
 
 	/**
@@ -79,6 +84,7 @@ public class BundleClass
 	 */
 	public BundleClass(String fullClazzName)
 	{
+		// TODO cleanup
 		this.className = getSimpleName(fullClazzName) + "Bundle";
 		this.interfaceName = getSimpleName(fullClazzName);
 		this.packageName = parsePackageName(fullClazzName);
@@ -215,6 +221,12 @@ public class BundleClass
 	}
 
 
+	/**
+	 * draws the bundleImage to the outputstream
+	 * 
+	 * @param outputStream
+	 *            bundle image outputstream
+	 */
 	public void drawBundleImage(OutputStream outputStream)
 	{
 		try

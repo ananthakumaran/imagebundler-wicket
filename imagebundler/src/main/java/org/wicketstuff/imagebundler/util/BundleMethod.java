@@ -16,9 +16,11 @@ public class BundleMethod
 {
 
 	private final Logger logger = Logger.getLogger(getClass().getName());
-	// simple method name
+	/** simple method name */
 	private String methodName;
+	/** image url */
 	private String imageURL;
+	/** The eclosing class of this method */
 	private BundleClass clazz;
 
 	/**
@@ -97,6 +99,12 @@ public class BundleMethod
 		return clazz.getImageBundleBuilder().getMapping(getImageURL());
 	}
 
+	/**
+	 * create the CSS style for the image
+	 * 
+	 * @param imageRect
+	 * @return
+	 */
 	public String getStyle(ImageRect imageRect)
 	{
 		// TODO may change on the future

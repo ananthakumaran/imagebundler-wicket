@@ -15,12 +15,24 @@ import javax.tools.Diagnostic.Kind;
 
 import org.wicketstuff.imagebundler.util.BundleClass;
 
+/**
+ * generates the ImageBundle class
+ * 
+ * @author Ananth
+ * 
+ */
 public class BundleClassGenerator
 {
 	private Element element;
 	private static final String BUNDLE_TYPE = "png";
 	private final Logger logger = Logger.getLogger(getClass().getName());
 
+	/**
+	 * constructor
+	 * 
+	 * @param element
+	 *            element with <code>@ImageBundle</code> annotation
+	 */
 	public BundleClassGenerator(Element element)
 	{
 		this.element = element;
@@ -32,9 +44,9 @@ public class BundleClassGenerator
 		bundleClass.addMethods(element.getEnclosedElements());
 		try
 		{
-			OutputStream outStream = getFiler()
-					.createResource(StandardLocation.SOURCE_OUTPUT, bundleClass.getPackageName(),
-							bundleClass.getClassName() +"."+BUNDLE_TYPE, element).openOutputStream();
+			OutputStream outStream = getFiler().createResource(StandardLocation.SOURCE_OUTPUT,
+					bundleClass.getPackageName(), bundleClass.getClassName() + "." + BUNDLE_TYPE,
+					element).openOutputStream();
 			bundleClass.drawBundleImage(outStream);
 			outStream.close();
 		}
