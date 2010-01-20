@@ -23,7 +23,7 @@ public class HomePage extends WebPage
 	{
 
 
-		 SampleImageBundle bundle = new SampleImageBundle();
+		 SampleImage bundle = new SampleImageBundle();
 
 		// send the orginal file name
 		 add(bundle.buttons("bold" , "bns.png"));

@@ -14,5 +14,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.SOURCE)
 @Documented
 public @interface Resource {
+	/**
+	 * image name
+	 * 
+	 * @return
+	 */
 	String value();
 }

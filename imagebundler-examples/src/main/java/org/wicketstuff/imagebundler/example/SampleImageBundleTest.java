@@ -1,10 +1,6 @@
 package org.wicketstuff.imagebundler.example;
 
-import org.apache.wicket.Application;
-import org.apache.wicket.Resource;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.PackageResourceReference;
 import org.apache.wicket.markup.html.image.Image;
 
 public  class SampleImageBundleTest implements SampleImage
