@@ -13,9 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+
+import org.wicketstuff.imagebundler.processor.CurrentEnv;
+import org.wicketstuff.imagebundler.util.FileLogger;
 
 
 /**
@@ -24,7 +26,7 @@ import javax.imageio.ImageIO;
 public class ImageBundleBuilder
 {
 
-	public static Logger logger = Logger.getLogger(ImageBundleBuilder.class.getName());
+	public final FileLogger logger = CurrentEnv.getLogger();
 
 	/**
 	 * The rectangle at which the original image is placed into the composite

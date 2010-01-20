@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.lang.model.element.Element;
 import javax.tools.StandardLocation;
 import javax.tools.Diagnostic.Kind;
 
 import org.wicketstuff.imagebundler.util.BundleClass;
+import org.wicketstuff.imagebundler.util.FileLogger;
 
 /**
  * generates the ImageBundle class
@@ -25,7 +25,7 @@ public class BundleClassGenerator
 {
 	private Element element;
 	private static final String BUNDLE_TYPE = "png";
-	private final Logger logger = Logger.getLogger(getClass().getName());
+	private final FileLogger logger = CurrentEnv.getLogger();
 
 	/**
 	 * constructor

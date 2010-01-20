@@ -6,6 +6,8 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
+import org.wicketstuff.imagebundler.util.FileLogger;
+
 /**
  * Provides static helper methods to get at the current
  * {@link ProcessingEnvironment}.
@@ -20,6 +22,8 @@ public class CurrentEnv
 
 	/** current environment */
 	private static ProcessingEnvironment current;
+	/** logger */
+	private static final FileLogger logger = new FileLogger();
 
 	public static void set(ProcessingEnvironment env)
 	{
@@ -50,6 +54,11 @@ public class CurrentEnv
 	public static Types getTypeUtils()
 	{
 		return current.getTypeUtils();
+	}
+
+	public static FileLogger getLogger()
+	{
+		return logger;
 	}
 
 }

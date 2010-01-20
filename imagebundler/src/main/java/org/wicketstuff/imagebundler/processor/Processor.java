@@ -21,6 +21,7 @@ import javax.tools.StandardLocation;
 import javax.tools.Diagnostic.Kind;
 
 import org.wicketstuff.imagebundler.ImageBundle;
+import org.wicketstuff.imagebundler.util.FileLogger;
 
 
 /**
@@ -33,6 +34,7 @@ import org.wicketstuff.imagebundler.ImageBundle;
 @SupportedSourceVersion(RELEASE_6)
 public class Processor extends AbstractProcessor
 {
+	private final FileLogger logger = CurrentEnv.getLogger();
 
 	@Override
 	public void init(ProcessingEnvironment processingEnv)
@@ -50,15 +52,22 @@ public class Processor extends AbstractProcessor
 		{
 			for (Element element : roundEnv.getElementsAnnotatedWith(ImageBundle.class))
 			{
-				getMessager().printMessage(Kind.NOTE, element.getSimpleName());
-				// handle interface only
-				if (element.getKind() == ElementKind.INTERFACE)
+				try
 				{
-					new BundleClassGenerator(element).generate();
+					getMessager().printMessage(Kind.NOTE, element.getSimpleName());
+					// handle interface only
+					if (element.getKind() == ElementKind.INTERFACE)
+					{
+						new BundleClassGenerator(element).generate();
+					}
+					else
+					{
+						warnElementIsUnhadled(element);
+					}
 				}
-				else
+				finally
 				{
-					warnElementIsUnhadled(element);
+					logLogsToTextFile();
 				}
 			}
 		}
@@ -101,6 +110,26 @@ public class Processor extends AbstractProcessor
 		{
 			this.processingEnv.getMessager().printMessage(Kind.ERROR,
 					"Error writing out error message " + e2.getMessage());
+		}
+	}
+
+	private void logLogsToTextFile()
+	{
+		try
+		{
+			if (logger.toString() != "")
+			{
+				FileObject fo = this.processingEnv.getFiler().createResource(
+						StandardLocation.SOURCE_OUTPUT, "", "ImageBundler-logs.txt");
+				OutputStream out = fo.openOutputStream();
+				out.write(logger.toString().getBytes());
+				out.close();
+			}
+		}
+		catch (Exception e2)
+		{
+			this.processingEnv.getMessager().printMessage(Kind.ERROR,
+					"Error writing out logs " + e2.getMessage());
 		}
 	}
 

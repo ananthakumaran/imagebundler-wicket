@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 
 import org.wicketstuff.imagebundler.ImageBundleBuilder;
+import org.wicketstuff.imagebundler.processor.CurrentEnv;
 
 /**
  * used to create a Bundle class.
@@ -58,7 +58,7 @@ import org.wicketstuff.imagebundler.ImageBundleBuilder;
 public class BundleClass
 {
 
-	private final Logger logger = Logger.getLogger(getClass().getName());
+	private final FileLogger logger = CurrentEnv.getLogger();
 	/** utility to create the bundle image */
 	private ImageBundleBuilder imageBundleBuilder = new ImageBundleBuilder();
 	/** full package name */

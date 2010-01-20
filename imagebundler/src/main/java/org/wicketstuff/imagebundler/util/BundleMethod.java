@@ -1,12 +1,12 @@
 package org.wicketstuff.imagebundler.util;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.lang.model.element.Element;
 
 import org.wicketstuff.imagebundler.Resource;
 import org.wicketstuff.imagebundler.ImageBundleBuilder.ImageRect;
+import org.wicketstuff.imagebundler.processor.CurrentEnv;
 
 /**
  * used to create a bundle method
@@ -16,7 +16,7 @@ import org.wicketstuff.imagebundler.ImageBundleBuilder.ImageRect;
 public class BundleMethod
 {
 
-	private final Logger logger = Logger.getLogger(getClass().getName());
+	private final FileLogger logger = CurrentEnv.getLogger();
 	/** simple method name */
 	private final String methodName;
 	/** image url */

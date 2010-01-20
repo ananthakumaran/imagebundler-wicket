@@ -11,7 +11,7 @@ import java.util.Collection;
 public final class RichString
 {
 	// orignal string container
-	private final StringBuffer string = new StringBuffer();
+	private final StringBuffer string = new StringBuffer("");
 	// used for indent purpose
 	private int tabCount = 0;
 
@@ -20,7 +20,6 @@ public final class RichString
 	 */
 	public RichString()
 	{
-
 	}
 
 	/**
