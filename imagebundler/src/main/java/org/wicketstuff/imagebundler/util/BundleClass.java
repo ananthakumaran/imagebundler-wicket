@@ -12,8 +12,6 @@ import java.util.logging.Logger;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 
-import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.image.Image;
 import org.wicketstuff.imagebundler.ImageBundleBuilder;
 
 /**
@@ -91,8 +89,8 @@ public class BundleClass
 		this.binaryName = packageName + "." + className;
 
 		// add import for the wicket image class
-		addImports(Image.class);
-		addImports(SimpleAttributeModifier.class);
+		addImports("org.apache.wicket.markup.html.image.Image");
+		addImports("org.apache.wicket.behavior.SimpleAttributeModifier");
 	}
 
 	/**
@@ -130,19 +128,14 @@ public class BundleClass
 	}
 
 	/**
-	 * adds the class to the set of imports
+	 * adds the import
 	 * 
-	 * @param clazzes
-	 *            classes
-	 * @return {@link BundleClass}
+	 * @param className
+	 *            full class name
 	 */
-	public BundleClass addImports(Class<?>... clazzes)
+	public void addImports(String className)
 	{
-		for (Class<?> clazz : clazzes)
-		{
-			imports.add(clazz.getName());
-		}
-		return this;
+		imports.add(className);
 	}
 
 	/**
