@@ -3,7 +3,7 @@ package org.wicketstuff.imagebundler.example;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.image.Image;
 
-public  class SampleImageBundleTest implements SampleImage
+public  class SampleImageBundleTest // implements SampleImage
 {
 	public Image buttons(String id, String fileName)
 	{

@@ -1,9 +1,11 @@
 package org.wicketstuff.imagebundler.util;
 
+import java.net.URL;
 import java.util.logging.Level;
 
 import javax.lang.model.element.Element;
 
+import org.wicketstuff.imagebundler.ImageNotFoundException;
 import org.wicketstuff.imagebundler.Resource;
 import org.wicketstuff.imagebundler.ImageBundleBuilder.ImageRect;
 import org.wicketstuff.imagebundler.processor.CurrentEnv;
@@ -26,8 +28,10 @@ public class BundleMethod
 
 	/**
 	 * constructor
+	 * 
+	 * @throws ImageNotFoundException
 	 */
-	public BundleMethod(Element methodElement, BundleClass clazz)
+	public BundleMethod(Element methodElement, BundleClass clazz) throws ImageNotFoundException
 	{
 		this.methodName = methodElement.getSimpleName().toString();
 		this.clazz = clazz;
@@ -48,8 +52,9 @@ public class BundleMethod
 		str.line();
 		// override annotation
 		str.append("@Override").line();
+		// TODO check the signature of this method in the interface
 		// method signature
-		str.append("public Image ").append(methodName).append("(String id,String fileName)").open();
+		str.append("public Image ").append(methodName).append("(String id)").open();
 
 		// declare the image
 		str.append("Image image = new Image(id, \"spacer.gif\")").semicolon();
@@ -61,29 +66,50 @@ public class BundleMethod
 	}
 
 	/**
-	 * creates the image url for the given method.Returns null if it cannot
-	 * build the image url
+	 * creates the image url for the given method
 	 * 
-	 * @return
+	 * @return imageURL
+	 * @throws ImageNotFoundException
 	 */
-	public String buildImageURL(Element element)
+	public String buildImageURL(Element element) throws ImageNotFoundException
 	{
 		Resource resource = element.getAnnotation(Resource.class);
-		String imageName;
+		String imageName = clazz.getPackageName().replace('.', '/') + "/";
 		if (resource == null)
 		{
 			// This method is not annotated with @Resource.So fall back and
 			// check for any image with methodname
 
-			// TODO add support for other extension also
-			imageName = methodName + ".png";
+			imageName += methodName;
+
+			// TODO check for all the jpeg extension
+			String[] extensions = { ".png", ".gif", ".jpg", ".jpeg", ".jpe" };
+			for (String extension : extensions)
+			{
+				URL imageUrl = getClass().getClassLoader().getResource(imageName + extension);
+				if (imageUrl != null)
+				{
+					// we found the image
+					return imageName + extension;
+				}
+			}
+			// image not found
+			// TODO provide some detail message
+			throw new ImageNotFoundException("cann't find the image for the method " + methodName);
 		}
 		else
 		{
-			imageName = resource.value();
+			imageName += resource.value();
+			URL imageUrl = getClass().getClassLoader().getResource(imageName);
+			if (imageUrl != null)
+			{
+				// we found the image
+				return imageName;
+			}
+			// image not found
+			// TODO provide some detail message
+			throw new ImageNotFoundException("cann't find the image " + resource.value());
 		}
-
-		return clazz.getPackageName().replace('.', '/') + "/" + imageName;
 	}
 
 	/**

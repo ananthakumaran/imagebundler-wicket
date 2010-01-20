@@ -12,6 +12,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 
 import org.wicketstuff.imagebundler.ImageBundleBuilder;
+import org.wicketstuff.imagebundler.ImageNotFoundException;
 import org.wicketstuff.imagebundler.processor.CurrentEnv;
 
 /**
@@ -139,13 +140,16 @@ public class BundleClass
 	}
 
 	/**
-	 * adds methods to the class
+	 * adds methods to the class. throws {@link ImageNotFoundException} if the
+	 * image cann't be found
 	 * 
 	 * @param methods
 	 *            methods
 	 * @return {@link BundleClass}
+	 * @throws ImageNotFoundException
 	 */
 	public BundleClass addMethods(List<? extends Element> methodElements)
+			throws ImageNotFoundException
 	{
 		for (Element method : methodElements)
 		{

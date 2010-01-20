@@ -38,7 +38,7 @@ public class BundleClassGenerator
 		this.element = element;
 	}
 
-	public void generate()
+	public void generate() throws Exception
 	{
 		BundleClass bundleClass = new BundleClass(element.asType().toString());
 		bundleClass.addMethods(element.getEnclosedElements());
@@ -53,6 +53,10 @@ public class BundleClassGenerator
 		catch (IOException e)
 		{
 			logger.log(Level.SEVERE, "could not create bundle image", e);
+
+			// don't try to create class if the you could not create the
+			// imageBundle
+			throw new Exception("could not create bundle image");
 		}
 		try
 		{

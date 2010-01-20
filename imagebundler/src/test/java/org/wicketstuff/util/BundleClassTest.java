@@ -23,51 +23,51 @@ public class BundleClassTest
 	@Test
 	public void testBundleClass()
 	{
-		System.out.println("asdfsadfasf");
-
-		BundleClass bundleClass = new BundleClass("org.wicketstuff.util.SampleImage");
-
-		// Try to put it inside the source
-		File f = new File("generatedImage.png");
-		FileOutputStream fileOutputStream = null;
-		try
-		{
-			f.createNewFile();
-		}
-		catch (IOException e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try
-		{
-			fileOutputStream = new FileOutputStream(f);
-
-		}
-		catch (FileNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-
-		assertNotNull(bundleClass);
-		Element buttonMethod = new MockElement("buttons");
-		Element coureMethod = new MockElement("course");
-
-		bundleClass.addMethods(Arrays.asList(buttonMethod, coureMethod));
-		bundleClass.drawBundleImage(fileOutputStream);
-		try
-		{
-			fileOutputStream.close();
-		}
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.print(bundleClass.getBinaryName());
-		System.out.println(bundleClass.toCode());
+//		System.out.println("asdfsadfasf");
+//
+//		BundleClass bundleClass = new BundleClass("org.wicketstuff.util.SampleImage");
+//
+//		// Try to put it inside the source
+//		File f = new File("generatedImage.png");
+//		FileOutputStream fileOutputStream = null;
+//		try
+//		{
+//			f.createNewFile();
+//		}
+//		catch (IOException e1)
+//		{
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		try
+//		{
+//			fileOutputStream = new FileOutputStream(f);
+//
+//		}
+//		catch (FileNotFoundException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//
+//		assertNotNull(bundleClass);
+//		Element buttonMethod = new MockElement("buttons");
+//		Element coureMethod = new MockElement("course");
+//
+//		bundleClass.addMethods(Arrays.asList(buttonMethod, coureMethod));
+//		bundleClass.drawBundleImage(fileOutputStream);
+//		try
+//		{
+//			fileOutputStream.close();
+//		}
+//		catch (IOException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.print(bundleClass.getBinaryName());
+//		System.out.println(bundleClass.toCode());
 	}
 
 

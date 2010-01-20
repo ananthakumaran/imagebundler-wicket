@@ -58,7 +58,14 @@ public class Processor extends AbstractProcessor
 				// handle interface only
 				if (element.getKind() == ElementKind.INTERFACE)
 				{
-					new BundleClassGenerator(element).generate();
+					try
+					{
+						new BundleClassGenerator(element).generate();
+					}
+					catch (Exception ex)
+					{
+						getLogger().log(Level.SEVERE, "could not generate class", ex);
+					}
 				}
 				else
 				{

@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Resource {
 	/**
-	 * image name
+	 * image file name. should be relative to the package
 	 * 
 	 * @return
 	 */

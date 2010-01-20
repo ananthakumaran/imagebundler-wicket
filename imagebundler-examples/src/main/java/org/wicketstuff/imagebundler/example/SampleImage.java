@@ -10,7 +10,7 @@ public interface SampleImage
 {
 	
 	@Resource("buttons.png")
-	public Image buttons(String a, String fileName);
+	public Image butto(String id);
 
-	public Image course(String a, String fileName);
+	public Image course(String id);
 }
