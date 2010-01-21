@@ -26,15 +26,6 @@
 				<directory>src/main/resources</directory>
 			</resource>
 			<resource>
-				<directory>target/generated-sources/apt/main/java</directory>
-				<includes>
-					<include>**</include>
-				</includes>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-			<resource>
 				<directory>src/main/java</directory>
 				<includes>
 					<include>**</include>
@@ -67,7 +58,7 @@
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
-					 <compilerArgument>-proc:none</compilerArgument>
+					<compilerArgument>-proc:none</compilerArgument>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -80,6 +71,10 @@
 							<goal>process</goal>
 						</goals>
 						<phase>generate-sources</phase>
+						<configuration>
+							<!-- source output directory -->
+							<outputDirectory>src/main/java</outputDirectory>
+						</configuration>
 					</execution>
 				</executions>
 				<dependencies />
@@ -108,8 +103,20 @@
 <![CDATA[
 eclipse.preferences.version=1
 org.eclipse.jdt.apt.aptEnabled=true
-org.eclipse.jdt.apt.genSrcDir=target/generated-sources/apt/main/java
+org.eclipse.jdt.apt.genSrcDir=src/main/java
 org.eclipse.jdt.apt.reconcileEnabled=true]]>
+							</content>
+						</file>
+						<file>
+							<name>.settings/org.eclispse.jdt.core.prefs</name>
+							<!-- don't know why the annotation process in not enabled by default -->
+							<content>
+						<![CDATA[
+org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6
+eclipse.preferences.version=1
+org.eclipse.jdt.core.compiler.source=1.6
+org.eclipse.jdt.core.compiler.compliance=1.6
+org.eclipse.jdt.core.compiler.processAnnotations=enabled]]>
 							</content>
 						</file>
 					</additionalConfig>
