@@ -149,7 +149,7 @@ public class BundleClass
 	 * @throws ImageNotFoundException
 	 */
 	public BundleClass addMethods(List<? extends Element> methodElements)
-			throws ImageNotFoundException
+			throws Exception
 	{
 		for (Element method : methodElements)
 		{

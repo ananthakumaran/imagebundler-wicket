@@ -3,6 +3,7 @@ package org.wicketstuff.imagebundler;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +15,6 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
-import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
 import org.wicketstuff.imagebundler.processor.CurrentEnv;
@@ -310,11 +310,11 @@ public class ImageBundleBuilder
 	 * 
 	 * @param logger
 	 *            a hierarchical logger which logs to the hosted console
-	 * @param imageName
+	 * @param methodName
 	 *            the name of an image that can be found on the classpath
 	 * @throws UnableToCompleteException
-	 *             if the image with name <code>imageName</code> cannot be added
-	 *             to the master composite image
+	 *             if the image with name <code>methodName</code> cannot be
+	 *             added to the master composite image
 	 */
 	public void assimilate(ImageURL imageURL) throws Exception
 	{
@@ -325,7 +325,7 @@ public class ImageBundleBuilder
 		 * exists within the composite image. Note that the coordinates of the
 		 * rectangle aren't computed until the composite is written.
 		 */
-		ImageRect rect = getMapping(imageURL.imageName);
+		ImageRect rect = getMapping(imageURL.getMethodName());
 		if (rect == null)
 		{
 
@@ -336,7 +336,7 @@ public class ImageBundleBuilder
 			// more than
 			// once, we only include the referenced image once in the bundled
 			// image.
-			putMapping(imageURL.imageName, rect);
+			putMapping(imageURL.getMethodName(), rect);
 		}
 	}
 
@@ -371,24 +371,78 @@ public class ImageBundleBuilder
 	private ImageRect addImage(ImageURL imageURL) throws Exception
 	{
 
-		logger.log(Level.INFO, "Adding image '" + imageURL.imageName + "'");
-
 		// Fetch the image.
 		try
 		{
+			InputStream inputStream = null;
+			if (imageURL.getResource() == null)
+			{
+				boolean imageFound = false;
+				// This method is not annotated with @Resource.So fall back and
+				// check for any image with methodname
+				// TODO check for all the jpeg extension
+				String[] extensions = { ".png", ".gif", ".jpg", ".jpeg", ".jpe" };
+				for (String extension : extensions)
+				{
+					try
+					{
+						// we are guessing the file extension and attempting to
+						// open it. If there is not such file an exception will
+						// be thrown.
+						inputStream = CurrentEnv.getFiler().getResource(
+								StandardLocation.CLASS_OUTPUT, imageURL.getPackageName(),
+								imageURL.getMethodName() + extension).openInputStream();
+						// image found
+						// set the image name
+						imageURL.setImageName(imageURL.getMethodName() + extension);
+						imageFound = true;
+						break;
+					}
+					catch (Exception ex)
+					{
+						// fail silently
+					}
+				}
+				if (!imageFound)
+				{
+					// image not found
+					// TODO provide some detail message
+					throw new ImageNotFoundException("cann't find the image for the method "
+							+ imageURL.getMethodName());
+				}
+			}
+			else
+			{
+				try
+				{
+					inputStream = CurrentEnv.getFiler().getResource(StandardLocation.CLASS_OUTPUT,
+							imageURL.getPackageName(), imageURL.getResource()).openInputStream();
+					// image found
+					// set the imageName
+					imageURL.setImageName(imageURL.getResource());
+				}
+				catch (Exception ex)
+				{
+					logger.log(Level.SEVERE, "cann't find the image " + imageURL.getResource(), ex);
+					// image not found
+					// TODO provide some detail message
+					throw new ImageNotFoundException("cann't find the image "
+							+ imageURL.getResource());
+				}
+
+			}
 
 			BufferedImage image;
 			// Load the image
 			try
 			{
-				FileObject fil = CurrentEnv.getFiler().getResource(StandardLocation.CLASS_OUTPUT,
-						imageURL.packageName, imageURL.imageName);
-				logger.log(Level.INFO, fil.toUri().toString());
-				image = ImageIO.read(fil.openInputStream());
+				image = ImageIO.read(inputStream);
+				// TODO check if it is closed already
+				inputStream.close();
 			}
 			catch (IllegalArgumentException iex)
 			{
-				if (imageURL.imageName.toLowerCase().endsWith("png")
+				if (imageURL.getImageName().toLowerCase().endsWith("png")
 						&& iex.getMessage() != null
 						&& iex.getStackTrace()[0].getClassName().equals(
 								"javax.imageio.ImageTypeSpecifier$Indexed"))
@@ -415,7 +469,7 @@ public class ImageBundleBuilder
 				throw new Exception();
 			}
 
-			return new ImageRect(imageURL.imageName, image);
+			return new ImageRect(imageURL.getMethodName(), image);
 
 		}
 		catch (IOException e)

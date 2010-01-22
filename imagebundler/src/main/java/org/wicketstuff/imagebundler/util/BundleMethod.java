@@ -1,14 +1,10 @@
 package org.wicketstuff.imagebundler.util;
 
-import java.util.logging.Level;
-
 import javax.lang.model.element.Element;
-import javax.tools.StandardLocation;
 
 import org.wicketstuff.imagebundler.ImageNotFoundException;
 import org.wicketstuff.imagebundler.Resource;
 import org.wicketstuff.imagebundler.ImageBundleBuilder.ImageRect;
-import org.wicketstuff.imagebundler.processor.CurrentEnv;
 
 /**
  * used to create a bundle method
@@ -18,7 +14,6 @@ import org.wicketstuff.imagebundler.processor.CurrentEnv;
 public class BundleMethod
 {
 
-	private final FileLogger logger = CurrentEnv.getLogger();
 	/** simple method name */
 	private final String methodName;
 	/** image url */
@@ -31,7 +26,7 @@ public class BundleMethod
 	 * 
 	 * @throws ImageNotFoundException
 	 */
-	public BundleMethod(Element methodElement, BundleClass clazz) throws ImageNotFoundException
+	public BundleMethod(Element methodElement, BundleClass clazz) throws Exception
 	{
 		this.methodName = methodElement.getSimpleName().toString();
 		this.clazz = clazz;
@@ -69,56 +64,16 @@ public class BundleMethod
 	 * creates the image url for the given method
 	 * 
 	 * @return imageURL
-	 * @throws ImageNotFoundException
 	 */
-	public ImageURL buildImageURL(Element element) throws ImageNotFoundException
+	public ImageURL buildImageURL(Element element)
 	{
 		Resource resource = element.getAnnotation(Resource.class);
-		if (resource == null)
+		ImageURL imageURL = new ImageURL(clazz.getPackageName(), methodName);
+		if (resource != null)
 		{
-			// This method is not annotated with @Resource.So fall back and
-			// check for any image with methodname
-
-
-			// TODO check for all the jpeg extension
-			String[] extensions = { ".png", ".gif", ".jpg", ".jpeg", ".jpe" };
-			for (String extension : extensions)
-			{
-				try
-				{
-					CurrentEnv.getFiler().getResource(StandardLocation.CLASS_OUTPUT,
-							clazz.getPackageName(), methodName + extension).openInputStream()
-							.close();
-					// image found
-					return new ImageURL(clazz.getPackageName(), methodName + extension);
-				}
-				catch (Exception ex)
-				{
-					// fail silently
-				}
-			}
-			// image not found
-			// TODO provide some detail message
-			throw new ImageNotFoundException("cann't find the image for the method " + methodName);
+			imageURL.setResource(resource.value());
 		}
-		else
-		{
-			try
-			{
-				CurrentEnv.getFiler().getResource(StandardLocation.CLASS_OUTPUT,
-						clazz.getPackageName(), resource.value()).openInputStream().close();
-				// image found
-				return new ImageURL(clazz.getPackageName(), resource.value());
-			}
-			catch (Exception ex)
-			{
-				logger.log(Level.SEVERE, "cann't find the image " + resource.value(), ex);
-				// image not found
-				// TODO provide some detail message
-				throw new ImageNotFoundException("cann't find the image " + resource.value());
-			}
-
-		}
+		return imageURL;
 	}
 
 	/**
@@ -134,16 +89,9 @@ public class BundleMethod
 	/**
 	 * adds the image to the imageBundle
 	 */
-	public void addToBundle()
+	public void addToBundle() throws Exception
 	{
-		try
-		{
-			clazz.getImageBundleBuilder().assimilate(getImageURL());
-		}
-		catch (Exception e)
-		{
-			logger.log(Level.SEVERE, "Could not add " + getImageURL() + " to the imageBundle", e);
-		}
+		clazz.getImageBundleBuilder().assimilate(getImageURL());
 	}
 
 	/**
@@ -154,7 +102,7 @@ public class BundleMethod
 	 */
 	public ImageRect getImageRect()
 	{
-		return clazz.getImageBundleBuilder().getMapping(getImageURL().imageName);
+		return clazz.getImageBundleBuilder().getMapping(getImageURL().getMethodName());
 	}
 
 	/**
