@@ -13,5 +13,4 @@ public interface SampleImage
 
 	public Image course(String id);
 
-	public Image spacer(String id);
 }

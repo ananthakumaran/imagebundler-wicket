@@ -381,8 +381,6 @@ public class ImageBundleBuilder
 			// Load the image
 			try
 			{
-				// FIXME StandardLocation.CLASS_OUTPUT is not pointing the class
-				// output directory when compiling with maven.
 				FileObject fil = CurrentEnv.getFiler().getResource(StandardLocation.CLASS_OUTPUT,
 						imageURL.packageName, imageURL.imageName);
 				logger.log(Level.INFO, fil.toUri().toString());

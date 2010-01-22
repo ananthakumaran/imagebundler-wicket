@@ -72,8 +72,13 @@
 						</goals>
 						<phase>generate-sources</phase>
 						<configuration>
-							<!-- source output directory -->
-							<outputDirectory>target/src/apt/java</outputDirectory>
+							<!--
+								maven annotation processor doesn't set the -d option which makes
+								the StandardLocation.CLASS_OUTPUT to point to the project root
+								directory. Note please make sure that the path doesn't contain
+								any spaces(again that breaks everything)
+							-->
+							<compilerArguments>-d ${project.build.outputDirectory}</compilerArguments>
 						</configuration>
 					</execution>
 				</executions>
@@ -103,7 +108,7 @@
 <![CDATA[
 eclipse.preferences.version=1
 org.eclipse.jdt.apt.aptEnabled=true
-org.eclipse.jdt.apt.genSrcDir=target/src/apt/java
+org.eclipse.jdt.apt.genSrcDir=target/generated-sources/apt/main/java
 org.eclipse.jdt.apt.reconcileEnabled=true]]>
 							</content>
 						</file>

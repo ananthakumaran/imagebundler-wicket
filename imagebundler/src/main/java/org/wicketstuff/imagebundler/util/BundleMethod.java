@@ -86,9 +86,6 @@ public class BundleMethod
 			{
 				try
 				{
-					// FIXME StandardLocation.CLASS_OUTPUT is not pointing the
-					// class
-					// output directory when compiling with maven.
 					CurrentEnv.getFiler().getResource(StandardLocation.CLASS_OUTPUT,
 							clazz.getPackageName(), methodName + extension).openInputStream()
 							.close();
@@ -108,8 +105,6 @@ public class BundleMethod
 		{
 			try
 			{
-				// FIXME StandardLocation.CLASS_OUTPUT is not pointing the class
-				// output directory when compiling with maven.
 				CurrentEnv.getFiler().getResource(StandardLocation.CLASS_OUTPUT,
 						clazz.getPackageName(), resource.value()).openInputStream().close();
 				// image found
