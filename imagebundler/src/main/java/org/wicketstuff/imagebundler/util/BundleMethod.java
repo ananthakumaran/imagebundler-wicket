@@ -1,9 +1,9 @@
 package org.wicketstuff.imagebundler.util;
 
-import java.net.URL;
 import java.util.logging.Level;
 
 import javax.lang.model.element.Element;
+import javax.tools.StandardLocation;
 
 import org.wicketstuff.imagebundler.ImageNotFoundException;
 import org.wicketstuff.imagebundler.Resource;
@@ -22,7 +22,7 @@ public class BundleMethod
 	/** simple method name */
 	private final String methodName;
 	/** image url */
-	private final String imageURL;
+	private final ImageURL imageURL;
 	/** The eclosing class of this method */
 	private final BundleClass clazz;
 
@@ -71,26 +71,33 @@ public class BundleMethod
 	 * @return imageURL
 	 * @throws ImageNotFoundException
 	 */
-	public String buildImageURL(Element element) throws ImageNotFoundException
+	public ImageURL buildImageURL(Element element) throws ImageNotFoundException
 	{
 		Resource resource = element.getAnnotation(Resource.class);
-		String imageName = clazz.getPackageName().replace('.', '/') + "/";
 		if (resource == null)
 		{
 			// This method is not annotated with @Resource.So fall back and
 			// check for any image with methodname
 
-			imageName += methodName;
 
 			// TODO check for all the jpeg extension
 			String[] extensions = { ".png", ".gif", ".jpg", ".jpeg", ".jpe" };
 			for (String extension : extensions)
 			{
-				URL imageUrl = getClass().getClassLoader().getResource(imageName + extension);
-				if (imageUrl != null)
+				try
 				{
-					// we found the image
-					return imageName + extension;
+					// FIXME StandardLocation.CLASS_OUTPUT is not pointing the
+					// class
+					// output directory when compiling with maven.
+					CurrentEnv.getFiler().getResource(StandardLocation.CLASS_OUTPUT,
+							clazz.getPackageName(), methodName + extension).openInputStream()
+							.close();
+					// image found
+					return new ImageURL(clazz.getPackageName(), methodName + extension);
+				}
+				catch (Exception ex)
+				{
+					// fail silently
 				}
 			}
 			// image not found
@@ -99,16 +106,23 @@ public class BundleMethod
 		}
 		else
 		{
-			imageName += resource.value();
-			URL imageUrl = getClass().getClassLoader().getResource(imageName);
-			if (imageUrl != null)
+			try
 			{
-				// we found the image
-				return imageName;
+				// FIXME StandardLocation.CLASS_OUTPUT is not pointing the class
+				// output directory when compiling with maven.
+				CurrentEnv.getFiler().getResource(StandardLocation.CLASS_OUTPUT,
+						clazz.getPackageName(), resource.value()).openInputStream().close();
+				// image found
+				return new ImageURL(clazz.getPackageName(), resource.value());
 			}
-			// image not found
-			// TODO provide some detail message
-			throw new ImageNotFoundException("cann't find the image " + resource.value());
+			catch (Exception ex)
+			{
+				logger.log(Level.SEVERE, "cann't find the image " + resource.value(), ex);
+				// image not found
+				// TODO provide some detail message
+				throw new ImageNotFoundException("cann't find the image " + resource.value());
+			}
+
 		}
 	}
 
@@ -117,7 +131,7 @@ public class BundleMethod
 	 * 
 	 * @return imageUrl
 	 */
-	public String getImageURL()
+	public ImageURL getImageURL()
 	{
 		return imageURL;
 	}
@@ -145,7 +159,7 @@ public class BundleMethod
 	 */
 	public ImageRect getImageRect()
 	{
-		return clazz.getImageBundleBuilder().getMapping(getImageURL());
+		return clazz.getImageBundleBuilder().getMapping(getImageURL().imageName);
 	}
 
 	/**

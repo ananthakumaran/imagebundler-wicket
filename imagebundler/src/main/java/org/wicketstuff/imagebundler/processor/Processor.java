@@ -23,7 +23,6 @@ import javax.tools.Diagnostic.Kind;
 import org.wicketstuff.imagebundler.ImageBundle;
 import org.wicketstuff.imagebundler.util.FileLogger;
 
-
 /**
  * generates source files
  * 

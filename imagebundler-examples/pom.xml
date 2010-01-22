@@ -73,7 +73,7 @@
 						<phase>generate-sources</phase>
 						<configuration>
 							<!-- source output directory -->
-							<outputDirectory>src/main/java</outputDirectory>
+							<outputDirectory>target/src/apt/java</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -103,12 +103,12 @@
 <![CDATA[
 eclipse.preferences.version=1
 org.eclipse.jdt.apt.aptEnabled=true
-org.eclipse.jdt.apt.genSrcDir=src/main/java
+org.eclipse.jdt.apt.genSrcDir=target/src/apt/java
 org.eclipse.jdt.apt.reconcileEnabled=true]]>
 							</content>
 						</file>
 						<file>
-							<name>.settings/org.eclispse.jdt.core.prefs</name>
+							<name>.settings/org.eclipse.jdt.core.prefs</name>
 							<!-- don't know why the annotation process in not enabled by default -->
 							<content>
 						<![CDATA[

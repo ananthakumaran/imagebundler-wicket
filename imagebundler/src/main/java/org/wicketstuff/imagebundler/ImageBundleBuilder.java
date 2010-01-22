@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,9 +14,12 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
+import javax.tools.FileObject;
+import javax.tools.StandardLocation;
 
 import org.wicketstuff.imagebundler.processor.CurrentEnv;
 import org.wicketstuff.imagebundler.util.FileLogger;
+import org.wicketstuff.imagebundler.util.ImageURL;
 
 
 /**
@@ -314,7 +316,7 @@ public class ImageBundleBuilder
 	 *             if the image with name <code>imageName</code> cannot be added
 	 *             to the master composite image
 	 */
-	public void assimilate(String imageName) throws Exception
+	public void assimilate(ImageURL imageURL) throws Exception
 	{
 
 		/*
@@ -323,18 +325,18 @@ public class ImageBundleBuilder
 		 * exists within the composite image. Note that the coordinates of the
 		 * rectangle aren't computed until the composite is written.
 		 */
-		ImageRect rect = getMapping(imageName);
+		ImageRect rect = getMapping(imageURL.imageName);
 		if (rect == null)
 		{
 
 			// Assimilate the image into the composite.
-			rect = addImage(imageName);
+			rect = addImage(imageURL);
 
 			// Map the URL to its image so that even if the same URL is used
 			// more than
 			// once, we only include the referenced image once in the bundled
 			// image.
-			putMapping(imageName, rect);
+			putMapping(imageURL.imageName, rect);
 		}
 	}
 
@@ -366,42 +368,29 @@ public class ImageBundleBuilder
 		}
 	}
 
-	private ImageRect addImage(String imageName) throws Exception
+	private ImageRect addImage(ImageURL imageURL) throws Exception
 	{
 
-		logger.log(Level.INFO, "Adding image '" + imageName + "'");
+		logger.log(Level.INFO, "Adding image '" + imageURL.imageName + "'");
 
 		// Fetch the image.
 		try
 		{
-			// Could turn this lookup logic into an externally-supplied policy
-			// for
-			// increased generality.
-			URL imageUrl = getClass().getClassLoader().getResource(imageName);
-			if (imageUrl == null)
-			{
-				// This should never happen, because this check is done right
-				// after
-				// the image name is retrieved from the metadata or the method
-				// name.
-				// If there is a failure in obtaining the resource, it will
-				// happen
-				// before this point.
-				logger.log(Level.SEVERE,
-						"Resource not found on classpath (is the name specified as "
-								+ "Class.getResource() would expect?)");
-				throw new Exception();
-			}
 
 			BufferedImage image;
 			// Load the image
 			try
 			{
-				image = ImageIO.read(imageUrl);
+				// FIXME StandardLocation.CLASS_OUTPUT is not pointing the class
+				// output directory when compiling with maven.
+				FileObject fil = CurrentEnv.getFiler().getResource(StandardLocation.CLASS_OUTPUT,
+						imageURL.packageName, imageURL.imageName);
+				logger.log(Level.INFO, fil.toUri().toString());
+				image = ImageIO.read(fil.openInputStream());
 			}
 			catch (IllegalArgumentException iex)
 			{
-				if (imageName.toLowerCase().endsWith("png")
+				if (imageURL.imageName.toLowerCase().endsWith("png")
 						&& iex.getMessage() != null
 						&& iex.getStackTrace()[0].getClassName().equals(
 								"javax.imageio.ImageTypeSpecifier$Indexed"))
@@ -428,7 +417,7 @@ public class ImageBundleBuilder
 				throw new Exception();
 			}
 
-			return new ImageRect(imageName, image);
+			return new ImageRect(imageURL.imageName, image);
 
 		}
 		catch (IOException e)
