@@ -20,6 +20,7 @@
 package org.imagebundler.wicket.util;
 
 import java.lang.annotation.Annotation;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,6 +35,7 @@ import javax.lang.model.type.TypeMirror;
 public class MockElement implements Element
 {
 	final String simpleName;
+	private Set<Modifier> modifier = new HashSet<Modifier>();
 
 	public MockElement(String simpleName)
 	{
@@ -91,8 +93,12 @@ public class MockElement implements Element
 	@Override
 	public Set<Modifier> getModifiers()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return modifier;
+	}
+
+	public void setModifier(Set<Modifier> modifier)
+	{
+		this.modifier = modifier;
 	}
 
 	@Override

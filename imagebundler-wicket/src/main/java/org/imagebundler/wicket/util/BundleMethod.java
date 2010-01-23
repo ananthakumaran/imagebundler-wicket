@@ -19,9 +19,13 @@
 
 package org.imagebundler.wicket.util;
 
+import java.util.Set;
+
 import javax.lang.model.element.Element;
+import javax.lang.model.element.Modifier;
 
 import org.imagebundler.wicket.ImageNotFoundException;
+import org.imagebundler.wicket.MethodSignatureException;
 import org.imagebundler.wicket.Resource;
 import org.imagebundler.wicket.ImageBundleBuilder.ImageRect;
 
@@ -47,10 +51,33 @@ public class BundleMethod
 	 */
 	public BundleMethod(Element methodElement, BundleClass clazz) throws Exception
 	{
+		checkMethodSignature(methodElement);
 		this.methodName = methodElement.getSimpleName().toString();
 		this.clazz = clazz;
 		this.imageURL = buildImageURL(methodElement);
 		addToBundle();
+	}
+
+	/**
+	 * checks the method signature and throws exception if it is not of type
+	 * <p>
+	 * <code>public Image methodName(String arg1)</code>
+	 * 
+	 * @param methodElement
+	 *            method element
+	 * @throws MethodSignatureException
+	 */
+	private void checkMethodSignature(Element methodElement) throws MethodSignatureException
+	{
+		// All the methods in the Interface is Abstract by default
+		Set<Modifier> modifiers = methodElement.getModifiers();
+		if (!(modifiers.size() == 2 && modifiers.contains(Modifier.ABSTRACT) && modifiers
+				.contains(Modifier.PUBLIC)))
+		{
+			throw new MethodSignatureException(
+					"The signature of the method should be public Image methodName(String arg)");
+		}
+		// TODO check for the params
 	}
 
 	/**
@@ -84,7 +111,7 @@ public class BundleMethod
 	 * 
 	 * @return imageURL
 	 */
-	public ImageURL buildImageURL(Element element)
+	private ImageURL buildImageURL(Element element)
 	{
 		Resource resource = element.getAnnotation(Resource.class);
 		ImageURL imageURL = new ImageURL(clazz.getPackageName(), methodName);
@@ -100,7 +127,7 @@ public class BundleMethod
 	 * 
 	 * @return imageUrl
 	 */
-	public ImageURL getImageURL()
+	private ImageURL getImageURL()
 	{
 		return imageURL;
 	}
@@ -108,7 +135,7 @@ public class BundleMethod
 	/**
 	 * adds the image to the imageBundle
 	 */
-	public void addToBundle() throws Exception
+	private void addToBundle() throws Exception
 	{
 		clazz.getImageBundleBuilder().assimilate(getImageURL());
 	}
@@ -119,7 +146,7 @@ public class BundleMethod
 	 * 
 	 * @return imageRect
 	 */
-	public ImageRect getImageRect()
+	private ImageRect getImageRect()
 	{
 		return clazz.getImageBundleBuilder().getMapping(getImageURL().getMethodName());
 	}
@@ -130,7 +157,7 @@ public class BundleMethod
 	 * @param imageRect
 	 * @return
 	 */
-	public String getStyle(ImageRect imageRect)
+	private String getStyle(ImageRect imageRect)
 	{
 		// TODO may change on the future
 		String fileName = String.format("resources/%s/%s.png", clazz.getBinaryName(), clazz
