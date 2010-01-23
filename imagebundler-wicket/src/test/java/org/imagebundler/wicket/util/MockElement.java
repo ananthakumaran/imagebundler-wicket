@@ -38,7 +38,7 @@ public class MockElement implements Element
 {
 	final String simpleName;
 	private Set<Modifier> modifier = new HashSet<Modifier>();
-	private String methodSignature;
+	private String methodSignature = "";
 
 	public MockElement(String simpleName)
 	{

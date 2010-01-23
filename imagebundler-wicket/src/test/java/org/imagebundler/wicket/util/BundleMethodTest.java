@@ -65,6 +65,8 @@ public class BundleMethodTest
 			modifiers.add(Modifier.PUBLIC);
 			modifiers.add(Modifier.ABSTRACT);
 			mockMethodElement.setModifier(modifiers);
+			mockMethodElement
+					.setMethodSignature("(java.lang.String)org.apache.wicket.markup.html.image.Image");
 			BundleMethod bundleMethod = new BundleMethod(mockMethodElement, new BundleClass(
 					"org.stub"));
 		}
