@@ -19,15 +19,22 @@
 
 package org.imagebundler.wicket.util;
 
+import java.lang.annotation.ElementType;
 import java.util.Set;
+import java.util.logging.Level;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.type.TypeMirror;
 
 import org.imagebundler.wicket.ImageNotFoundException;
 import org.imagebundler.wicket.MethodSignatureException;
 import org.imagebundler.wicket.Resource;
 import org.imagebundler.wicket.ImageBundleBuilder.ImageRect;
+import org.imagebundler.wicket.processor.CurrentEnv;
+
+import sun.security.action.GetLongAction;
 
 /**
  * used to create a bundle method
@@ -77,7 +84,16 @@ public class BundleMethod
 			throw new MethodSignatureException(
 					"The signature of the method should be public Image methodName(String arg)");
 		}
-		// TODO check for the params
+		// check the return type and arguments
+		if (!methodElement.asType().toString().equals(
+				"(java.lang.String)org.apache.wicket.markup.html.image.Image"))
+
+		{
+			throw new MethodSignatureException(
+					"The signature of the method should be public Image methodName(String arg)");
+		}
+
+
 	}
 
 	/**

@@ -77,7 +77,7 @@ public class BundleMethodTest
 			// expected
 		}
 
-		// more than one modifier
+		// more than two modifier
 		try
 		{
 			MockElement mockMethodElement = new MockElement("mockMethod");
@@ -85,6 +85,8 @@ public class BundleMethodTest
 			modifiers.add(Modifier.PUBLIC);
 			modifiers.add(Modifier.STATIC);
 			mockMethodElement.setModifier(modifiers);
+			mockMethodElement
+					.setMethodSignature("(java.lang.String)org.apache.wicket.markup.html.image.Image");
 			BundleMethod bundleMethod = new BundleMethod(mockMethodElement, new BundleClass(
 					"org.stub"));
 			Assert.fail("should throw MethodSignatureException");

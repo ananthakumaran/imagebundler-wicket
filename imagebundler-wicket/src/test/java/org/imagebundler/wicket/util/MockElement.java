@@ -30,16 +30,25 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ElementVisitor;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.Name;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.TypeVisitor;
 
 public class MockElement implements Element
 {
 	final String simpleName;
 	private Set<Modifier> modifier = new HashSet<Modifier>();
+	private String methodSignature;
 
 	public MockElement(String simpleName)
 	{
 		this.simpleName = simpleName;
+	}
+
+
+	public void setMethodSignature(String methodSignature)
+	{
+		this.methodSignature = methodSignature;
 	}
 
 	@Override
@@ -52,8 +61,28 @@ public class MockElement implements Element
 	@Override
 	public TypeMirror asType()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new TypeMirror()
+		{
+
+			@Override
+			public TypeKind getKind()
+			{
+				return null;
+			}
+
+			@Override
+			public <R, P> R accept(TypeVisitor<R, P> v, P p)
+			{
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public String toString()
+			{
+				return methodSignature;
+			}
+		};
 	}
 
 	@Override
