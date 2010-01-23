@@ -8,8 +8,45 @@
 	<name>imagebundler-wicket-Parent</name>
 	<description>
 	</description>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<inceptionYear>2009</inceptionYear>
+	<developers>
+		<developer>
+			<id>ananth</id>
+			<name>Anantha Kumaran</name>
+			<email>ananthakumaran@gmail.com</email>
+			<url>http://ananthakumaran.wordpress.com</url>
+			<timezone>(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi</timezone>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		</developers>
   <modules>
     <module>imagebundler-wicket</module>
     <module>imagebundler-wicket-examples</module>
   </modules>
+  <build>
+  <plugins>
+  <!-- license header plugin -->
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<configuration>
+					<header>etc/license.txt</header>
+					<properties>
+						<year>${project.inceptionYear}</year>
+						<name>Anantha Kumaran</name>
+						<email>ananthakumaran@gmail.com</email>
+					</properties>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
