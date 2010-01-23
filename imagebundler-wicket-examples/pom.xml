@@ -14,6 +14,19 @@
 	<packaging>war</packaging>
 	<name>imagebundler-wicket-examples</name>
 	<description></description>
+	<inceptionYear>2010</inceptionYear>
+	<developers>
+		<developer>
+			<id>ananth</id>
+			<name>Anantha Kumaran</name>
+			<email>ananthakumaran@gmail.com</email>
+			<url>http://ananthakumaran.wordpress.com</url>
+			<timezone>(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi</timezone>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		</developers>
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
