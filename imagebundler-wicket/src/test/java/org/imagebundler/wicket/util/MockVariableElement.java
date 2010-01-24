@@ -20,70 +20,46 @@
 package org.imagebundler.wicket.util;
 
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ElementVisitor;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.Name;
-import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVisitor;
 
-/**
- * mock executable element
- * 
- * @author Ananth
- * 
- */
-public class MockElement implements ExecutableElement
+public class MockVariableElement implements VariableElement
 {
-	final String simpleName;
-	private Set<Modifier> modifier = new HashSet<Modifier>();
-	private List<VariableElement> parameters = new ArrayList<VariableElement>();
-	private String returnType = "";
 
-	public MockElement(String simpleName)
-	{
-		this.simpleName = simpleName;
-	}
+	String returnType;
 
-	public void setParameters(List<VariableElement> parameters)
-	{
-		this.parameters = parameters;
-	}
-
-
-	@Override
-	public AnnotationValue getDefaultValue()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public List<? extends VariableElement> getParameters()
-	{
-		return parameters;
-	}
-
-	public void setReturnType(String returnType)
+	public MockVariableElement(String returnType)
 	{
 		this.returnType = returnType;
 	}
 
 	@Override
-	public TypeMirror getReturnType()
+	public Object getConstantValue()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <R, P> R accept(ElementVisitor<R, P> v, P p)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TypeMirror asType()
 	{
 		return new TypeMirror()
 		{
@@ -105,52 +81,10 @@ public class MockElement implements ExecutableElement
 			@Override
 			public String toString()
 			{
-
 				return returnType;
 			}
 		};
 	}
-
-
-	@Override
-	public List<? extends TypeMirror> getThrownTypes()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public List<? extends TypeParameterElement> getTypeParameters()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public boolean isVarArgs()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public <R, P> R accept(ElementVisitor<R, P> v, P p)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public TypeMirror asType()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 	@Override
 	public <A extends Annotation> A getAnnotation(Class<A> annotationType)
@@ -159,14 +93,12 @@ public class MockElement implements ExecutableElement
 		return null;
 	}
 
-
 	@Override
 	public List<? extends AnnotationMirror> getAnnotationMirrors()
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	@Override
 	public List<? extends Element> getEnclosedElements()
@@ -175,14 +107,12 @@ public class MockElement implements ExecutableElement
 		return null;
 	}
 
-
 	@Override
 	public Element getEnclosingElement()
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	@Override
 	public ElementKind getKind()
@@ -191,61 +121,18 @@ public class MockElement implements ExecutableElement
 		return null;
 	}
 
-
 	@Override
 	public Set<Modifier> getModifiers()
 	{
-		return modifier;
-	}
-
-	public void setModifier(Set<Modifier> modifier)
-	{
-		this.modifier = modifier;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Name getSimpleName()
 	{
-
-		return new Name()
-		{
-
-			@Override
-			public CharSequence subSequence(int start, int end)
-			{
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public int length()
-			{
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public char charAt(int index)
-			{
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public boolean contentEquals(CharSequence cs)
-			{
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public String toString()
-			{
-
-				return simpleName;
-			}
-		};
+		// TODO Auto-generated method stub
+		return null;
 	}
-
 
 }

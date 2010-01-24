@@ -19,11 +19,13 @@
 
 package org.imagebundler.wicket.util;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.type.TypeMirror;
+import javax.lang.model.element.VariableElement;
 
 import org.imagebundler.wicket.ImageNotFoundException;
 import org.imagebundler.wicket.MethodSignatureException;
@@ -61,15 +63,7 @@ public class BundleMethod
 	}
 
 	/**
-	 * checks the method signature and throws exception if it is not of type The
-	 * check is made using the toString() representation of the
-	 * {@link TypeMirror}.Eclipse and javac implemented it in different ways.so
-	 * we have to check for the two models.Eclipse does't put the returnType in
-	 * the representation. so currently there is no check is made for the return
-	 * type if incase of Eclipse
-	 * <p>
-	 * TODO check returnType incase of Eclipse also
-	 * <p>
+	 * checks the method signature and throws exception if it is not of type
 	 * <code>public Image methodName(String arg1)</code>
 	 * 
 	 * @param methodElement
@@ -87,18 +81,23 @@ public class BundleMethod
 					"The signature of the method should be public Image methodName(String arg)");
 		}
 
-		String methodStr = methodElement.asType().toString();
-		// check the return type and arguments
-		// javac toString() implementation - (arg1,arg2)returnType all the types
-		// are represented by full name eg. java.lang.String
-		// eclipse toString() implementation - methodName(arg1) all the types
-		// are represented by simple name eg. String
-		if (!(methodStr.equals("(java.lang.String)org.apache.wicket.markup.html.image.Image") || methodStr
-				.matches(".+\\(String\\)")))
+		ExecutableElement execMethodElement = (ExecutableElement)methodElement;
+
+		// check return Type
+		if (!execMethodElement.getReturnType().toString().equals(
+				"org.apache.wicket.markup.html.image.Image"))
 		{
 			throw new MethodSignatureException(
-					"The signature of the method should be public Image methodName(String arg) not"
-							+ methodElement.asType().toString());
+					"The signature of the method should be public Image methodName(String arg)");
+		}
+
+
+		List<VariableElement> params = (List<VariableElement>)execMethodElement.getParameters();
+		// check parameters
+		if (!(params.size() == 1 && params.get(0).asType().toString().equals("java.lang.String")))
+		{
+			throw new MethodSignatureException(
+					"The signature of the method should be public Image methodName(String arg)");
 		}
 	}
 

@@ -19,10 +19,13 @@
 
 package org.imagebundler.wicket.util;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.VariableElement;
 
 import junit.framework.Assert;
 
@@ -66,8 +69,10 @@ public class BundleMethodTest
 			modifiers.add(Modifier.PUBLIC);
 			modifiers.add(Modifier.ABSTRACT);
 			mockMethodElement.setModifier(modifiers);
-			mockMethodElement
-					.setMethodSignature("(java.lang.String)org.apache.wicket.markup.html.image.Image");
+			mockMethodElement.setReturnType("org.apache.wicket.markup.html.image.Image");
+			List<VariableElement> parlist = new ArrayList<VariableElement>();
+			parlist.add(new MockVariableElement("java.lang.String"));
+			mockMethodElement.setParameters(parlist);
 			BundleMethod bundleMethod = new BundleMethod(mockMethodElement, new BundleClass(
 					"org.stub"));
 		}
@@ -89,8 +94,10 @@ public class BundleMethodTest
 			modifiers.add(Modifier.PUBLIC);
 			modifiers.add(Modifier.STATIC);
 			mockMethodElement.setModifier(modifiers);
-			mockMethodElement
-					.setMethodSignature("(java.lang.String)org.apache.wicket.markup.html.image.Image");
+			mockMethodElement.setReturnType("java.lang.String");
+			List<VariableElement> parlist = new ArrayList<VariableElement>();
+			parlist.add(new MockVariableElement("java.lang.String"));
+			mockMethodElement.setParameters(parlist);
 			BundleMethod bundleMethod = new BundleMethod(mockMethodElement, new BundleClass(
 					"org.stub"));
 			Assert.fail("should throw MethodSignatureException");
@@ -105,27 +112,5 @@ public class BundleMethodTest
 			Assert.fail("should throw MethodSignatureException");
 		}
 
-		// public abstract modifier
-		try
-		{
-			MockElement mockMethodElement = new MockElement("mockMethod");
-			Set<Modifier> modifiers = new HashSet<Modifier>();
-			modifiers.add(Modifier.PUBLIC);
-			modifiers.add(Modifier.ABSTRACT);
-			mockMethodElement.setModifier(modifiers);
-			// eclipse returns the method name and args as follows
-			mockMethodElement.setMethodSignature("mockMethod(String)");
-			BundleMethod bundleMethod = new BundleMethod(mockMethodElement, new BundleClass(
-					"org.stub"));
-		}
-		catch (MethodSignatureException ex)
-		{
-			ex.printStackTrace();
-			Assert.fail("should  not throw  MethodSignatureException");
-		}
-		catch (Exception ex)
-		{
-			// expected
-		}
 	}
 }
