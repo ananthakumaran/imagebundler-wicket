@@ -19,6 +19,8 @@
 
 package org.imagebundler.wicket.processor;
 
+import java.util.Map;
+
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -43,6 +45,8 @@ public class CurrentEnv
 	private static ProcessingEnvironment current;
 	/** logger */
 	private static final FileLogger logger = new FileLogger();
+	/** image bundler properties */
+	private static Map<String, String> imageBundlerProperties;
 
 	public static void set(ProcessingEnvironment env)
 	{
@@ -78,6 +82,16 @@ public class CurrentEnv
 	public static FileLogger getLogger()
 	{
 		return logger;
+	}
+
+	public static Map<String, String> getProperties()
+	{
+		if (imageBundlerProperties == null)
+		{
+			Config config = new Config();
+			imageBundlerProperties = config.getOptions();
+		}
+		return imageBundlerProperties;
 	}
 
 }

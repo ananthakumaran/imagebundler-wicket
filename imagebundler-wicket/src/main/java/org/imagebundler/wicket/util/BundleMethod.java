@@ -28,6 +28,7 @@ import org.imagebundler.wicket.ImageNotFoundException;
 import org.imagebundler.wicket.MethodSignatureException;
 import org.imagebundler.wicket.Resource;
 import org.imagebundler.wicket.ImageBundleBuilder.ImageRect;
+import org.imagebundler.wicket.processor.CurrentEnv;
 
 /**
  * used to create a bundle method
@@ -80,13 +81,10 @@ public class BundleMethod
 		// check the return type and arguments
 		if (!methodElement.asType().toString().equals(
 				"(java.lang.String)org.apache.wicket.markup.html.image.Image"))
-
 		{
 			throw new MethodSignatureException(
-					"The signature of the method should be public Image methodName(String arg)");
+					"The signature of the method should be public Image methodName(String arg) not"+methodElement.asType().toString());
 		}
-
-
 	}
 
 	/**
@@ -102,12 +100,16 @@ public class BundleMethod
 		str.line();
 		// override annotation
 		str.append("@Override").line();
-		// TODO check the signature of this method in the interface
 		// method signature
 		str.append("public Image ").append(methodName).append("(String id)").open();
 
 		// declare the image
-		str.append("Image image = new Image(id, \"spacer.gif\")").semicolon();
+		str.append("Image image = new Image(id)").semicolon();
+
+		String src = CurrentEnv.getProperties().get("image");
+		// set the src
+		str.append("image.add(new SimpleAttributeModifier(\"src\", \"").append(src).append("\"))")
+				.semicolon();
 		// set the style element
 		str.append("image.add(new SimpleAttributeModifier(\"style\", \"").append(
 				getStyle(getImageRect())).append("\"))").semicolon();
