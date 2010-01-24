@@ -21,8 +21,8 @@ package org.imagebundler.wicket;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
-import javax.tools.StandardLocation;
 
 import org.imagebundler.wicket.processor.CurrentEnv;
 import org.imagebundler.wicket.util.FileLogger;
@@ -393,71 +392,12 @@ public class ImageBundleBuilder
 		// Fetch the image.
 		try
 		{
-			InputStream inputStream = null;
-			if (imageURL.getResource() == null)
-			{
-				boolean imageFound = false;
-				// This method is not annotated with @Resource.So fall back and
-				// check for any image with methodname
-				// TODO check for all the jpeg extension
-				String[] extensions = { ".png", ".gif", ".jpg", ".jpeg", ".jpe" };
-				for (String extension : extensions)
-				{
-					try
-					{
-						// we are guessing the file extension and attempting to
-						// open it. If there is not such file an exception will
-						// be thrown.
-						inputStream = CurrentEnv.getFiler().getResource(
-								StandardLocation.CLASS_OUTPUT, imageURL.getPackageName(),
-								imageURL.getMethodName() + extension).openInputStream();
-						// image found
-						// set the image name
-						imageURL.setImageName(imageURL.getMethodName() + extension);
-						imageFound = true;
-						break;
-					}
-					catch (Exception ex)
-					{
-						// fail silently
-					}
-				}
-				if (!imageFound)
-				{
-					// image not found
-					// TODO provide some detail message
-					throw new ImageNotFoundException("cann't find the image for the method "
-							+ imageURL.getMethodName());
-				}
-			}
-			else
-			{
-				try
-				{
-					inputStream = CurrentEnv.getFiler().getResource(StandardLocation.CLASS_OUTPUT,
-							imageURL.getPackageName(), imageURL.getResource()).openInputStream();
-					// image found
-					// set the imageName
-					imageURL.setImageName(imageURL.getResource());
-				}
-				catch (Exception ex)
-				{
-					logger.log(Level.SEVERE, "cann't find the image " + imageURL.getResource(), ex);
-					// image not found
-					// TODO provide some detail message
-					throw new ImageNotFoundException("cann't find the image "
-							+ imageURL.getResource());
-				}
-
-			}
 
 			BufferedImage image;
 			// Load the image
 			try
 			{
-				image = ImageIO.read(inputStream);
-				// TODO check if it is closed already
-				inputStream.close();
+				image = ImageIO.read(new File(imageURL.getPath()));
 			}
 			catch (IllegalArgumentException iex)
 			{

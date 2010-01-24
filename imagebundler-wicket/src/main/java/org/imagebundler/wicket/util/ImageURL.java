@@ -31,10 +31,10 @@ public class ImageURL
 	private String packageName;
 	/** method name */
 	private String methodName;
-	/** <code>@Resource</code> value */
-	private String resource;
 	/** image name */
 	private String imageName;
+	/** path of the image */
+	private String path;
 
 	/**
 	 * 
@@ -43,10 +43,17 @@ public class ImageURL
 	 * @param methodName
 	 *            image name with extension
 	 */
-	public ImageURL(String packageName, String imageName)
+	public ImageURL(String packageName, String imageName, String path, String methodName)
 	{
 		this.packageName = packageName;
-		this.methodName = imageName;
+		this.imageName = imageName;
+		this.path = path;
+		this.methodName = methodName;
+	}
+
+	public String getPath()
+	{
+		return path;
 	}
 
 	public String getPackageName()
@@ -57,16 +64,6 @@ public class ImageURL
 	public String getMethodName()
 	{
 		return methodName;
-	}
-
-	public String getResource()
-	{
-		return resource;
-	}
-
-	public void setResource(String resource)
-	{
-		this.resource = resource;
 	}
 
 	public String getImageName()

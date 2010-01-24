@@ -19,13 +19,17 @@
 
 package org.imagebundler.wicket.util;
 
+import java.io.File;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.VariableElement;
+import javax.tools.FileObject;
+import javax.tools.StandardLocation;
 
 import org.imagebundler.wicket.ImageNotFoundException;
 import org.imagebundler.wicket.MethodSignatureException;
@@ -41,6 +45,7 @@ import org.imagebundler.wicket.processor.CurrentEnv;
 public class BundleMethod
 {
 
+	private final FileLogger logger = CurrentEnv.getLogger();
 	/** simple method name */
 	private final String methodName;
 	/** image url */
@@ -133,17 +138,72 @@ public class BundleMethod
 	/**
 	 * creates the image url for the given method
 	 * 
-	 * @return imageURL
+	 * @param element
+	 *            element
+	 * @return {@link ImageURL}
+	 * @throws ImageNotFoundException
 	 */
-	private ImageURL buildImageURL(Element element)
+	private ImageURL buildImageURL(Element element) throws ImageNotFoundException
 	{
 		Resource resource = element.getAnnotation(Resource.class);
-		ImageURL imageURL = new ImageURL(clazz.getPackageName(), methodName);
-		if (resource != null)
+		if (resource == null)
 		{
-			imageURL.setResource(resource.value());
+			// This method is not annotated with @Resource.So fall back and
+			// check for any image with methodname
+			// TODO check for all the jpeg extension
+			String[] extensions = { ".png", ".gif", ".jpg", ".jpeg", ".jpe" };
+			for (String extension : extensions)
+			{
+
+				try
+				{
+					// we are guessing the file extension and attempting to
+					// open it. If there is not such file an exception will
+					// be thrown.
+					FileObject imageFileObj = CurrentEnv.getFiler().getResource(
+							StandardLocation.CLASS_OUTPUT, clazz.getPackageName(),
+							methodName + extension);
+					final String path = imageFileObj.toUri().toString().replace("file:", "");
+					File imageFile = new File(path);
+					if (imageFile.exists())
+					{
+						// image found
+						return new ImageURL(clazz.getPackageName(), methodName + extension, path,
+								methodName);
+					}
+				}
+				catch (Exception ex)
+				{
+					logger.log(Level.SEVERE, "", ex);
+				}
+			}
+			// image not found
+			// TODO provide some detail message
+			throw new ImageNotFoundException("cann't find the image for the method " + methodName);
 		}
-		return imageURL;
+		else
+		{
+			try
+			{
+				FileObject imageFileObj = CurrentEnv.getFiler().getResource(
+						StandardLocation.CLASS_OUTPUT, clazz.getPackageName(), resource.value());
+				final String path = imageFileObj.toUri().toString().replace("file:", "");
+				File imageFile = new File(path);
+				if (imageFile.exists())
+				{
+					// image found
+					return new ImageURL(clazz.getPackageName(), resource.value(), path, methodName);
+				}
+				// image not found
+				// TODO provide some detail message
+				throw new ImageNotFoundException("cann't find the image " + resource.value());
+			}
+			catch (Exception ex)
+			{
+				logger.log(Level.SEVERE, "", ex);
+				throw new ImageNotFoundException("cann't find the image " + resource.value());
+			}
+		}
 	}
 
 	/**
