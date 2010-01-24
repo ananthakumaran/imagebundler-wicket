@@ -167,8 +167,7 @@ public class BundleClass
 	 * @return {@link BundleClass}
 	 * @throws ImageNotFoundException
 	 */
-	public BundleClass addMethods(List<? extends Element> methodElements)
-			throws Exception
+	public BundleClass addMethods(List<? extends Element> methodElements) throws Exception
 	{
 		for (Element method : methodElements)
 		{

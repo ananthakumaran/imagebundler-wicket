@@ -36,7 +36,7 @@ public class Config
 	private void loadDefaultOptions()
 	{
 		// TODO may change in the future
-		this.options.put("image", "images/clear.gif");
+		this.options.put("image.clear", "images/clear.gif");
 	}
 
 	private void loadImageBundlerDotProperties()

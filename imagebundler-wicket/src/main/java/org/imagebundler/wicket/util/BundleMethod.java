@@ -20,11 +20,9 @@
 package org.imagebundler.wicket.util;
 
 import java.util.Set;
-import java.util.logging.Logger;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
 import org.imagebundler.wicket.ImageNotFoundException;
@@ -123,10 +121,9 @@ public class BundleMethod
 		// declare the image
 		str.append("Image image = new Image(id)").semicolon();
 
-		String src = CurrentEnv.getProperties().get("image");
 		// set the src
-		str.append("image.add(new SimpleAttributeModifier(\"src\", \"").append(src).append("\"))")
-				.semicolon();
+		str.append("image.add(new SimpleAttributeModifier(\"src\", \"").append(
+				getProperty("image.clear")).append("\"))").semicolon();
 		// set the style element
 		str.append("image.add(new SimpleAttributeModifier(\"style\", \"").append(
 				getStyle(getImageRect())).append("\"))").semicolon();
@@ -195,6 +192,18 @@ public class BundleMethod
 						"background-image: url(%s); background-position:-%dpx -%dpx; width:%dpx; height:%dpx;",
 						fileName, imageRect.getLeft(), imageRect.getTop(), imageRect.getWidth(),
 						imageRect.getHeight());
+	}
+
+	/**
+	 * get the propertye
+	 * 
+	 * @param key
+	 *            key
+	 * @return value
+	 */
+	private String getProperty(String key)
+	{
+		return CurrentEnv.getProperties().get(key);
 	}
 
 }
