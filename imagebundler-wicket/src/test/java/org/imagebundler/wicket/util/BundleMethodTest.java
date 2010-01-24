@@ -54,6 +54,7 @@ public class BundleMethodTest
 		}
 		catch (Exception ex)
 		{
+			ex.printStackTrace();
 			Assert.fail("should throw MethodSignatureException");
 		}
 
@@ -72,6 +73,7 @@ public class BundleMethodTest
 		}
 		catch (MethodSignatureException ex)
 		{
+			ex.printStackTrace();
 			Assert.fail("should  not throw  MethodSignatureException");
 		}
 		catch (Exception ex)
@@ -99,7 +101,31 @@ public class BundleMethodTest
 		}
 		catch (Exception ex)
 		{
+			ex.printStackTrace();
 			Assert.fail("should throw MethodSignatureException");
+		}
+
+		// public abstract modifier
+		try
+		{
+			MockElement mockMethodElement = new MockElement("mockMethod");
+			Set<Modifier> modifiers = new HashSet<Modifier>();
+			modifiers.add(Modifier.PUBLIC);
+			modifiers.add(Modifier.ABSTRACT);
+			mockMethodElement.setModifier(modifiers);
+			// eclipse returns the method name and args as follows
+			mockMethodElement.setMethodSignature("mockMethod(String)");
+			BundleMethod bundleMethod = new BundleMethod(mockMethodElement, new BundleClass(
+					"org.stub"));
+		}
+		catch (MethodSignatureException ex)
+		{
+			ex.printStackTrace();
+			Assert.fail("should  not throw  MethodSignatureException");
+		}
+		catch (Exception ex)
+		{
+			// expected
 		}
 	}
 }
