@@ -57,6 +57,11 @@ public class BundleClassGenerator
 		this.element = element;
 	}
 
+	/**
+	 * generates the BundleClass File and the Bundle Image
+	 * 
+	 * @throws Exception
+	 */
 	public void generate() throws Exception
 	{
 		BundleClass bundleClass = new BundleClass(element.asType().toString());
@@ -77,6 +82,19 @@ public class BundleClassGenerator
 			// imageBundle
 			throw new Exception("could not create bundle image");
 		}
+
+		writeBundleClass(bundleClass);
+
+	}
+
+	/**
+	 * writes the source file for the BundleClass
+	 * 
+	 * @param bundleClass
+	 *            bundle class
+	 */
+	private void writeBundleClass(BundleClass bundleClass)
+	{
 		try
 		{
 			Writer writer = getFiler().createSourceFile(bundleClass.getBinaryName(), element)
@@ -89,6 +107,5 @@ public class BundleClassGenerator
 		{
 			getMessager().printMessage(Kind.ERROR, "could not create file");
 		}
-
 	}
 }
