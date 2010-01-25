@@ -20,6 +20,8 @@
 package org.imagebundler.wicket;
 
 /**
+ * The method signature should be of the form
+ * <code>Image methodName(String arg)</code>
  * 
  * @author Ananth
  */

@@ -26,6 +26,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * specifies the path to the image relative to the package
  * 
  * @author Ananth
  */

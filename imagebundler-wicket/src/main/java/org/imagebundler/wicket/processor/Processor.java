@@ -43,7 +43,7 @@ import org.imagebundler.wicket.ImageBundle;
 import org.imagebundler.wicket.util.FileLogger;
 
 /**
- * generates source files
+ * generates the bundle class and bundle image
  * 
  * @author Ananth
  * 
@@ -65,14 +65,12 @@ public class Processor extends AbstractProcessor
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
 	{
-		CurrentEnv.getMessager().printMessage(Kind.NOTE, "ImageBundle processing started");
 		boolean writeLogs = false;
 		try
 		{
 			for (Element element : roundEnv.getElementsAnnotatedWith(ImageBundle.class))
 			{
 				writeLogs = true;
-				getMessager().printMessage(Kind.NOTE, element.getSimpleName());
 				// handle interface only
 				if (element.getKind() == ElementKind.INTERFACE)
 				{
@@ -93,7 +91,7 @@ public class Processor extends AbstractProcessor
 		}
 		catch (Exception e)
 		{
-			getLogger().log(Level.SEVERE, "", e);
+			getLogger().log(Level.SEVERE, "could not process the annotation", e);
 			writeLogs = true;
 		}
 		finally
@@ -103,15 +101,24 @@ public class Processor extends AbstractProcessor
 				logLogsToTextFile();
 			}
 		}
-		getMessager().printMessage(Kind.NOTE, "processing finished");
 		return true;
 	}
 
+	/**
+	 * warn the user if he puts the annotation in Types other than Interface
+	 * 
+	 * @param element
+	 *            element
+	 */
 	private void warnElementIsUnhadled(Element element)
 	{
 		getMessager().printMessage(Kind.WARNING, "Unhandled element " + element);
+		logger.log(Level.WARNING, "@ImageBundle annotation should be applied to Interface only");
 	}
 
+	/**
+	 * write the logs to the text file for debugging purposes
+	 */
 	private void logLogsToTextFile()
 	{
 		try
@@ -131,5 +138,4 @@ public class Processor extends AbstractProcessor
 					"Error writing out logs " + e2.getMessage());
 		}
 	}
-
 }

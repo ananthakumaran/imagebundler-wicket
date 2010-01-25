@@ -27,6 +27,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotate interface with <code>@ImageBundle</code> to generate the Bundle
+ * class and BundleImage
  * 
  * @author Ananth
  */

@@ -19,7 +19,6 @@
 
 package org.imagebundler.wicket.util;
 
-import java.io.File;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,41 +36,6 @@ import org.imagebundler.wicket.processor.CurrentEnv;
 
 /**
  * used to create a Bundle class.
- * <p>
- * 
- * <pre>
- * package org.test;
- * 
- * import org.apache.wicket.markup.html.image.Image;
- * import org.wicketstuff.sprite.ImageBundle;
- * 
- * public interface SampleImage
- * {
- * 	public Image boldImage(String id , String fileName);
- * 	public Image codeImage(String id , String fileName);
- * }
- *  
- * For the above the generated class will be like this
- * 
- * package org.test;
- * 
- * import org.test.Sample;
- * import org.apache.wicket.markup.html.image.Image;
- * 
- * public class SampleImageBundle implements SampleImage 
- * {
- * 	public Image boldImage(String id , String fileName)
- * 	{
- * 	// code goes here
- * 	}
- * 	public Image codeImage(String id , String fileName)
- * 	{
- * 	// code goes here
- * 	}
- * }
- * 
- * <pre>
- * 
  * 
  * @author Ananth
  * 
@@ -132,7 +96,13 @@ public class BundleClass
 	 */
 	public String getSimpleName(String fullClazzName)
 	{
-		return fullClazzName.substring(fullClazzName.lastIndexOf('.') + 1);
+		int lastIndex = fullClazzName.lastIndexOf('.');
+		if (lastIndex != -1)
+		{
+			return fullClazzName.substring(lastIndex + 1);
+		}
+		// default package
+		return fullClazzName;
 	}
 
 	/**
@@ -144,7 +114,13 @@ public class BundleClass
 	 */
 	public String parsePackageName(String fullClazzName)
 	{
-		return fullClazzName.substring(0, fullClazzName.lastIndexOf('.'));
+		int lastIndex = fullClazzName.lastIndexOf('.');
+		if (lastIndex != -1)
+		{
+			return fullClazzName.substring(0, lastIndex);
+		}
+		// default package
+		return "";
 	}
 
 	/**
@@ -274,9 +250,11 @@ public class BundleClass
 		return imageBundlePath;
 	}
 
+	/**
+	 * builds the path for the imagebundle that we are going to create
+	 */
 	private void buildImageBundlePath()
 	{
-
 		String outdir = CurrentEnv.getProperties().get("image.output");
 		if (!outdir.equals(""))
 		{
@@ -289,6 +267,12 @@ public class BundleClass
 		}
 	}
 
+	/**
+	 * whether the user specified a output directory to place the generated
+	 * image
+	 * 
+	 * @return true if the user specified a output directory
+	 */
 	public boolean isOutputFolderSpecified()
 	{
 		return outputFolderSpecified;
