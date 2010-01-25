@@ -57,7 +57,7 @@ public class Config
 		// TODO may change in the future
 		this.options.put("image.clear", "images/clear.gif");
 		this.options.put("image.output", "");
-		this.options.put("webapp", "");
+		this.options.put("webapp", "src/main/webapp");
 		this.options.put("basedir", "");
 	}
 
@@ -94,7 +94,6 @@ public class Config
 			// make an assumption that the properties file is in the base dir
 			// and set some defaults if it is not already set
 			setValueIfEmpty("basedir", imageBundlerProperites.getParentFile().getAbsolutePath());
-			setValueIfEmpty("webapp", "src/main/webapp");
 
 		}
 	}
