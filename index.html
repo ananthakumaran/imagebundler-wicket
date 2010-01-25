@@ -1,1 +1,91 @@
-Hello World
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<h1>Automatic Compile-Time Image Bundling For Apache Wicket</h1>
+<h2>Inspiration</h2>
+<a href="http://code.google.com/p/google-web-toolkit/wiki/ImageBundleDesign">http://code.google.com/p/google-web-toolkit/wiki/ImageBundleDesign</a>
+<h2>Goals</h2>
+<ul>
+<li>Allow developers to easily create bundles of static images that can be downloaded in a single HTTP request.</li>
+<li>Solve the "bouncy UI startup" problem in an automated way that does not require developers to specify image sizes explicitly in code.</li>
+<li>Avoid even simple HTTP freshness checks, leaving HTTP connections available for important work.</li>
+</ul>
+<h2>Non-Goals</h2>
+<ul>
+<li>Find the optimal way to combine individual images into a single image in multiple dimensions. Simply lining up images left-to-right to create an image strip is sufficient.</li>
+<li>Support use cases that need a dynamic set of images, such as those in which end user input controls the set of images. For example, this mechanism is not intended as a way to implement a photo gallery.</li>
+</ul>
+
+<h2>Defining an Image Bundle</h2>
+<code><pre>
+@ImageBundle
+interface WordProcessorImage {
+
+  /**
+   * Would match either file 'newFileIcon.gif' or 'newFileIcon.png' in the same package as this type.
+   * Note that other file extensions may also be recognized.
+   */
+  Image newFileIcon(String id);
+
+  /**
+   * Would bundle the file 'open-file-icon.gif' residing in the same package as this type.
+   */
+  @Resource("open-file-icon.gif")
+  Image openFileIcon(String id);
+
+  /**
+   * Would bundle the file 'savefile.gif' residing in the folder icons relative to this package.
+   */
+  @Resource("icons/savefile.gif")
+  Image saveFileIcon(String id);
+}
+</pre></code>
+<h2>Using an Image Bundle</h2>
+<code><pre>
+
+  /**
+   *  If you configured eclipse properly WordProcessorImageBundle Class will be automatically created after you save
+   *  the  WordProcessorImage interface
+   */
+  WordProcessorImage bundle = new WordProcessorImageBundle();
+  add(bundle.openFileIcon("openfile"));
+  add(bundle.saveFileIcon("savefile"));
+
+</pre></code>
+
+<h2>Configuration</h2>
+<h3>Interface</h3>
+<ul>
+<li>Annotate your interface with <pre><code>@ImageBundle</code></pre></li>
+<li>All the methods in the interface should have the following signature 
+<code><pre> Image methodName(String id)</pre></code>
+</li>
+<li>By default the image that have the same name as method name residing in the same package as this type will be bundled. for example for a method
+sample, anyone of the following file sample.gif , sample.png  , sample.jpg in the same package will be bundled
+</li>
+</ul>
+<h3>imagebundler.properties</h3>
+<ul>
+<li>For the image bundler to work a 1px gif image namely clear.gif should be placed in images/clear.gif (relative to the webapp). This can be changed by proper configuration</li>
+<li>By default all the generated imagebundle will be placed in the same package.
+</li>
+<li>This file is not needed if you follow the defaults</li>
+</ul>
+<code><pre>
+# [default the folder that contains the imagebundler.properties will be considered as the basedir]
+basedir=full/pathto/base/directory
+# [default src/main/webapp]
+webapp=path/relativeto/basedir
+# This needs a 1px transparent gif to work.
+# [default images/clear.gif]
+image.clear=path/relativeto/webapp
+# [default same package] note that the generated image bundles will be placed at basedir+webapp+image.output folder
+image.output=path/for/generated/images/relativeto/webapp
+</pre></code>
+
+</body>
+</html>
