@@ -4,6 +4,8 @@
   <classpathentry kind="src" path="target/generated-sources/apt/main/java"/>
   <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
   <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="var" path="M2_REPO/org/easymock/easymock/2.0/easymock-2.0.jar" sourcepath="M2_REPO/org/easymock/easymock/2.0/easymock-2.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/java/dev/hickory/hickory/1.0.0/hickory-1.0.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/imagebundler/wicket/imagebundler-wicket/1.0-SNAPSHOT/imagebundler-wicket-1.0-SNAPSHOT.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty/6.1.4/jetty-6.1.4.jar" sourcepath="M2_REPO/org/mortbay/jetty/jetty/6.1.4/jetty-6.1.4-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/mortbay/jetty/jetty-management/6.1.4/jetty-management-6.1.4.jar" sourcepath="M2_REPO/org/mortbay/jetty/jetty-management/6.1.4/jetty-management-6.1.4-sources.jar"/>

@@ -19,6 +19,7 @@
 
 package org.imagebundler.wicket.util;
 
+import java.io.File;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,6 +94,13 @@ public class BundleClass
 	private final Set<String> imports = new TreeSet<String>();
 	/** method list */
 	private final List<BundleMethod> methods = new ArrayList<BundleMethod>();
+	/**
+	 * contains the path of the BundleImage of this class.This path is relative
+	 * to the webapp dir
+	 */
+	private String imageBundlePath;
+	/** whether the output folder is specified by the user or not */
+	private boolean outputFolderSpecified = false;
 
 	/**
 	 * constructor
@@ -111,6 +119,8 @@ public class BundleClass
 		// add import for the wicket image class
 		addImports("org.apache.wicket.markup.html.image.Image");
 		addImports("org.apache.wicket.behavior.SimpleAttributeModifier");
+
+		buildImageBundlePath();
 	}
 
 	/**
@@ -252,5 +262,35 @@ public class BundleClass
 		{
 			logger.log(Level.SEVERE, "could not draw bundle image", e);
 		}
+	}
+
+	/**
+	 * getter
+	 * 
+	 * @return imageBundlePath that can be used as url
+	 */
+	public String getImageBundlePath()
+	{
+		return imageBundlePath;
+	}
+
+	private void buildImageBundlePath()
+	{
+
+		String outdir = CurrentEnv.getProperties().get("image.output");
+		if (!outdir.equals(""))
+		{
+			outputFolderSpecified = true;
+			imageBundlePath = outdir + "/" + className + ".png";
+		}
+		else
+		{
+			imageBundlePath = String.format("resources/%s/%s.png", binaryName, className);
+		}
+	}
+
+	public boolean isOutputFolderSpecified()
+	{
+		return outputFolderSpecified;
 	}
 }

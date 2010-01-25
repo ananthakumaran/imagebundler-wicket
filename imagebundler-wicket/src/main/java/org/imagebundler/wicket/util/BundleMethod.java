@@ -243,14 +243,11 @@ public class BundleMethod
 	 */
 	private String getStyle(ImageRect imageRect)
 	{
-		// TODO may change on the future
-		String fileName = String.format("resources/%s/%s.png", clazz.getBinaryName(), clazz
-				.getClassName());
 		return String
 				.format(
 						"background-image: url(%s); background-position:-%dpx -%dpx; width:%dpx; height:%dpx;",
-						fileName, imageRect.getLeft(), imageRect.getTop(), imageRect.getWidth(),
-						imageRect.getHeight());
+						clazz.getImageBundlePath(), imageRect.getLeft(), imageRect.getTop(),
+						imageRect.getWidth(), imageRect.getHeight());
 	}
 
 	/**
