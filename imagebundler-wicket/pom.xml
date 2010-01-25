@@ -25,7 +25,7 @@
 				<role>Developer</role>
 			</roles>
 		</developer>
-		</developers>
+	</developers>
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -54,6 +54,17 @@
 		</plugins>
 	</build>
 	<dependencies>
+		<!-- For Testing -->
+		<dependency>
+			<groupId>easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.hickory</groupId>
+			<artifactId>hickory</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -61,4 +72,11 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>jolira-tools-repo</id>
+			<name>Jolira-Tools Maven Repository</name>
+			<url>http://jolira-tools.googlecode.com/svn/maven/repo</url>
+		</repository>
+	</repositories>
 </project>
