@@ -8,6 +8,13 @@
   <script type ="text/javascript" src="static/prettify.js"></script>
 </head>
 <body onload="prettyPrint()">
+<div class="navigation">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="maven2.html">Maven2 configuration</a></li>
+</ul>
+</div>
+<div>
 <h1>Automatic Compile-Time Image Bundling For Apache Wicket</h1>
 <h2>Inspiration</h2>
 <a href="http://code.google.com/p/google-web-toolkit/wiki/ImageBundleDesign">http://code.google.com/p/google-web-toolkit/wiki/ImageBundleDesign</a>
@@ -32,19 +39,19 @@ interface WordProcessorImage {
    * Would match either file 'newFileIcon.gif' or 'newFileIcon.png' in the same package as this type.
    * Note that other file extensions may also be recognized.
    */
-  Image newFileIcon(String id);
+  public Image newFileIcon(String id);
 
   /**
    * Would bundle the file 'open-file-icon.gif' residing in the same package as this type.
    */
   @Resource("open-file-icon.gif")
-  Image openFileIcon(String id);
+  public Image openFileIcon(String id);
 
   /**
    * Would bundle the file 'savefile.gif' residing in the folder icons relative to this package.
    */
   @Resource("icons/savefile.gif")
-  Image saveFileIcon(String id);
+  public Image saveFileIcon(String id);
 }
 </pre></code>
 <h2>Using an Image Bundle</h2>
@@ -59,13 +66,52 @@ interface WordProcessorImage {
   add(bundle.saveFileIcon("savefile"));
 
 </pre></code>
+<h2>How it Works</h2>
+JDK 6 Annotation processor is used to generate source files.For the above example the generated image will
+be like this
+<code><pre class="prettyprint">
+public class WordProcessorImageBundle implements WordProcessorImage
+{
+	
+	@Override
+	public Image newFileIcon(String id)
+	{
+		Image image = new Image(id);
+		image.add(new SimpleAttributeModifier("src", "images/clear.gif"));
+		image.add(new SimpleAttributeModifier("style", "background-image: "+
+		+"url(resources/org.imagebundler.wicket.examples.WordProcessorImageBundle/WordProcessorImageBundle.png);"
+		+"background-position:-Xpx -Xpx; width:Xpx; height:Xpx;"));
+		return image;
+	}
+	
+	@Override
+	public Image openFileIcon(String id)
+	{
+		Image image = new Image(id);
+		image.add(new SimpleAttributeModifier("src", "images/clear.gif"));
+		image.add(new SimpleAttributeModifier("style", "background-image: "+
+		+"url(resources/org.imagebundler.wicket.examples.WordProcessorImageBundle/WordProcessorImageBundle.png);"
+		+"background-position:-Xpx -Xpx; width:Xpx; height:Xpx;"));
+		return image;
+	}
+	@Override
+	public Image saveFileIcon(String id);
+		Image image = new Image(id);
+		image.add(new SimpleAttributeModifier("src", "images/clear.gif"));
+		image.add(new SimpleAttributeModifier("style", "background-image: "+
+		+"url(resources/org.imagebundler.wicket.examples.WordProcessorImageBundle/WordProcessorImageBundle.png);"
+		+"background-position:-Xpx -Xpx; width:Xpx; height:Xpx;"));
+		return image;
+	}
+}
 
+</pre></code>
 <h2>Configuration</h2>
 <h3>Interface</h3>
 <ul>
 <li>Annotate your interface with <pre><code class="prettyprint">@ImageBundle</code></pre></li>
 <li>All the methods in the interface should have the following signature 
-<code><pre class="prettyprint"> Image methodName(String id)</pre></code>
+<code><pre class="prettyprint"> public Image methodName(String id)</pre></code>
 </li>
 <li>By default the image that have the same name as method name residing in the same package as this type will be bundled. for example for a method
 sample, anyone of the following file sample.gif , sample.png  , sample.jpg in the same package will be bundled
@@ -73,7 +119,7 @@ sample, anyone of the following file sample.gif , sample.png  , sample.jpg in th
 </ul>
 <h3>imagebundler.properties</h3>
 <ul>
-<li>For the image bundler to work a 1px gif image namely clear.gif should be placed in images/clear.gif (relative to the webapp). This can be changed by proper configuration</li>
+<li>For the image bundler to work a 1px transparent gif image namely clear.gif should be placed in  images/clear.gif (relative to the webapp). This can be changed by proper configuration</li>
 <li>By default all the generated imagebundle will be placed in the same package.
 </li>
 <li>This file is not needed if you follow the defaults</li>
@@ -89,6 +135,6 @@ image.clear=path/relativeto/webapp
 # [default same package] note that the generated image bundles will be placed at basedir+webapp+image.output folder
 image.output=path/for/generated/images/relativeto/webapp
 </pre></code>
-
+</div>
 </body>
 </html>

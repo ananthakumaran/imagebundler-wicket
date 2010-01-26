@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link  type="text/css" href="static/prettify.css" rel="stylesheet"/>
+  <link  type="text/css" href="static/style.css" rel="stylesheet"/>
+  <script type ="text/javascript" src="static/prettify.js"></script>
+</head>
+<body onload="prettyPrint()">
+<div class="navigation">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="maven2.html">Maven2 configuration</a></li>
+</ul>
+</div>
+<div>
+<h1>Maven2 Configuration</h1>
+<h2>Repository</h2>
+<code><pre class="prettyprint">
+&lt;repositories&gt;
+ &lt;repository&gt;
+  &lt;id&gt;org.imagebundler.wicket&lt;/id&gt;
+  &lt;name&gt;imagebundler Maven Repository&lt;/name&gt;
+  &lt;url&gt;http://imagebundler-wicket.googlecode.com/svn/maven2&lt;/url&gt;
+ &lt;/repository&gt;
+&lt;/repositories&gt;
+&lt;pluginRepositories&gt;
+  &lt;pluginRepository&gt;
+   &lt;id&gt;maven-annotation-plugin&lt;/id&gt;
+   &lt;name&gt;maven-annotation-processor Repository&lt;/name&gt;
+   &lt;url&gt;http://maven-annotation-plugin.googlecode.com/svn/trunk/mavenrepo&lt;/url&gt;
+  &lt;/pluginRepository&gt;
+ &lt;/pluginRepositories&gt;
+</pre></code>
+<h2>Dependency</h2>
+<code><pre class="prettyprint">
+&lt;dependency&gt;
+ &lt;groupId&gt;org.imagebundler.wicket&lt;/groupId&gt;
+ &lt;artifactId&gt;imagebundler-wicket&lt;/artifactId&gt;
+ &lt;version&gt;${imagebundler.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</pre></code>
+<h2>Configuring Maven to process annotations</h2>
+<code><pre class="prettyprint">
+&lt;plugin&gt;
+ &lt;!--
+  set source compliance level to 1.6, do not use javac to run
+  annotation processors, we will use the maven-processor-plugin to do
+  this
+  --&gt;
+ &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+ &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+  &lt;configuration&gt;
+	&lt;source&gt;1.6&lt;/source&gt;
+	&lt;target&gt;1.6&lt;/target&gt;
+	&lt;compilerArgument&gt;-proc:none&lt;/compilerArgument&gt;
+ &lt;/configuration&gt;
+&lt;/plugin&gt;
+&lt;plugin&gt;
+ &lt;groupId&gt;org.bsc.maven&lt;/groupId&gt;
+ &lt;artifactId&gt;maven-processor-plugin&lt;/artifactId&gt;
+  &lt;executions&gt;
+	&lt;execution&gt;
+	 &lt;id&gt;process&lt;/id&gt;
+	 &lt;goals&gt;
+	  &lt;goal&gt;process&lt;/goal&gt;
+	 &lt;/goals&gt;
+	&lt;phase&gt;generate-sources&lt;/phase&gt;
+	 &lt;configuration&gt;
+	  &lt;!--
+	   maven annotation processor doesn't set the -d option which makes
+	   the StandardLocation.CLASS_OUTPUT to point to the project root
+	   directory. Note please make sure that the path doesn't contain
+	   any spaces(again that breaks everything)
+	   http://code.google.com/p/maven-annotation-plugin/issues/detail?id=12
+	   --&gt;
+	  &lt;compilerArguments&gt;-d ${project.build.outputDirectory}&lt;/compilerArguments&gt;
+	  &lt;/configuration&gt;
+	 &lt;/execution&gt;
+ &lt;/executions&gt;
+	&lt;dependencies /&gt;
+&lt;/plugin&gt;
+</pre></code>
+<h2>Configure Maven2 Eclipse plugin to setup the project to use ImageBundler annotation processor when mvn eclipse:eclipse is executed</h2>
+<code><pre class="prettyprint">
+ &lt;plugin&gt;
+  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+   &lt;artifactId&gt;maven-eclipse-plugin&lt;/artifactId&gt;
+   &lt;configuration&gt;
+   &lt;downloadSources&gt;true&lt;/downloadSources&gt;
+    &lt;additionalConfig&gt;
+     &lt;file&gt;
+	  &lt;name&gt;.factorypath&lt;/name&gt;
+	   &lt;content&gt;
+        &lt;![CDATA[&lt;factorypath&gt;
+        &lt;factorypathentry kind="VARJAR" 
+		id="M2_REPO/org/imagebundler/wicket/imagebundler-wicket/${imagebundler.version}/imagebundler-wicket-${imagebundler.version}.jar" 
+		enabled="true" runInBatchMode="false"/&gt;
+        &lt;/factorypath&gt;]]&gt;
+	   &lt;/content&gt;
+	 &lt;/file&gt;
+	&lt;file&gt;
+	 &lt;name&gt;.settings/org.eclipse.jdt.apt.core.prefs&lt;/name&gt;
+	 &lt;content&gt;
+     &lt;![CDATA[
+     eclipse.preferences.version=1
+     org.eclipse.jdt.apt.aptEnabled=true
+     org.eclipse.jdt.apt.genSrcDir=target/generated-sources/apt/main/java
+     org.eclipse.jdt.apt.reconcileEnabled=true]]&gt;
+	&lt;/content&gt;
+	&lt;/file&gt;
+   &lt;file&gt;
+	&lt;name&gt;.settings/org.eclipse.jdt.core.prefs&lt;/name&gt;
+	&lt;!-- instead of doing this add org.eclipse.jdt.core.compiler.processAnnotations=enabled to the file directly --&gt;
+	&lt;content&gt;
+	&lt;![CDATA[
+      org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6
+      eclipse.preferences.version=1
+      org.eclipse.jdt.core.compiler.source=1.6
+      org.eclipse.jdt.core.compiler.compliance=1.6
+      org.eclipse.jdt.core.compiler.processAnnotations=enabled]]&gt;
+	&lt;/content&gt;
+   &lt;/file&gt;
+  &lt;/additionalConfig&gt;
+ &lt;/configuration&gt;
+&lt;/plugin&gt;
+
+&lt;properties&gt;
+  &lt;imagebundler.version&gt;1.0-SNAPSHOT&lt;/imagebundler.version&gt;
+&lt;/properties&gt;
+</pre></code>
+<div>
+</body>
+</html>
