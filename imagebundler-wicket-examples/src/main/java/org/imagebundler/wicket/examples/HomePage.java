@@ -41,10 +41,10 @@ public class HomePage extends WebPage
 	public HomePage(final PageParameters parameters)
 	{
 
-		EditorButton editorBundle = new EditorButtonBundle();
-		this.add(editorBundle.italic("italic"));
-		this.add(editorBundle.bold("bold"));
-		this.add(editorBundle.italic("anotheritalic"));
+		// EditorButton editorBundle = new EditorButtonBundle();
+		// this.add(editorBundle.italic("italic"));
+		// this.add(editorBundle.bold("bold"));
+		// this.add(editorBundle.italic("anotheritalic"));
 
 	}
 }
