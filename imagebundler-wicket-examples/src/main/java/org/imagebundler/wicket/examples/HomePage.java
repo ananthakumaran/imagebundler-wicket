@@ -41,11 +41,10 @@ public class HomePage extends WebPage
 	public HomePage(final PageParameters parameters)
 	{
 
-		SampleImage bundle = new SampleImageBundle();
-		//
-		// // send the orginal file name
-		this.add(bundle.buttons("bold"));
-		this.add(bundle.course("code"));
-		// // TODO Add your page's components here
+		EditorButton editorBundle = new EditorButtonBundle();
+		this.add(editorBundle.italic("italic"));
+		this.add(editorBundle.bold("bold"));
+		this.add(editorBundle.italic("anotheritalic"));
+
 	}
 }
