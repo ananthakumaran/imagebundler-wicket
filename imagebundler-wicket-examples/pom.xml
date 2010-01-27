@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.imagebundler.wicket</groupId>
 		<artifactId>imagebundler-wicket-parent</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>imagebundler-wicket-examples</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>war</packaging>
 	<name>imagebundler-wicket-examples</name>
-	<description></description>
+	<description />
 	<inceptionYear>2010</inceptionYear>
 	<developers>
 		<developer>
@@ -121,7 +119,7 @@
 							<name>.factorypath</name>
 							<content>
 <![CDATA[<factorypath>
-  <factorypathentry kind="VARJAR" id="M2_REPO/org/imagebundler/wicket/imagebundler-wicket/${imagebundler.version}/imagebundler-wicket-${imagebundler.version}.jar" enabled="true" runInBatchMode="false"/>
+  <factorypathentry kind="VARJAR" id="M2_REPO/org/imagebundler/wicket/imagebundler-wicket/${imagebundler.version}/imagebundler-wicket-${imagebundler.version}.jar" enabled="true" runInBatchMode="false" />
   </factorypath>]]>
 							</content>
 						</file>
@@ -200,7 +198,7 @@ org.eclipse.jdt.core.compiler.processAnnotations=enabled]]>
 		</dependency>
 	</dependencies>
 	<properties>
-		<imagebundler.version>1.0-SNAPSHOT</imagebundler.version>
+		<imagebundler.version>1.0</imagebundler.version>
 		<jetty.version>6.1.4</jetty.version>
 		<wicket.version>1.4.5</wicket.version>
 	</properties>
