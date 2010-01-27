@@ -30,7 +30,7 @@
 		</developers>
 		<scm>
 		<connection>scm:git:ssh://github.com:443/ananthakumaran/imagebundler-wicket.git</connection>
-        <developerConnection>scm:git:[fetch=]http://github.com/ananthakumaran/imagebundler-wicket.git[push=]ssh://github.com:443/ananthakumaran/imagebundler-wicket.git</developerConnection>
+        <developerConnection>scm:git:ssh://github.com:443/ananthakumaran/imagebundler-wicket.git</developerConnection>
         <url>scm:git:ssh://github.com:443/ananthakumaran/imagebundler-wicket.git</url>
     </scm>
   <modules>
