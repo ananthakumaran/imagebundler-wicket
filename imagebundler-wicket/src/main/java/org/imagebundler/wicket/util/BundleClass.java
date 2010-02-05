@@ -83,7 +83,8 @@ public class BundleClass
 		// add import for the wicket image class
 		addImports("org.apache.wicket.markup.html.image.Image");
 		addImports("org.apache.wicket.behavior.SimpleAttributeModifier");
-
+		addImports("org.apache.wicket.RequestCycle");
+		addImports("org.apache.wicket.ResourceReference");
 		buildImageBundlePath();
 	}
 
