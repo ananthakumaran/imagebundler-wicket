@@ -22,12 +22,9 @@ package org.imagebundler.wicket.processor;
 import static org.imagebundler.wicket.processor.CurrentEnv.getFiler;
 import static org.imagebundler.wicket.processor.CurrentEnv.getMessager;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.Map;
 import java.util.logging.Level;
 
 import javax.lang.model.element.Element;
@@ -85,20 +82,11 @@ public class BundleClassGenerator
 	{
 		try
 		{
-			OutputStream outStream = null;
-			if (bundleClass.isOutputFolderSpecified())
-			{
-				Map<String, String> prop = CurrentEnv.getProperties();
-				String filePath = prop.get("basedir") + File.separator + prop.get("webapp")
-						+ File.separator + bundleClass.getImageBundlePath();
-				outStream = new FileOutputStream(filePath);
-			}
-			else
-			{
-				outStream = getFiler().createResource(StandardLocation.SOURCE_OUTPUT,
-						bundleClass.getPackageName(),
-						bundleClass.getClassName() + "." + BUNDLE_TYPE, element).openOutputStream();
-			}
+
+			OutputStream outStream = getFiler().createResource(StandardLocation.SOURCE_OUTPUT,
+					bundleClass.getPackageName(), bundleClass.getClassName() + "." + BUNDLE_TYPE,
+					element).openOutputStream();
+
 			bundleClass.drawBundleImage(outStream);
 			outStream.close();
 		}

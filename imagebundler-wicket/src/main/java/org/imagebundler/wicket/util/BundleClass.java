@@ -256,26 +256,6 @@ public class BundleClass
 	 */
 	private void buildImageBundlePath()
 	{
-		String outdir = CurrentEnv.getProperties().get("image.output");
-		if (!outdir.equals(""))
-		{
-			outputFolderSpecified = true;
-			imageBundlePath = outdir + "/" + className + ".png";
-		}
-		else
-		{
-			imageBundlePath = String.format("resources/%s/%s.png", binaryName, className);
-		}
-	}
-
-	/**
-	 * whether the user specified a output directory to place the generated
-	 * image
-	 * 
-	 * @return true if the user specified a output directory
-	 */
-	public boolean isOutputFolderSpecified()
-	{
-		return outputFolderSpecified;
+		imageBundlePath = String.format("resources/%s/%s.png", binaryName, className);
 	}
 }
