@@ -128,6 +128,7 @@ public class BundleMethod
 		// set the src
 		str.append("image.add(new SimpleAttributeModifier(\"src\", \"").append(
 				getProperty("image.clear")).append("\"))").semicolon();
+		str.append("String url = RequestCycle.get().urlFor(new ResourceReference(this.getClass(), \"EditorButtonBundle.png\", RequestCycle.get().getSession().getLocale(), null)) + \"\"").semicolon();
 		// set the style element
 		str.append("image.add(new SimpleAttributeModifier(\"style\", \"").append(
 				getStyle(getImageRect())).append("\"))").semicolon();
@@ -245,9 +246,9 @@ public class BundleMethod
 	{
 		return String
 				.format(
-						"background-image: url(%s); background-position:-%dpx -%dpx; width:%dpx; height:%dpx;",
-						clazz.getImageBundlePath(), imageRect.getLeft(), imageRect.getTop(),
-						imageRect.getWidth(), imageRect.getHeight());
+						"background-image: url(\"+url+\"); background-position:-%dpx -%dpx; width:%dpx; height:%dpx;",
+						imageRect.getLeft(), imageRect.getTop(), imageRect.getWidth(), imageRect
+								.getHeight());
 	}
 
 	/**
