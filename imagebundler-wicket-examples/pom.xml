@@ -38,7 +38,7 @@
 				<directory>src/main/resources</directory>
 			</resource>
 			<resource>
-				<directory>target/generated-sources/apt/main/java</directory>
+				<directory>target/generated-sources/apt/</directory>
 				<includes>
 					<include>**</include>
 				</includes>
@@ -129,7 +129,7 @@
 <![CDATA[
 eclipse.preferences.version=1
 org.eclipse.jdt.apt.aptEnabled=true
-org.eclipse.jdt.apt.genSrcDir=target/generated-sources/apt/main/java
+org.eclipse.jdt.apt.genSrcDir=target/generated-sources/apt/
 org.eclipse.jdt.apt.reconcileEnabled=true]]>
 							</content>
 						</file>
