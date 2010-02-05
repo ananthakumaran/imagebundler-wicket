@@ -63,8 +63,6 @@ public class BundleClass
 	 * to the webapp dir
 	 */
 	private String imageBundlePath;
-	/** whether the output folder is specified by the user or not */
-	private boolean outputFolderSpecified = false;
 
 	/**
 	 * constructor
