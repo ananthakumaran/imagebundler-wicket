@@ -25,28 +25,28 @@ Defining an Image Bundle
 {% highlight java %}
 
 	// bundle class
-	@ImageBundle
-	interface WordProcessorImage {
+@ImageBundle
+interface WordProcessorImage {
 
-	  /**
-	   * Would match either file 'newFileIcon.gif' or 'newFileIcon.png'
-	   * in the same package as this type.
-	   * Note that other file extensions may also be recognized.
-	   */
-	  public Image newFileIcon(String id);
+  /**
+   * Would match either file 'newFileIcon.gif' or 'newFileIcon.png'
+   * in the same package as this type.
+   * Note that other file extensions may also be recognized.
+   */
+  public Image newFileIcon(String id);
 
-	  /**
-	   * Would bundle the file 'open-file-icon.gif' residing in the same package as this type.
-	   */
-	  @Resource("open-file-icon.gif")
-	  public Image openFileIcon(String id);
+  /**
+   * Would bundle the file 'open-file-icon.gif' residing in the same package as this type.
+   */
+  @Resource("open-file-icon.gif")
+  public Image openFileIcon(String id);
 
-	  /**
-	   * Would bundle the file 'savefile.gif' residing in the folder icons relative to this package.
-	   */
-	  @Resource("icons/savefile.gif")
-	  public Image saveFileIcon(String id);
-	}
+  /**
+   * Would bundle the file 'savefile.gif' residing in the folder icons relative to this package.
+   */
+  @Resource("icons/savefile.gif")
+  public Image saveFileIcon(String id);
+}
 
 {% endhighlight %}
 Using an Image Bundle
