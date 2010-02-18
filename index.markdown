@@ -27,7 +27,8 @@ Defining an Image Bundle
 interface WordProcessorImage {
 
   /**
-   * Would match either file 'newFileIcon.gif' or 'newFileIcon.png' in the same package as this type.
+   * Would match either file 'newFileIcon.gif' or 'newFileIcon.png'
+   * in the same package as this type.
    * Note that other file extensions may also be recognized.
    */
   public Image newFileIcon(String id);
@@ -113,7 +114,7 @@ sample, anyone of the following file sample.gif , sample.png  , sample.jpg in th
 *	For the image bundler to work a 1px transparent gif image namely clear.gif should be placed in  images/clear.gif (relative to the webapp). This can be changed by proper configuration
 *	By default all the generated imagebundle will be placed in the same package.
 *	This file is not needed if you follow the defaults
-{% highlight properties %}
+{% highlight java %}
 # [default the folder that contains the imagebundler.properties will be considered as the basedir]
 basedir=full/pathto/base/directory
 # [default src/main/webapp]
