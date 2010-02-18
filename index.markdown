@@ -24,6 +24,7 @@ Defining an Image Bundle
 ------------------------
 {% highlight java %}
 
+// bundle class
 @ImageBundle
 interface WordProcessorImage {
 
