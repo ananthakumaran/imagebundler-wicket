@@ -23,6 +23,7 @@ Non-Goals
 Defining an Image Bundle
 ------------------------
 {% highlight java %}
+
 @ImageBundle
 interface WordProcessorImage {
 
@@ -45,6 +46,7 @@ interface WordProcessorImage {
   @Resource("icons/savefile.gif")
   public Image saveFileIcon(String id);
 }
+
 {% endhighlight %}
 Using an Image Bundle
 ---------------------
