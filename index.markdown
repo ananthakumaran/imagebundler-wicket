@@ -1,13 +1,11 @@
 ---
 layout: default
 title: ImageBundler
-header : ImageBundler For Apache Wicket
+header : Automatic Compile Time Image Bundling for Wicket
 meta_keywords: imagebundler , wicket image bundling , Wicket , wicket image sprite 
 meta_description: imageBundler for apache wicket
 ---
 
-Automatic Compile-Time Image Bundling For Apache Wicket
-=======================================================
 Inspiration
 -----------
 [http://code.google.com/p/google-web-toolkit/wiki/ImageBundleDesign](http://code.google.com/p/google-web-toolkit/wiki/ImageBundleDesign)
