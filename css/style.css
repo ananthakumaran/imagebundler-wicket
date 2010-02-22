@@ -104,14 +104,18 @@ h3 {
 .big { font-size:27px; }
 /*********************end of typography****************/
 /********************* specific **************************/
+#post h2 { margin:20px 0 5px;}
 ul.hNavL { margin-top:47px; }
 .bird { margin-top:-12px; }
-
-#post h2 { margin:20px 0 5px;}
+.mainNav {
+	position:relative;
+	top:3px;
+	padding-right:0;
+}
 
 /** 
  * TODO
- * [*] activities
+ * [*] tweets
  *
  */
 /********************* end of specific *******************/
