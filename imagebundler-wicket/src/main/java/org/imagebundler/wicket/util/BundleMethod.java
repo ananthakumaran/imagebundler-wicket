@@ -50,21 +50,22 @@ public class BundleMethod
 	private final String methodName;
 	/** image url */
 	private final ImageURL imageURL;
-	/** The eclosing class of this method */
-	private final BundleClass clazz;
+	/** package name */
+	private final String packageName;
+	/** */
+	private ImageRect imageRect;
 
 	/**
 	 * constructor
 	 * 
 	 * @throws ImageNotFoundException
 	 */
-	public BundleMethod(Element methodElement, BundleClass clazz) throws Exception
+	public BundleMethod(Element methodElement, String packageName) throws Exception
 	{
 		checkMethodSignature(methodElement);
 		this.methodName = methodElement.getSimpleName().toString();
-		this.clazz = clazz;
+		this.packageName = packageName;
 		this.imageURL = buildImageURL(methodElement);
-		addToBundle();
 	}
 
 	/**
@@ -126,7 +127,10 @@ public class BundleMethod
 		// set the src
 		str.append("image.add(new SimpleAttributeModifier(\"src\", \"").append(
 				getProperty("image.clear")).append("\"))").semicolon();
-		str.append("String url = RequestCycle.get().urlFor(new ResourceReference(this.getClass(), \"EditorButtonBundle.png\", RequestCycle.get().getSession().getLocale(), null)) + \"\"").semicolon();
+		str
+				.append(
+						"String url = RequestCycle.get().urlFor(new ResourceReference(this.getClass(), \"EditorButtonBundle.png\", RequestCycle.get().getSession().getLocale(), null)) + \"\"")
+				.semicolon();
 		// set the style element
 		str.append("image.add(new SimpleAttributeModifier(\"style\", \"").append(
 				getStyle(getImageRect())).append("\"))").semicolon();
@@ -160,15 +164,13 @@ public class BundleMethod
 					// open it. If there is not such file an exception will
 					// be thrown.
 					FileObject imageFileObj = CurrentEnv.getFiler().getResource(
-							StandardLocation.CLASS_OUTPUT, clazz.getPackageName(),
-							methodName + extension);
+							StandardLocation.CLASS_OUTPUT, packageName, methodName + extension);
 					final String path = imageFileObj.toUri().toString().replace("file:", "");
 					File imageFile = new File(path);
 					if (imageFile.exists())
 					{
 						// image found
-						return new ImageURL(clazz.getPackageName(), methodName + extension, path,
-								methodName);
+						return new ImageURL(packageName, methodName + extension, path, methodName);
 					}
 				}
 				catch (Exception ex)
@@ -185,13 +187,13 @@ public class BundleMethod
 			try
 			{
 				FileObject imageFileObj = CurrentEnv.getFiler().getResource(
-						StandardLocation.CLASS_OUTPUT, clazz.getPackageName(), resource.value());
+						StandardLocation.CLASS_OUTPUT, packageName, resource.value());
 				final String path = imageFileObj.toUri().toString().replace("file:", "");
 				File imageFile = new File(path);
 				if (imageFile.exists())
 				{
 					// image found
-					return new ImageURL(clazz.getPackageName(), resource.value(), path, methodName);
+					return new ImageURL(packageName, resource.value(), path, methodName);
 				}
 				// image not found
 				// TODO provide some detail message
@@ -210,18 +212,11 @@ public class BundleMethod
 	 * 
 	 * @return imageUrl
 	 */
-	private ImageURL getImageURL()
+	public ImageURL getImageURL()
 	{
 		return imageURL;
 	}
 
-	/**
-	 * adds the image to the imageBundle
-	 */
-	private void addToBundle() throws Exception
-	{
-		clazz.getImageBundleBuilder().assimilate(getImageURL());
-	}
 
 	/**
 	 * get the imageRect which contains the details of the image NOTE don't call
@@ -231,7 +226,16 @@ public class BundleMethod
 	 */
 	private ImageRect getImageRect()
 	{
-		return clazz.getImageBundleBuilder().getMapping(getImageURL().getMethodName());
+		return imageRect;
+	}
+
+	/**
+	 * 
+	 * @param imageRect
+	 */
+	public void setImageRect(ImageRect imageRect)
+	{
+		this.imageRect = imageRect;
 	}
 
 	/**
