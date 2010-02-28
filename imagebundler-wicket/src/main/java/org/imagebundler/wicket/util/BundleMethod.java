@@ -34,7 +34,6 @@ import javax.tools.StandardLocation;
 import org.imagebundler.wicket.ImageNotFoundException;
 import org.imagebundler.wicket.MethodSignatureException;
 import org.imagebundler.wicket.Resource;
-import org.imagebundler.wicket.ImageBundleBuilder.ImageRect;
 import org.imagebundler.wicket.processor.CurrentEnv;
 
 /**
@@ -52,8 +51,6 @@ public class BundleMethod
 	private final ImageURL imageURL;
 	/** package name */
 	private final String packageName;
-	/** */
-	private ImageRect imageRect;
 
 	/**
 	 * constructor
@@ -118,6 +115,9 @@ public class BundleMethod
 		str.line();
 		// override annotation
 		str.append("@Override").line();
+		// locale
+		str.append(" String locale = RequestCycle.get().getSession().getLocale().toString()")
+				.semicolon();
 		// method signature
 		str.append("public Image ").append(methodName).append("(String id)").open();
 
@@ -127,13 +127,9 @@ public class BundleMethod
 		// set the src
 		str.append("image.add(new SimpleAttributeModifier(\"src\", \"").append(
 				getProperty("image.clear")).append("\"))").semicolon();
-		str
-				.append(
-						"String url = RequestCycle.get().urlFor(new ResourceReference(this.getClass(), \"EditorButtonBundle.png\", RequestCycle.get().getSession().getLocale(), null)) + \"\"")
-				.semicolon();
-		// set the style element
-		str.append("image.add(new SimpleAttributeModifier(\"style\", \"").append(
-				getStyle(getImageRect())).append("\"))").semicolon();
+		// TODO add the CSS styles here
+		str.append("image.add(new SimpleAttributeModifier(\"class\",").append("locale")
+				.append("))").semicolon();
 		str.append("return image").semicolon().close();
 		return str;
 	}
@@ -215,42 +211,6 @@ public class BundleMethod
 	public ImageURL getImageURL()
 	{
 		return imageURL;
-	}
-
-
-	/**
-	 * get the imageRect which contains the details of the image NOTE don't call
-	 * this method before creation of the imagebundle
-	 * 
-	 * @return imageRect
-	 */
-	private ImageRect getImageRect()
-	{
-		return imageRect;
-	}
-
-	/**
-	 * 
-	 * @param imageRect
-	 */
-	public void setImageRect(ImageRect imageRect)
-	{
-		this.imageRect = imageRect;
-	}
-
-	/**
-	 * create the CSS style for the image
-	 * 
-	 * @param imageRect
-	 * @return
-	 */
-	private String getStyle(ImageRect imageRect)
-	{
-		return String
-				.format(
-						"background-image: url(\"+url+\"); background-position:-%dpx -%dpx; width:%dpx; height:%dpx;",
-						imageRect.getLeft(), imageRect.getTop(), imageRect.getWidth(), imageRect
-								.getHeight());
 	}
 
 	/**
