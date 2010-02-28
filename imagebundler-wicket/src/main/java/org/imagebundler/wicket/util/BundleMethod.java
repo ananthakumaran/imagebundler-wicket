@@ -75,6 +75,7 @@ public class BundleMethod
 	 *            method element
 	 * @throws MethodSignatureException
 	 */
+	@SuppressWarnings("unchecked")
 	private void checkMethodSignature(Element methodElement) throws MethodSignatureException
 	{
 		// All the methods in the Interface is Abstract by default
@@ -91,8 +92,7 @@ public class BundleMethod
 		if (!execMethodElement.getReturnType().toString().equals(
 				"org.apache.wicket.markup.html.image.Image"))
 		{
-			throw new MethodSignatureException(
-					"");
+			throw new MethodSignatureException();
 		}
 
 
