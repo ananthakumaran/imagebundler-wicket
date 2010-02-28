@@ -144,7 +144,7 @@ public class BundleMethod
 	}
 
 	/**
-	 * creates the image url for the given method
+	 * creates the image urls
 	 * 
 	 * @throws ImageNotFoundException
 	 */
@@ -154,7 +154,15 @@ public class BundleMethod
 		if (resource == null)
 		{
 			// tries to construct the default image url
-			imageURL.put("default", matchExt(methodName));
+			ImageURL defaultImageURL = matchExt(methodName);
+			imageURL.put("default", defaultImageURL);
+
+			// construct the urls for all the locales
+			for (String locale : locales)
+			{
+				imageURL.put(locale, matchExt(Utils.insertLocale(methodName, locale),
+						defaultImageURL));
+			}
 		}
 		else
 		{
@@ -162,9 +170,24 @@ public class BundleMethod
 			{
 				if (exists(resource.value()))
 				{
-					// image found
-					imageURL.put("default", new ImageURL(packageName, resource.value(),
-							getPath(resource.value()), methodName));
+					// tries to construct the default image url
+					ImageURL defaultImageURL = new ImageURL(packageName, resource.value(),
+							getPath(resource.value()), methodName);
+					imageURL.put("default", defaultImageURL);
+					// construct the urls for all the locales
+					for (String locale : locales)
+					{
+						String value = Utils.insertLocale(resource.value(), locale);
+						if (exists(value))
+						{
+							imageURL.put(locale, new ImageURL(packageName, value, getPath(value),
+									methodName));
+						}
+						else
+						{
+							imageURL.put(locale, defaultImageURL);
+						}
+					}
 				}
 				else
 				{
@@ -179,7 +202,6 @@ public class BundleMethod
 			}
 		}
 	}
-
 
 	/**
 	 * matches a list of file extensions for the given name. if no match found
