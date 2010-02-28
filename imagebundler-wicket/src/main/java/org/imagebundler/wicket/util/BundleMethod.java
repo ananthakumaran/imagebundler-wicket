@@ -82,8 +82,7 @@ public class BundleMethod
 		if (!(modifiers.size() == 2 && modifiers.contains(Modifier.ABSTRACT) && modifiers
 				.contains(Modifier.PUBLIC)))
 		{
-			throw new MethodSignatureException(
-					"The signature of the method should be public Image methodName(String arg)");
+			throw new MethodSignatureException();
 		}
 
 		ExecutableElement execMethodElement = (ExecutableElement)methodElement;
@@ -93,7 +92,7 @@ public class BundleMethod
 				"org.apache.wicket.markup.html.image.Image"))
 		{
 			throw new MethodSignatureException(
-					"The signature of the method should be public Image methodName(String arg)");
+					"");
 		}
 
 
@@ -101,8 +100,7 @@ public class BundleMethod
 		// check parameters
 		if (!(params.size() == 1 && params.get(0).asType().toString().equals("java.lang.String")))
 		{
-			throw new MethodSignatureException(
-					"The signature of the method should be public Image methodName(String arg)");
+			throw new MethodSignatureException();
 		}
 	}
 

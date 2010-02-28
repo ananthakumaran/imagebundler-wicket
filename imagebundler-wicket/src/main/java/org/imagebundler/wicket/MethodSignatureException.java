@@ -39,8 +39,8 @@ public class MethodSignatureException extends Exception
 	 * @param message
 	 *            message
 	 */
-	public MethodSignatureException(String message)
+	public MethodSignatureException()
 	{
-		super(message);
+		super("The signature of the method should be public Image methodName(String arg)");
 	}
 }
