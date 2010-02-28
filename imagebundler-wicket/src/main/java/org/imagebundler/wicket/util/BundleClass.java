@@ -158,7 +158,8 @@ public class BundleClass
 		{
 			if (method.getKind() == ElementKind.METHOD)
 			{
-				this.methods.add(new BundleMethod(method, this));
+				this.methods.add(new BundleMethod(method, packageName));
+				//
 			}
 		}
 		return this;
