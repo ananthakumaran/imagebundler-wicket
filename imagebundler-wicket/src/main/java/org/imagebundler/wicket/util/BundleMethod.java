@@ -158,7 +158,6 @@ public class BundleMethod
 		{
 			// This method is not annotated with @Resource.So fall back and
 			// check for any image with methodname
-			// TODO check for all the jpeg extension
 			String[] extensions = { ".png", ".gif", ".jpg", ".jpeg", ".jpe" };
 			for (String extension : extensions)
 			{
@@ -181,14 +180,12 @@ public class BundleMethod
 				}
 			}
 			// image not found
-			// TODO provide some detail message
 			throw new ImageNotFoundException("cann't find the image for the method " + methodName);
 		}
 		else
 		{
 			try
 			{
-
 				if (exists(resource.value()))
 				{
 					// image found
@@ -196,7 +193,6 @@ public class BundleMethod
 							methodName);
 				}
 				// image not found
-				// TODO provide some detail message
 				throw new ImageNotFoundException("cann't find the image " + resource.value());
 			}
 			catch (Exception ex)
