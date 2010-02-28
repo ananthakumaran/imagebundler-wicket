@@ -1,11 +1,21 @@
 Usage
 -----
-
 for info about usage see 
 [http://ananthakumaran.github.com/imagebundler-wicket](http://ananthakumaran.github.com/imagebundler-wicket)
 
 TODO
 ----
+
+Locales support can be provided by taking a array of locales in the annotation
+
+	@ImageBundler({"en","en_US"});
+	
+allow the user to provide different images for different locales by appending
+the locale at the end.
+
+	open_en.png;
+	
+	
 
 Instead of adding inline styles generate a seperate css file and
 write the style for all locales.
@@ -21,8 +31,7 @@ write the style for all locales.
     		return image;
     	}
 
-
-
+genereted css should be like this.
     .openFileIcon {
      background-image :url(resources/org.imagebundler.wicket.examples.WordProcessorImageBundle/WordProcessorImageBundle.png) ;
      background-position:-Xpx -Xpx; width:Xpx; height:Xpx;
