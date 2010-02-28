@@ -146,41 +146,15 @@ public class BundleMethod
 	/**
 	 * creates the image url for the given method
 	 * 
-	 * @param element
-	 *            element
-	 * @return {@link ImageURL}
 	 * @throws ImageNotFoundException
 	 */
-	public ImageURL buildImageURL() throws ImageNotFoundException
+	public void buildImageURL() throws ImageNotFoundException
 	{
 		Resource resource = methodElement.getAnnotation(Resource.class);
 		if (resource == null)
 		{
-			// This method is not annotated with @Resource.So fall back and
-			// check for any image with methodname
-			String[] extensions = { ".png", ".gif", ".jpg", ".jpeg", ".jpe" };
-			for (String extension : extensions)
-			{
-
-				try
-				{
-					// we are guessing the file extension and attempting to
-					// open it. If there is not such file an exception will
-					// be thrown.
-					if (exists(methodName + extension))
-					{
-						// image found
-						return new ImageURL(packageName, methodName + extension, getPath(methodName
-								+ extension), methodName);
-					}
-				}
-				catch (Exception ex)
-				{
-					logger.log(Level.SEVERE, "", ex);
-				}
-			}
-			// image not found
-			throw new ImageNotFoundException("cann't find the image for the method " + methodName);
+			// tries to construct the default image url
+			imageURL.put("default", matchExt(methodName));
 		}
 		else
 		{
@@ -189,11 +163,14 @@ public class BundleMethod
 				if (exists(resource.value()))
 				{
 					// image found
-					return new ImageURL(packageName, resource.value(), getPath(resource.value()),
-							methodName);
+					imageURL.put("default", new ImageURL(packageName, resource.value(),
+							getPath(resource.value()), methodName));
 				}
-				// image not found
-				throw new ImageNotFoundException("cann't find the image " + resource.value());
+				else
+				{
+					// image not found
+					throw new ImageNotFoundException("cann't find the image " + resource.value());
+				}
 			}
 			catch (Exception ex)
 			{
@@ -203,6 +180,64 @@ public class BundleMethod
 		}
 	}
 
+
+	/**
+	 * matches a list of file extensions for the given name. if no match found
+	 * throws {@link ImageNotFoundException}
+	 * 
+	 * @param name
+	 * @return
+	 * @throws ImageNotFoundException
+	 */
+	private ImageURL matchExt(String name) throws ImageNotFoundException
+	{
+		return matchExt(name, null);
+	}
+
+	/**
+	 * mathces a list of file extensions for the given name. if no match found
+	 * the defaut Image URL will be returned
+	 * 
+	 * @param name
+	 * @param defaultImageURL
+	 * @return
+	 * @throws ImageNotFoundException
+	 */
+	private ImageURL matchExt(String name, ImageURL defaultImageURL) throws ImageNotFoundException
+	{
+		// This method is not annotated with @Resource.So fall back and
+		// check for any image with methodname
+		String[] extensions = { ".png", ".gif", ".jpg", ".jpeg", ".jpe" };
+		for (String extension : extensions)
+		{
+			try
+			{
+				// we are guessing the file extension and attempting to
+				// open it. If there is not such file an exception will
+				// be thrown.
+				if (exists(name + extension))
+				{
+					// image found
+					return new ImageURL(packageName, name + extension, getPath(name + extension),
+							methodName);
+				}
+			}
+			catch (Exception ex)
+			{
+				logger.log(Level.SEVERE, "", ex);
+			}
+		}
+
+		// image not found
+		if (defaultImageURL == null)
+		{
+			return defaultImageURL;
+		}
+		else
+		{
+			throw new ImageNotFoundException("cann't find the image for the method " + methodName);
+		}
+	}
 
 	/**
 	 * check for the existense of the given file in the current package
