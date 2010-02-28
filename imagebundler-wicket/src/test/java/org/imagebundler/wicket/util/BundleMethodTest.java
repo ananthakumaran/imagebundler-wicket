@@ -35,4 +35,13 @@ public class BundleMethodTest
 		ImageURL imageURL = bundleMethod.matchExt("test");
 		assertEquals("test.png", imageURL.getImageName());
 	}
+
+	@Test(expected=ImageNotFoundException.class)
+	public void testMatchExtForWrongFileName() throws ImageNotFoundException
+	{
+		ImageURL imageURL = bundleMethod.matchExt("test");
+		assertEquals("test.png", imageURL.getImageName());
+	}
+	
+	
 }

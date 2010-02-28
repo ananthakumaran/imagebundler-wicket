@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
@@ -47,8 +46,6 @@ import org.imagebundler.wicket.processor.CurrentEnv;
  */
 public class BundleMethod
 {
-
-	private final static Logger Logs = Logger.getLogger(BundleMethod.class.getName());
 
 	private final FileLogger logger = CurrentEnv.getLogger();
 	/** list of image urls */
@@ -248,7 +245,6 @@ public class BundleMethod
 			catch (Exception ex)
 			{
 				logger.log(Level.SEVERE, "", ex);
-				Logs.log(Level.SEVERE, "", ex);
 			}
 		}
 
