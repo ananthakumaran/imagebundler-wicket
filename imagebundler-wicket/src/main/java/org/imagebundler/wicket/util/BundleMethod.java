@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
@@ -47,9 +48,9 @@ import org.imagebundler.wicket.processor.CurrentEnv;
 public class BundleMethod
 {
 
+	private final static Logger Logs = Logger.getLogger(BundleMethod.class.getName());
+
 	private final FileLogger logger = CurrentEnv.getLogger();
-	/** simple method name */
-	private final String methodName;
 	/** list of image urls */
 	private final Map<String, ImageURL> imageURL = new HashMap<String, ImageURL>();
 	/** package name */
@@ -68,7 +69,6 @@ public class BundleMethod
 			throws Exception
 	{
 		checkMethodSignature(methodElement);
-		this.methodName = methodElement.getSimpleName().toString();
 		this.packageName = packageName;
 		this.locales = locales;
 		this.methodElement = methodElement;
@@ -83,7 +83,7 @@ public class BundleMethod
 	 * @throws MethodSignatureException
 	 */
 	@SuppressWarnings("unchecked")
-	private void checkMethodSignature(Element methodElement) throws MethodSignatureException
+	void checkMethodSignature(Element methodElement) throws MethodSignatureException
 	{
 		// All the methods in the Interface is Abstract by default
 		Set<Modifier> modifiers = methodElement.getModifiers();
@@ -111,6 +111,7 @@ public class BundleMethod
 		}
 	}
 
+
 	/**
 	 * appends all the code the to rich string
 	 * 
@@ -128,7 +129,7 @@ public class BundleMethod
 		str.append(" String locale = RequestCycle.get().getSession().getLocale().toString()")
 				.semicolon();
 		// method signature
-		str.append("public Image ").append(methodName).append("(String id)").open();
+		str.append("public Image ").append(getMethodName()).append("(String id)").open();
 
 		// declare the image
 		str.append("Image image = new Image(id)").semicolon();
@@ -154,13 +155,13 @@ public class BundleMethod
 		if (resource == null)
 		{
 			// tries to construct the default image url
-			ImageURL defaultImageURL = matchExt(methodName);
+			ImageURL defaultImageURL = matchExt(getMethodName());
 			imageURL.put("default", defaultImageURL);
 
 			// construct the urls for all the locales
 			for (String locale : locales)
 			{
-				imageURL.put(locale, matchExt(Utils.insertLocale(methodName, locale),
+				imageURL.put(locale, matchExt(Utils.insertLocale(getMethodName(), locale),
 						defaultImageURL));
 			}
 		}
@@ -172,7 +173,7 @@ public class BundleMethod
 				{
 					// tries to construct the default image url
 					ImageURL defaultImageURL = new ImageURL(packageName, resource.value(),
-							getPath(resource.value()), methodName);
+							getPath(resource.value()), getMethodName());
 					imageURL.put("default", defaultImageURL);
 					// construct the urls for all the locales
 					for (String locale : locales)
@@ -181,7 +182,7 @@ public class BundleMethod
 						if (exists(value))
 						{
 							imageURL.put(locale, new ImageURL(packageName, value, getPath(value),
-									methodName));
+									getMethodName()));
 						}
 						else
 						{
@@ -211,7 +212,7 @@ public class BundleMethod
 	 * @return
 	 * @throws ImageNotFoundException
 	 */
-	private ImageURL matchExt(String name) throws ImageNotFoundException
+	ImageURL matchExt(String name) throws ImageNotFoundException
 	{
 		return matchExt(name, null);
 	}
@@ -241,37 +242,38 @@ public class BundleMethod
 				{
 					// image found
 					return new ImageURL(packageName, name + extension, getPath(name + extension),
-							methodName);
+							getMethodName());
 				}
 			}
 			catch (Exception ex)
 			{
 				logger.log(Level.SEVERE, "", ex);
+				Logs.log(Level.SEVERE, "", ex);
 			}
 		}
 
 		// image not found
-		if (defaultImageURL == null)
+		if (defaultImageURL != null)
 		{
 			return defaultImageURL;
 		}
 		else
 		{
-			throw new ImageNotFoundException("cann't find the image for the method " + methodName);
+			throw new ImageNotFoundException("cann't find the image for the method " + name);
 		}
 	}
 
 	/**
 	 * check for the existense of the given file in the current package
 	 * 
-	 * @param image
+	 * @param fileName
 	 * @return
 	 * @throws IOException
 	 */
-	private boolean exists(String image) throws IOException
+	boolean exists(String fileName) throws IOException
 	{
-		File imageFile = new File(getPath(image));
-		return imageFile.exists();
+		File file = new File(getPath(fileName));
+		return file.exists();
 	}
 
 	/**
@@ -281,11 +283,11 @@ public class BundleMethod
 	 * @return
 	 * @throws IOException
 	 */
-	private String getPath(String fileName) throws IOException
+	String getPath(String fileName) throws IOException
 	{
-		FileObject imageFileObj = CurrentEnv.getFiler().getResource(StandardLocation.CLASS_OUTPUT,
+		FileObject FileObj = CurrentEnv.getFiler().getResource(StandardLocation.CLASS_OUTPUT,
 				packageName, fileName);
-		return imageFileObj.toUri().toString().replace("file:", "");
+		return FileObj.toUri().toString().replace("file:", "");
 	}
 
 	/**
@@ -322,4 +324,13 @@ public class BundleMethod
 		return CurrentEnv.getProperties().get(key);
 	}
 
+	/**
+	 * getter for method Name
+	 * 
+	 * @return
+	 */
+	String getMethodName()
+	{
+		return methodElement.getSimpleName().toString();
+	}
 }

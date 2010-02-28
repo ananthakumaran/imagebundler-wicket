@@ -1,7 +1,9 @@
 <projectDescription>
   <name>imagebundler-wicket-examples</name>
   <comment></comment>
-  <projects/>
+  <projects>
+    <project>imagebundler-wicket</project>
+  </projects>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>
