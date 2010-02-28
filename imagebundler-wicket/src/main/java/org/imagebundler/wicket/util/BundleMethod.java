@@ -20,7 +20,10 @@
 package org.imagebundler.wicket.util;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -47,22 +50,28 @@ public class BundleMethod
 	private final FileLogger logger = CurrentEnv.getLogger();
 	/** simple method name */
 	private final String methodName;
-	/** image url */
-	private final ImageURL imageURL;
+	/** list of image urls */
+	private final Map<String, ImageURL> imageURL = new HashMap<String, ImageURL>();
 	/** package name */
 	private final String packageName;
+	/** list of locale */
+	private String[] locales;
+	/** method element */
+	private final Element methodElement;
 
 	/**
 	 * constructor
 	 * 
 	 * @throws ImageNotFoundException
 	 */
-	public BundleMethod(Element methodElement, String packageName) throws Exception
+	public BundleMethod(Element methodElement, String packageName, String[] locales)
+			throws Exception
 	{
 		checkMethodSignature(methodElement);
 		this.methodName = methodElement.getSimpleName().toString();
 		this.packageName = packageName;
-		this.imageURL = buildImageURL(methodElement);
+		this.locales = locales;
+		this.methodElement = methodElement;
 	}
 
 	/**
@@ -142,9 +151,9 @@ public class BundleMethod
 	 * @return {@link ImageURL}
 	 * @throws ImageNotFoundException
 	 */
-	private ImageURL buildImageURL(Element element) throws ImageNotFoundException
+	public ImageURL buildImageURL() throws ImageNotFoundException
 	{
-		Resource resource = element.getAnnotation(Resource.class);
+		Resource resource = methodElement.getAnnotation(Resource.class);
 		if (resource == null)
 		{
 			// This method is not annotated with @Resource.So fall back and
@@ -159,14 +168,11 @@ public class BundleMethod
 					// we are guessing the file extension and attempting to
 					// open it. If there is not such file an exception will
 					// be thrown.
-					FileObject imageFileObj = CurrentEnv.getFiler().getResource(
-							StandardLocation.CLASS_OUTPUT, packageName, methodName + extension);
-					final String path = imageFileObj.toUri().toString().replace("file:", "");
-					File imageFile = new File(path);
-					if (imageFile.exists())
+					if (exists(methodName + extension))
 					{
 						// image found
-						return new ImageURL(packageName, methodName + extension, path, methodName);
+						return new ImageURL(packageName, methodName + extension, getPath(methodName
+								+ extension), methodName);
 					}
 				}
 				catch (Exception ex)
@@ -182,14 +188,12 @@ public class BundleMethod
 		{
 			try
 			{
-				FileObject imageFileObj = CurrentEnv.getFiler().getResource(
-						StandardLocation.CLASS_OUTPUT, packageName, resource.value());
-				final String path = imageFileObj.toUri().toString().replace("file:", "");
-				File imageFile = new File(path);
-				if (imageFile.exists())
+
+				if (exists(resource.value()))
 				{
 					// image found
-					return new ImageURL(packageName, resource.value(), path, methodName);
+					return new ImageURL(packageName, resource.value(), getPath(resource.value()),
+							methodName);
 				}
 				// image not found
 				// TODO provide some detail message
@@ -203,14 +207,54 @@ public class BundleMethod
 		}
 	}
 
+
 	/**
-	 * getter for imageUrl
+	 * check for the existense of the given file in the current package
 	 * 
-	 * @return imageUrl
+	 * @param image
+	 * @return
+	 * @throws IOException
+	 */
+	private boolean exists(String image) throws IOException
+	{
+		File imageFile = new File(getPath(image));
+		return imageFile.exists();
+	}
+
+	/**
+	 * gets the full path of the file relative to the current package
+	 * 
+	 * @param fileName
+	 * @return
+	 * @throws IOException
+	 */
+	private String getPath(String fileName) throws IOException
+	{
+		FileObject imageFileObj = CurrentEnv.getFiler().getResource(StandardLocation.CLASS_OUTPUT,
+				packageName, fileName);
+		return imageFileObj.toUri().toString().replace("file:", "");
+	}
+
+	/**
+	 * getter for the image url
+	 * 
+	 * @param locale
+	 *            locale
+	 * @return
+	 */
+	public ImageURL getImageURL(String locale)
+	{
+		return imageURL.get(locale);
+	}
+
+	/**
+	 * get the default image url
+	 * 
+	 * @return
 	 */
 	public ImageURL getImageURL()
 	{
-		return imageURL;
+		return imageURL.get("default");
 	}
 
 	/**

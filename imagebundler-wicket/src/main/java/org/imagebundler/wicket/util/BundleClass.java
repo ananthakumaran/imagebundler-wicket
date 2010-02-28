@@ -158,8 +158,8 @@ public class BundleClass
 		{
 			if (method.getKind() == ElementKind.METHOD)
 			{
-				this.methods.add(new BundleMethod(method, packageName));
-				//
+				// TODO pass the locales
+				this.methods.add(new BundleMethod(method, packageName , null));
 			}
 		}
 		return this;
