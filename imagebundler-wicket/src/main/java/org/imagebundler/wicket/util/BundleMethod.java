@@ -49,7 +49,7 @@ public class BundleMethod
 
 	private final FileLogger logger = CurrentEnv.getLogger();
 	/** list of image urls */
-	private final Map<String, ImageURL> imageURL = new HashMap<String, ImageURL>();
+	private final Map<String, ImageURL> imageURLs = new HashMap<String, ImageURL>();
 	/** package name */
 	private final String packageName;
 	/** list of locale */
@@ -122,12 +122,12 @@ public class BundleMethod
 		str.line();
 		// override annotation
 		str.append("@Override").line();
+		
+		// method signature
+		str.append("public Image ").append(getMethodName()).append("(String id)").open();
 		// locale
 		str.append(" String locale = RequestCycle.get().getSession().getLocale().toString()")
 				.semicolon();
-		// method signature
-		str.append("public Image ").append(getMethodName()).append("(String id)").open();
-
 		// declare the image
 		str.append("Image image = new Image(id)").semicolon();
 
@@ -153,12 +153,12 @@ public class BundleMethod
 		{
 			// tries to construct the default image url
 			ImageURL defaultImageURL = matchExt(getMethodName());
-			imageURL.put("default", defaultImageURL);
+			imageURLs.put("default", defaultImageURL);
 
 			// construct the urls for all the locales
 			for (String locale : locales)
 			{
-				imageURL.put(locale, matchExt(Utils.insertLocale(getMethodName(), locale),
+				imageURLs.put(locale, matchExt(Utils.insertLocale(getMethodName(), locale),
 						defaultImageURL));
 			}
 		}
@@ -171,19 +171,19 @@ public class BundleMethod
 					// tries to construct the default image url
 					ImageURL defaultImageURL = new ImageURL(packageName, resource.value(),
 							getPath(resource.value()), getMethodName());
-					imageURL.put("default", defaultImageURL);
+					imageURLs.put("default", defaultImageURL);
 					// construct the urls for all the locales
 					for (String locale : locales)
 					{
 						String value = Utils.insertLocale(resource.value(), locale);
 						if (exists(value))
 						{
-							imageURL.put(locale, new ImageURL(packageName, value, getPath(value),
+							imageURLs.put(locale, new ImageURL(packageName, value, getPath(value),
 									getMethodName()));
 						}
 						else
 						{
-							imageURL.put(locale, defaultImageURL);
+							imageURLs.put(locale, defaultImageURL);
 						}
 					}
 				}
@@ -295,7 +295,7 @@ public class BundleMethod
 	 */
 	public ImageURL getImageURL(String locale)
 	{
-		return imageURL.get(locale);
+		return imageURLs.get(locale);
 	}
 
 	/**
@@ -305,7 +305,7 @@ public class BundleMethod
 	 */
 	public ImageURL getImageURL()
 	{
-		return imageURL.get("default");
+		return imageURLs.get("default");
 	}
 
 	/**

@@ -50,8 +50,8 @@ public class BundleClass
 	/** imports list */
 	private final Set<String> imports = new TreeSet<String>();
 	/** method list */
-	private final List<BundleMethod> methods = new ArrayList<BundleMethod>();
-	private final String[] locale ;
+	public final List<BundleMethod> methods = new ArrayList<BundleMethod>();
+	private final String[] locale;
 	/**
 	 * contains the path of the BundleImage of this class.This path is relative
 	 * to the webapp dir
@@ -64,7 +64,7 @@ public class BundleClass
 	 * @param clazz
 	 *            class of the interface
 	 */
-	public BundleClass(String fullClazzName , String[] locale)
+	public BundleClass(String fullClazzName, String[] locale)
 	{
 		// TODO cleanup
 		this.className = getSimpleName(fullClazzName) + "Bundle";
@@ -76,7 +76,6 @@ public class BundleClass
 		addImports("org.apache.wicket.markup.html.image.Image");
 		addImports("org.apache.wicket.behavior.SimpleAttributeModifier");
 		addImports("org.apache.wicket.RequestCycle");
-		addImports("org.apache.wicket.ResourceReference");
 		buildImageBundlePath();
 	}
 
@@ -152,7 +151,9 @@ public class BundleClass
 		{
 			if (method.getKind() == ElementKind.METHOD)
 			{
-				this.methods.add(new BundleMethod(method, packageName, locale));
+				BundleMethod bundleMethod = new BundleMethod(method, packageName, locale);
+				bundleMethod.buildImageURL();
+				this.methods.add(bundleMethod);
 			}
 		}
 		return this;
