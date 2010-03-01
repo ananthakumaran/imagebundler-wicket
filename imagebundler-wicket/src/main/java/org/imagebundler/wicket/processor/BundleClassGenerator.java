@@ -25,6 +25,8 @@ import static org.imagebundler.wicket.processor.CurrentEnv.getMessager;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 
 import javax.lang.model.element.Element;
@@ -32,7 +34,9 @@ import javax.tools.StandardLocation;
 import javax.tools.Diagnostic.Kind;
 
 import org.imagebundler.wicket.ImageBundle;
+import org.imagebundler.wicket.ImageBundleBuilder;
 import org.imagebundler.wicket.util.BundleClass;
+import org.imagebundler.wicket.util.BundleMethod;
 import org.imagebundler.wicket.util.FileLogger;
 
 /**
@@ -46,7 +50,7 @@ public class BundleClassGenerator
 	private Element element;
 	private static final String BUNDLE_TYPE = "png";
 	private final FileLogger logger = CurrentEnv.getLogger();
-	private final String[] locale;
+	private final String[] locales;
 	private BundleClass bundleClass;
 
 	/**
@@ -58,7 +62,7 @@ public class BundleClassGenerator
 	public BundleClassGenerator(Element element)
 	{
 		this.element = element;
-		this.locale = element.getAnnotation(ImageBundle.class).locale();
+		this.locales = element.getAnnotation(ImageBundle.class).locale();
 	}
 
 	/**
@@ -69,7 +73,7 @@ public class BundleClassGenerator
 	public void generate() throws Exception
 	{
 
-		this.bundleClass = new BundleClass(element.asType().toString(), locale);
+		this.bundleClass = new BundleClass(element.asType().toString(), locales);
 		bundleClass.addMethods(element.getEnclosedElements());
 		// TODO create css file
 		writeBundleImage(bundleClass);
@@ -84,23 +88,37 @@ public class BundleClassGenerator
 	 */
 	private void writeBundleImage(BundleClass bundleClass) throws Exception
 	{
-		try
+		// handle the default first
+		List<String> localeList = Arrays.asList(locales);
+	//	localeList.add(0, "default");
+		for (String locale : localeList)
 		{
+			ImageBundleBuilder imageBuilder = new ImageBundleBuilder();
+			for (BundleMethod method : bundleClass.methods)
+			{
+				imageBuilder.assimilate(method.getImageURL(locale));
+			}
 
-			OutputStream outStream = getFiler().createResource(StandardLocation.SOURCE_OUTPUT,
-					bundleClass.getPackageName(), bundleClass.getClassName() + "." + BUNDLE_TYPE,
-					element).openOutputStream();
+			try
+			{
 
-			outStream.close();
+				OutputStream outStream = getFiler().createResource(StandardLocation.SOURCE_OUTPUT,
+						bundleClass.getPackageName(),
+						bundleClass.getClassName() + "_" + locale + "." + BUNDLE_TYPE, element)
+						.openOutputStream();
+				imageBuilder.writeBundledImage(outStream);
+				outStream.close();
+			}
+			catch (IOException e)
+			{
+				logger.log(Level.SEVERE, "could not create bundle image", e);
+
+				// don't try to create class if the you could not create the
+				// imageBundle
+				throw new Exception("could not create bundle image");
+			}
 		}
-		catch (IOException e)
-		{
-			logger.log(Level.SEVERE, "could not create bundle image", e);
 
-			// don't try to create class if the you could not create the
-			// imageBundle
-			throw new Exception("could not create bundle image");
-		}
 	}
 
 	/**

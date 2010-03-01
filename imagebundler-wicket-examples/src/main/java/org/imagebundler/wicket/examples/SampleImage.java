@@ -23,7 +23,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.imagebundler.wicket.ImageBundle;
 import org.imagebundler.wicket.Resource;
 
-@ImageBundle
+@ImageBundle(locale = { "en", "en_US" })
 public interface SampleImage
 {
 

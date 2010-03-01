@@ -486,4 +486,9 @@ public class ImageBundleBuilder
 	{
 		imageNameToImageRectMap.put(imageName, rect);
 	}
+	
+	public Map<String, ImageRect> getImageNameToImageRectMap()
+	{
+		return imageNameToImageRectMap;
+	}
 }
