@@ -36,5 +36,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.SOURCE)
 @Documented
 public @interface ImageBundle {
-
+	/**
+	 * list of locales
+	 * 
+	 * @return
+	 */
+	public String[] locale() default { };
 }

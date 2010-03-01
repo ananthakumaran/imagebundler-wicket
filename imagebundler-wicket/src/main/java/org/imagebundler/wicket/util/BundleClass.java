@@ -19,20 +19,16 @@
 
 package org.imagebundler.wicket.util;
 
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.logging.Level;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 
-import org.imagebundler.wicket.ImageBundleBuilder;
 import org.imagebundler.wicket.ImageNotFoundException;
-import org.imagebundler.wicket.processor.CurrentEnv;
 
 /**
  * used to create a Bundle class.
@@ -43,9 +39,6 @@ import org.imagebundler.wicket.processor.CurrentEnv;
 public class BundleClass
 {
 
-	private final FileLogger logger = CurrentEnv.getLogger();
-	/** utility to create the bundle image */
-	private ImageBundleBuilder imageBundleBuilder = new ImageBundleBuilder();
 	/** full package name */
 	private final String packageName;
 	/** simple class name */
@@ -58,6 +51,7 @@ public class BundleClass
 	private final Set<String> imports = new TreeSet<String>();
 	/** method list */
 	private final List<BundleMethod> methods = new ArrayList<BundleMethod>();
+	private final String[] locale ;
 	/**
 	 * contains the path of the BundleImage of this class.This path is relative
 	 * to the webapp dir
@@ -70,14 +64,14 @@ public class BundleClass
 	 * @param clazz
 	 *            class of the interface
 	 */
-	public BundleClass(String fullClazzName)
+	public BundleClass(String fullClazzName , String[] locale)
 	{
 		// TODO cleanup
 		this.className = getSimpleName(fullClazzName) + "Bundle";
 		this.interfaceName = getSimpleName(fullClazzName);
 		this.packageName = parsePackageName(fullClazzName);
 		this.binaryName = packageName + "." + className;
-
+		this.locale = locale;
 		// add import for the wicket image class
 		addImports("org.apache.wicket.markup.html.image.Image");
 		addImports("org.apache.wicket.behavior.SimpleAttributeModifier");
@@ -158,8 +152,7 @@ public class BundleClass
 		{
 			if (method.getKind() == ElementKind.METHOD)
 			{
-				// TODO pass the locales
-				this.methods.add(new BundleMethod(method, packageName , null));
+				this.methods.add(new BundleMethod(method, packageName, locale));
 			}
 		}
 		return this;
@@ -214,30 +207,6 @@ public class BundleClass
 	public String getBinaryName()
 	{
 		return binaryName;
-	}
-
-	public ImageBundleBuilder getImageBundleBuilder()
-	{
-		return imageBundleBuilder;
-	}
-
-
-	/**
-	 * draws the bundleImage to the outputstream
-	 * 
-	 * @param outputStream
-	 *            bundle image outputstream
-	 */
-	public void drawBundleImage(OutputStream outputStream)
-	{
-		try
-		{
-			imageBundleBuilder.writeBundledImage(outputStream);
-		}
-		catch (Exception e)
-		{
-			logger.log(Level.SEVERE, "could not draw bundle image", e);
-		}
 	}
 
 	/**
