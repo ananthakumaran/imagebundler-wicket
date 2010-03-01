@@ -25,6 +25,7 @@ import static org.imagebundler.wicket.processor.CurrentEnv.getMessager;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
@@ -89,8 +90,8 @@ public class BundleClassGenerator
 	private void writeBundleImage(BundleClass bundleClass) throws Exception
 	{
 		// handle the default first
-		List<String> localeList = Arrays.asList(locales);
-	//	localeList.add(0, "default");
+		List<String> localeList = new ArrayList<String>(Arrays.asList(locales));
+		localeList.add(0, "default");
 		for (String locale : localeList)
 		{
 			ImageBundleBuilder imageBuilder = new ImageBundleBuilder();
@@ -103,8 +104,7 @@ public class BundleClassGenerator
 			{
 
 				OutputStream outStream = getFiler().createResource(StandardLocation.SOURCE_OUTPUT,
-						bundleClass.getPackageName(),
-						bundleClass.getClassName() + "_" + locale + "." + BUNDLE_TYPE, element)
+						bundleClass.getPackageName(), createImageName(locale), element)
 						.openOutputStream();
 				imageBuilder.writeBundledImage(outStream);
 				outStream.close();
@@ -119,6 +119,23 @@ public class BundleClassGenerator
 			}
 		}
 
+	}
+
+	/**
+	 * creates a image name for the given locale
+	 * 
+	 * @param locale
+	 * @return
+	 */
+	String createImageName(String locale)
+	{
+		String imageName = bundleClass.getClassName();
+		if (!locale.equals("default"))
+		{
+			imageName += "_" + locale;
+		}
+		imageName += "." + BUNDLE_TYPE;
+		return imageName;
 	}
 
 	/**
