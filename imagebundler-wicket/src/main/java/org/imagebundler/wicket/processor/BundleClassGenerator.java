@@ -31,6 +31,7 @@ import javax.lang.model.element.Element;
 import javax.tools.StandardLocation;
 import javax.tools.Diagnostic.Kind;
 
+import org.imagebundler.wicket.ImageBundle;
 import org.imagebundler.wicket.util.BundleClass;
 import org.imagebundler.wicket.util.FileLogger;
 
@@ -45,6 +46,8 @@ public class BundleClassGenerator
 	private Element element;
 	private static final String BUNDLE_TYPE = "png";
 	private final FileLogger logger = CurrentEnv.getLogger();
+	private final String[] locale;
+	private BundleClass bundleClass;
 
 	/**
 	 * constructor
@@ -55,6 +58,7 @@ public class BundleClassGenerator
 	public BundleClassGenerator(Element element)
 	{
 		this.element = element;
+		this.locale = element.getAnnotation(ImageBundle.class).locale();
 	}
 
 	/**
@@ -64,12 +68,12 @@ public class BundleClassGenerator
 	 */
 	public void generate() throws Exception
 	{
-		BundleClass bundleClass = new BundleClass(element.asType().toString());
+
+		this.bundleClass = new BundleClass(element.asType().toString(), locale);
 		bundleClass.addMethods(element.getEnclosedElements());
+		// TODO create css file
 		writeBundleImage(bundleClass);
-
 		writeBundleClass(bundleClass);
-
 	}
 
 	/**
@@ -87,7 +91,6 @@ public class BundleClassGenerator
 					bundleClass.getPackageName(), bundleClass.getClassName() + "." + BUNDLE_TYPE,
 					element).openOutputStream();
 
-			bundleClass.drawBundleImage(outStream);
 			outStream.close();
 		}
 		catch (IOException e)
