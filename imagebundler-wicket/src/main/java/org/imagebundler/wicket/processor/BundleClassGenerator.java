@@ -27,18 +27,23 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import javax.lang.model.element.Element;
 import javax.tools.StandardLocation;
 import javax.tools.Diagnostic.Kind;
 
+import org.imagebundler.wicket.CSSBuilder;
 import org.imagebundler.wicket.ImageBundle;
 import org.imagebundler.wicket.ImageBundleBuilder;
+import org.imagebundler.wicket.ImageBundleBuilder.ImageRect;
 import org.imagebundler.wicket.util.BundleClass;
 import org.imagebundler.wicket.util.BundleMethod;
 import org.imagebundler.wicket.util.FileLogger;
+import org.imagebundler.wicket.util.ImageURL;
 
 /**
  * generates the ImageBundle class
@@ -76,7 +81,6 @@ public class BundleClassGenerator
 
 		this.bundleClass = new BundleClass(element.asType().toString(), locales);
 		bundleClass.addMethods(element.getEnclosedElements());
-		// TODO create css file
 		writeBundleImage(bundleClass);
 		writeBundleClass(bundleClass);
 	}
@@ -91,13 +95,21 @@ public class BundleClassGenerator
 	{
 		// handle the default first
 		List<String> localeList = new ArrayList<String>(Arrays.asList(locales));
+
+		Map<String, Map<ImageURL, ImageRect>> cssMap = new HashMap<String, Map<ImageURL, ImageRect>>();
 		localeList.add(0, "default");
 		for (String locale : localeList)
 		{
 			ImageBundleBuilder imageBuilder = new ImageBundleBuilder();
+
+			Map<ImageURL, ImageRect> methodMap = new HashMap<ImageURL, ImageRect>();
+
 			for (BundleMethod method : bundleClass.methods)
 			{
-				imageBuilder.assimilate(method.getImageURL(locale));
+				ImageURL localeImageURL = method.getImageURL(locale);
+				imageBuilder.assimilate(localeImageURL);
+				methodMap.put(localeImageURL, imageBuilder
+						.getMapping(localeImageURL.getImageName()));
 			}
 
 			try
@@ -117,8 +129,12 @@ public class BundleClassGenerator
 				// imageBundle
 				throw new Exception("could not create bundle image");
 			}
+
+			cssMap.put(locale, methodMap);
 		}
 
+		// create the css file
+		new CSSBuilder(cssMap).build();
 	}
 
 	/**

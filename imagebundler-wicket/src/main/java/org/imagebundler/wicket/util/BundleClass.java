@@ -151,7 +151,7 @@ public class BundleClass
 		{
 			if (method.getKind() == ElementKind.METHOD)
 			{
-				BundleMethod bundleMethod = new BundleMethod(method, packageName, locale);
+				BundleMethod bundleMethod = new BundleMethod(method, packageName, className, locale);
 				bundleMethod.buildImageURL();
 				this.methods.add(bundleMethod);
 			}

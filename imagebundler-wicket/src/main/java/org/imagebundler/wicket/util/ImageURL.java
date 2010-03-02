@@ -35,6 +35,8 @@ public class ImageURL
 	private String imageName;
 	/** path of the image */
 	private String path;
+	/** class name **/
+	private String className;
 
 	/**
 	 * 
@@ -43,12 +45,13 @@ public class ImageURL
 	 * @param methodName
 	 *            image name with extension
 	 */
-	public ImageURL(String packageName, String imageName, String path, String methodName)
+	public ImageURL(String packageName, String imageName, String path, String methodName , String className)
 	{
 		this.packageName = packageName;
 		this.imageName = imageName;
 		this.path = path;
 		this.methodName = methodName;
+		this.className = className;
 	}
 
 	public String getPath()
@@ -76,4 +79,8 @@ public class ImageURL
 		this.imageName = imageName;
 	}
 
+	public String getClassName()
+	{
+		return className;
+	}
 }

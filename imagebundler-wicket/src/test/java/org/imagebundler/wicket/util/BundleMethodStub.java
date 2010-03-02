@@ -22,7 +22,7 @@ public class BundleMethodStub extends BundleMethod
 	public BundleMethodStub(Element methodElement, String packageName, String[] locales)
 			throws Exception
 	{
-		super(methodElement, packageName, locales);
+		super(methodElement, packageName, "testClass", locales);
 	}
 
 	@Override

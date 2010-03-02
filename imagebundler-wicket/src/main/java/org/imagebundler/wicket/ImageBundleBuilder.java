@@ -343,7 +343,7 @@ public class ImageBundleBuilder
 		 * exists within the composite image. Note that the coordinates of the
 		 * rectangle aren't computed until the composite is written.
 		 */
-		ImageRect rect = getMapping(imageURL.getMethodName());
+		ImageRect rect = getMapping(imageURL.getImageName());
 		if (rect == null)
 		{
 
@@ -354,7 +354,7 @@ public class ImageBundleBuilder
 			// more than
 			// once, we only include the referenced image once in the bundled
 			// image.
-			putMapping(imageURL.getMethodName(), rect);
+			putMapping(imageURL.getImageName(), rect);
 		}
 	}
 

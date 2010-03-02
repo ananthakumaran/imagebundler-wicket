@@ -11,5 +11,7 @@ public class UtilsTest
 	{
 		assertEquals("value_lo", Utils.insertLocale("value", "lo"));
 		assertEquals("value_lo.ext", Utils.insertLocale("value.ext", "lo"));
+		assertEquals("value", Utils.insertLocale("value", "default"));
+		assertEquals("value.ext", Utils.insertLocale("value.ext", "default"));
 	}
 }

@@ -56,19 +56,21 @@ public class BundleMethod
 	private String[] locales;
 	/** method element */
 	private final Element methodElement;
+	private String className;
 
 	/**
 	 * constructor
 	 * 
 	 * @throws ImageNotFoundException
 	 */
-	public BundleMethod(Element methodElement, String packageName, String[] locales)
-			throws Exception
+	public BundleMethod(Element methodElement, String packageName, String className,
+			String[] locales) throws Exception
 	{
 		checkMethodSignature(methodElement);
 		this.packageName = packageName;
 		this.locales = locales;
 		this.methodElement = methodElement;
+		this.className = className;
 	}
 
 	/**
@@ -122,7 +124,7 @@ public class BundleMethod
 		str.line();
 		// override annotation
 		str.append("@Override").line();
-		
+
 		// method signature
 		str.append("public Image ").append(getMethodName()).append("(String id)").open();
 		// locale
@@ -169,8 +171,7 @@ public class BundleMethod
 				if (exists(resource.value()))
 				{
 					// tries to construct the default image url
-					ImageURL defaultImageURL = new ImageURL(packageName, resource.value(),
-							getPath(resource.value()), getMethodName());
+					ImageURL defaultImageURL = newImageURL(resource.value());
 					imageURLs.put("default", defaultImageURL);
 					// construct the urls for all the locales
 					for (String locale : locales)
@@ -178,8 +179,7 @@ public class BundleMethod
 						String value = Utils.insertLocale(resource.value(), locale);
 						if (exists(value))
 						{
-							imageURLs.put(locale, new ImageURL(packageName, value, getPath(value),
-									getMethodName()));
+							imageURLs.put(locale, newImageURL(value));
 						}
 						else
 						{
@@ -238,8 +238,7 @@ public class BundleMethod
 				if (exists(name + extension))
 				{
 					// image found
-					return new ImageURL(packageName, name + extension, getPath(name + extension),
-							getMethodName());
+					return newImageURL(name + extension);
 				}
 			}
 			catch (Exception ex)
@@ -328,5 +327,15 @@ public class BundleMethod
 	String getMethodName()
 	{
 		return methodElement.getSimpleName().toString();
+	}
+
+	/**
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	private ImageURL newImageURL(String imageName) throws IOException
+	{
+		return new ImageURL(packageName, imageName, getPath(imageName), getMethodName(), className);
 	}
 }
