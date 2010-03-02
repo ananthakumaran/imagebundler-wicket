@@ -40,12 +40,9 @@ public class CSSBuilder
 	{
 		for (String locale : cssMap.keySet())
 		{
-			for (Map<ImageURL, ImageRect> value : cssMap.values())
+			for (Entry<ImageURL, ImageRect> entry : cssMap.get(locale).entrySet())
 			{
-				for (Entry<ImageURL, ImageRect> entry : value.entrySet())
-				{
-					buildCSS(locale, entry.getKey(), entry.getValue());
-				}
+				buildCSS(locale, entry.getKey(), entry.getValue());
 			}
 		}
 		writeCSS();
@@ -53,11 +50,6 @@ public class CSSBuilder
 
 	public void buildCSS(String locale, ImageURL imageURL, ImageRect imageRect)
 	{
-		imageURL.getClassName();
-		insertLocale(imageURL.getMethodName(), locale);
-		insertLocale(imageURL.getImageName(), locale);
-		imageRect.getLeft();
-
 		String rule = String
 				.format(
 						".%s_%s { background-image :url(resources/%s.%s/%s.png) ; background-position:-%dpx -%dpx; width:%dpx; height:%dpx; } ",
