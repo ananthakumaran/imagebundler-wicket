@@ -76,7 +76,7 @@ public class CSSRules
 		}
 	}
 
-	public  void save()
+	public void save()
 	{
 		BufferedWriter cssWriter = null;
 		try
@@ -104,5 +104,18 @@ public class CSSRules
 
 			}
 		}
+	}
+
+	public void remove(String prefix)
+	{
+		List<String> remove = new ArrayList<String>();
+		for (String rule : rules)
+		{
+			if (rule.startsWith(prefix))
+			{
+				remove.add(rule);
+			}
+		}
+		rules.removeAll(remove);
 	}
 }

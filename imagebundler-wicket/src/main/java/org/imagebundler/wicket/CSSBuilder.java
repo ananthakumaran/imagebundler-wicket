@@ -24,16 +24,17 @@ public class CSSBuilder
 	/** list of image urls */
 	private Map<String, Map<ImageURL, ImageRect>> cssMap;
 
-	RichString css = new RichString();
-	List<String> rules = new ArrayList<String>();
+	public List<String> rules = new ArrayList<String>();
+	private String className;
 
 	/**
 	 * 
 	 * @param imageURL
 	 */
-	public CSSBuilder(Map<String, Map<ImageURL, ImageRect>> cssMap)
+	public CSSBuilder(Map<String, Map<ImageURL, ImageRect>> cssMap, String className)
 	{
 		this.cssMap = cssMap;
+		this.className = className;
 	}
 
 	/**
@@ -81,6 +82,8 @@ public class CSSBuilder
 
 	public void writeCSS()
 	{
-		CSSRules.get().rules.addAll(rules);
+		CSSRules cssRules = CSSRules.get();
+		cssRules.remove("." + className);
+		cssRules.rules.addAll(rules);
 	}
 }

@@ -134,7 +134,7 @@ public class BundleClassGenerator
 		}
 
 		// create the css file
-		new CSSBuilder(cssMap).build();
+		new CSSBuilder(cssMap , bundleClass.getClassName()).build();
 	}
 
 	/**
