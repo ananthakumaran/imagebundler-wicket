@@ -56,6 +56,8 @@ public class Config
 	{
 		// TODO may change in the future
 		this.options.put("image.clear", "images/clear.gif");
+		this.options.put("webapp", "src/main/webapp");
+		this.options.put("basedir", "");
 	}
 
 	private void loadImageBundlerDotProperties()
@@ -87,6 +89,9 @@ public class Config
 			{
 				this.options.put((String)entry.getKey(), (String)entry.getValue());
 			}
+			// make an assumption that the properties file is in the base dir
+			// and set some defaults if it is not already set
+			setValueIfEmpty("basedir", imageBundlerProperites.getParentFile().getAbsolutePath());
 		}
 	}
 
@@ -157,5 +162,14 @@ public class Config
 	public Map<String, String> getOptions()
 	{
 		return options;
+	}
+
+	private void setValueIfEmpty(String key, String value)
+	{
+		String originalValue = options.get(key);
+		if (originalValue != null && originalValue.equals(""))
+		{
+			options.put(key, value);
+		}
 	}
 }

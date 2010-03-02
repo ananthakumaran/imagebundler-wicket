@@ -1,5 +1,7 @@
 package org.imagebundler.wicket;
 
+import static org.imagebundler.wicket.util.Utils.insertLocale;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +13,6 @@ import org.imagebundler.wicket.processor.CurrentEnv;
 import org.imagebundler.wicket.util.FileLogger;
 import org.imagebundler.wicket.util.ImageURL;
 import org.imagebundler.wicket.util.RichString;
-import static org.imagebundler.wicket.util.Utils.*;
 
 /**
  * 
