@@ -137,10 +137,17 @@ public class BundleMethod
 		str.append("image.add(new SimpleAttributeModifier(\"src\", \"").append(
 				getProperty("image.clear")).append("\"))").semicolon();
 		// TODO add the CSS styles here
-		str.append("image.add(new SimpleAttributeModifier(\"class\",").append("locale")
+		str.append("image.add(new SimpleAttributeModifier(\"class\",").append(getCSSClass())
 				.append("))").semicolon();
 		str.append("return image").semicolon().close();
 		return str;
+	}
+
+	private String getCSSClass()
+	{
+
+		return "\"" + className + "_" + getMethodName() + "_\"+ locale +\" " + className + "_"
+				+ getMethodName() + "\"";
 	}
 
 	/**
