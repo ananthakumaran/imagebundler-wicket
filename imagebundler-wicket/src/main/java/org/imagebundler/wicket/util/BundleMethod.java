@@ -143,6 +143,12 @@ public class BundleMethod
 		return str;
 	}
 
+
+	/**
+	 * creates the css class name for this method
+	 * 
+	 * @return
+	 */
 	private String getCSSClass()
 	{
 

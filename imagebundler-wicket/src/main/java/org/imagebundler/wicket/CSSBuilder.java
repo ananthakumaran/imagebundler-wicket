@@ -8,10 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.imagebundler.wicket.ImageBundleBuilder.ImageRect;
-import org.imagebundler.wicket.processor.CurrentEnv;
-import org.imagebundler.wicket.util.FileLogger;
 import org.imagebundler.wicket.util.ImageURL;
-import org.imagebundler.wicket.util.RichString;
 
 /**
  * 
@@ -20,7 +17,6 @@ import org.imagebundler.wicket.util.RichString;
  */
 public class CSSBuilder
 {
-	private final FileLogger logger = CurrentEnv.getLogger();
 	/** list of image urls */
 	private Map<String, Map<ImageURL, ImageRect>> cssMap;
 
