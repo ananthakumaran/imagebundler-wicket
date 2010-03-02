@@ -19,8 +19,12 @@
 
 package org.imagebundler.wicket.examples;
 
-import org.apache.wicket.PageParameters;
+import java.util.Locale;
+
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.link.Link;
 
 
 /**
@@ -38,13 +42,48 @@ public class HomePage extends WebPage
 	 * @param parameters
 	 *            Page parameters
 	 */
-	public HomePage(final PageParameters parameters)
+	public HomePage()
 	{
 
-		 EditorButton editorBundle = new EditorButtonBundle();
-		 this.add(editorBundle.italic("italic"));
-		 this.add(editorBundle.bold("bold"));
-		 this.add(editorBundle.italic("anotheritalic"));
+		EditorButton editorBundle = new EditorButtonBundle();
+		this.add(editorBundle.italic("italic"));
+		this.add(editorBundle.bold("bold"));
+		this.add(editorBundle.italic("anotheritalic"));
 
+		this.add(new Link("china")
+		{
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick()
+			{
+				Locale locale = Locale.CHINESE;
+				Session session = RequestCycle.get().getSession();
+				session.setLocale(locale);
+				this.setResponsePage(new HomePage());
+			}
+		});
+
+		this.add(new Link("english")
+		{
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick()
+			{
+				Locale locale = Locale.ENGLISH;
+				Session session = RequestCycle.get().getSession();
+				session.setLocale(locale);
+				this.setResponsePage(new HomePage());
+			}
+		});
 	}
 }
