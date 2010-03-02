@@ -65,18 +65,12 @@ public class CSSBuilder
 		String rule = String
 				.format(
 						".%s_%s { background-image :url(resources/%s.%s/%s.png) ; background-position:-%dpx -%dpx; width:%dpx; height:%dpx; } ",
-						imageURL.getClassName(), insertLocale(imageURL.getMethodName(), locale),
-						imageURL.getPackageName(), imageURL.getClassName(), insertLocale(className, locale), imageRect.getLeft(), imageRect.getTop(),
-						imageRect.getWidth(), imageRect.getHeight());
+						className, insertLocale(imageURL.getMethodName(), locale), imageURL
+								.getPackageName(), className, insertLocale(className, locale),
+						imageRect.getLeft(), imageRect.getTop(), imageRect.getWidth(), imageRect
+								.getHeight());
 
-		if (locale.equals("default"))
-		{
-			rules.add(0, rule);
-		}
-		else
-		{
-			rules.add(rule);
-		}
+		rules.add(rule);
 	}
 
 	public void writeCSS()
