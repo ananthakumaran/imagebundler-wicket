@@ -39,6 +39,7 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import javax.tools.Diagnostic.Kind;
 
+import org.imagebundler.wicket.CSSRules;
 import org.imagebundler.wicket.ImageBundle;
 import org.imagebundler.wicket.util.FileLogger;
 
@@ -88,6 +89,7 @@ public class Processor extends AbstractProcessor
 					warnElementIsUnhadled(element);
 				}
 			}
+			CSSRules.get().save();
 		}
 		catch (Exception e)
 		{

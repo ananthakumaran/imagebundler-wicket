@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 
 import org.imagebundler.wicket.ImageBundleBuilder.ImageRect;
 import org.imagebundler.wicket.processor.CurrentEnv;
@@ -64,7 +63,7 @@ public class CSSBuilder
 
 		String rule = String
 				.format(
-						".%s_%s { background-image :url(resources/%s/%s} ; background-position:-%dpx -%dpx; width:%dpx; height:%dpx; } \n",
+						".%s_%s { background-image :url(resources/%s/%s} ; background-position:-%dpx -%dpx; width:%dpx; height:%dpx; } ",
 						imageURL.getClassName(), insertLocale(imageURL.getMethodName(), locale),
 						imageURL.getPackageName(), insertLocale(imageURL.getImageName(), locale),
 						imageRect.getLeft(), imageRect.getTop(), imageRect.getWidth(), imageRect
@@ -82,11 +81,6 @@ public class CSSBuilder
 
 	public void writeCSS()
 	{
-		// Remove previous css associated with this class
-		for (String rule : rules)
-		{
-			logger.log(Level.INFO, rule);
-		}
-
+		CSSRules.get().rules.addAll(rules);
 	}
 }
