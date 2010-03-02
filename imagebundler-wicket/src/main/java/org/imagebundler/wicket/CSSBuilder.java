@@ -64,11 +64,10 @@ public class CSSBuilder
 
 		String rule = String
 				.format(
-						".%s_%s { background-image :url(resources/%s/%s} ; background-position:-%dpx -%dpx; width:%dpx; height:%dpx; } ",
+						".%s_%s { background-image :url(resources/%s.%s/%s.png) ; background-position:-%dpx -%dpx; width:%dpx; height:%dpx; } ",
 						imageURL.getClassName(), insertLocale(imageURL.getMethodName(), locale),
-						imageURL.getPackageName(), insertLocale(imageURL.getImageName(), locale),
-						imageRect.getLeft(), imageRect.getTop(), imageRect.getWidth(), imageRect
-								.getHeight());
+						imageURL.getPackageName(), imageURL.getClassName(), insertLocale(className, locale), imageRect.getLeft(), imageRect.getTop(),
+						imageRect.getWidth(), imageRect.getHeight());
 
 		if (locale.equals("default"))
 		{
