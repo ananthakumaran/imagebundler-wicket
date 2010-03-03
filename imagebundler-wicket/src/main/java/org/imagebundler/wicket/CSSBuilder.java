@@ -12,15 +12,18 @@ import org.imagebundler.wicket.util.ImageURL;
 
 /**
  * 
+ * builds the css rules
+ * 
  * @author Ananth
  * 
  */
 public class CSSBuilder
 {
-	/** list of image urls */
+	/** list of imageurl for each locale */
 	private Map<String, Map<ImageURL, ImageRect>> cssMap;
-
+	/** list of rules */
 	public List<String> rules = new ArrayList<String>();
+	/** class name */
 	private String className;
 
 	/**
@@ -48,6 +51,14 @@ public class CSSBuilder
 		writeCSS();
 	}
 
+	/**
+	 * creates a css rule with the details and push it into the list of css
+	 * rules
+	 * 
+	 * @param locale
+	 * @param imageURL
+	 * @param imageRect
+	 */
 	public void buildCSS(String locale, ImageURL imageURL, ImageRect imageRect)
 	{
 		String rule = String
@@ -61,6 +72,10 @@ public class CSSBuilder
 		rules.add(rule);
 	}
 
+	/**
+	 * removes all the previous css rules associated with this class and add the
+	 * new css rules
+	 */
 	public void writeCSS()
 	{
 		CSSRules cssRules = CSSRules.get();

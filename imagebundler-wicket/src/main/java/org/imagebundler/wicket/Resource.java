@@ -35,7 +35,9 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Resource {
 	/**
-	 * image file name. should be relative to the package
+	 * image file name. should be relative to the package for each locale the
+	 * same extension will be searched. for eg for a file {@code bold.png bold_en.png } 
+	 * will be searched for  locale {@code en}
 	 * 
 	 * @return
 	 */

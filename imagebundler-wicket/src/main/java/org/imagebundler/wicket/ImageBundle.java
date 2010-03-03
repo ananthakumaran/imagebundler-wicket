@@ -37,7 +37,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface ImageBundle {
 	/**
-	 * list of locales
+	 * list of locales to be supported
 	 * 
 	 * @return
 	 */

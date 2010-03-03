@@ -13,19 +13,38 @@ import java.util.logging.Level;
 import org.imagebundler.wicket.processor.CurrentEnv;
 import org.imagebundler.wicket.util.FileLogger;
 
+/**
+ * This is the singleton which contains all the css rules. It reads all the css
+ * rules from the files during the starting and then write all the css at the
+ * end of processing.
+ * 
+ * 
+ * @author Ananth
+ * 
+ */
 public class CSSRules
 {
 	private final static FileLogger logger = CurrentEnv.getLogger();
+	/** singleton instance */
 	private static CSSRules INSTANCE = null;
-
+	/** list of all the rules */
 	public List<String> rules = new ArrayList<String>();
+	/** css file */
 	private static File cssFile;
 
+	/**
+	 * singleton
+	 */
 	private CSSRules()
 	{
 
 	}
 
+	/**
+	 * load the rules in the first access
+	 * 
+	 * @return
+	 */
 	public static CSSRules get()
 	{
 		if (INSTANCE == null)
@@ -36,20 +55,20 @@ public class CSSRules
 		return INSTANCE;
 	}
 
+	/**
+	 * load the rules from the css file
+	 */
 	private void loadRules()
 	{
 		String cssFileUrl = CurrentEnv.getProperties().get("basedir");
 		cssFileUrl += "/" + CurrentEnv.getProperties().get("webapp") + "/imagebundler.css";
 		cssFile = new File(cssFileUrl);
-
-		logger.log(Level.INFO, cssFileUrl);
-
 		BufferedReader cssReader = null;
 		try
 		{
 			if (cssFile.createNewFile())
 			{
-				logger.log(Level.INFO, "file created");
+				logger.log(Level.INFO, "new CSS file created");
 			}
 			cssReader = new BufferedReader(new FileReader(cssFile));
 			String line;
@@ -76,6 +95,9 @@ public class CSSRules
 		}
 	}
 
+	/**
+	 * writes all the css rules to the file
+	 */
 	public void save()
 	{
 		BufferedWriter cssWriter = null;

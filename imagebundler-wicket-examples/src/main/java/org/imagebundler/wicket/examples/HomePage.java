@@ -50,7 +50,7 @@ public class HomePage extends WebPage
 		this.add(editorBundle.bold("bold"));
 		this.add(editorBundle.italic("anotheritalic"));
 
-		this.add(new Link("china")
+		this.add(new Link<Void>("china")
 		{
 
 			/**
@@ -68,7 +68,7 @@ public class HomePage extends WebPage
 			}
 		});
 
-		this.add(new Link("english")
+		this.add(new Link<Void>("english")
 		{
 
 			/**
