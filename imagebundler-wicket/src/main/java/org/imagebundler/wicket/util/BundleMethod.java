@@ -37,6 +37,7 @@ import javax.tools.StandardLocation;
 import org.imagebundler.wicket.ImageNotFoundException;
 import org.imagebundler.wicket.MethodSignatureException;
 import org.imagebundler.wicket.Resource;
+import org.imagebundler.wicket.ImageBundleBuilder.ImageRect;
 import org.imagebundler.wicket.processor.CurrentEnv;
 
 /**
@@ -53,7 +54,7 @@ public class BundleMethod
 	/** package name */
 	private final String packageName;
 	/** list of locale */
-	private String[] locales;
+	private final String[] locales;
 	/** method element */
 	private final Element methodElement;
 
@@ -116,13 +117,13 @@ public class BundleMethod
 	 *            tabCount
 	 * @return String representation of the method
 	 */
-	public RichString toCode(int tabCount)
+	public RichString toCode(int tabCount, Map<String, ImageRect> /* <locale , pos> */ imagePos)
 	{
 		RichString str = new RichString(tabCount);
 		str.line();
 		// override annotation
 		str.append("@Override").line();
-		
+
 		// method signature
 		str.append("public Image ").append(getMethodName()).append("(String id)").open();
 		// locale
@@ -325,7 +326,7 @@ public class BundleMethod
 	 * 
 	 * @return
 	 */
-	String getMethodName()
+	public String getMethodName()
 	{
 		return methodElement.getSimpleName().toString();
 	}

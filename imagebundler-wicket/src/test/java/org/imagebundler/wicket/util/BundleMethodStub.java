@@ -15,7 +15,7 @@ public class BundleMethodStub extends BundleMethod
 {
 
 	public static final Logger logger = Logger.getLogger(BundleMethodStub.class.getName());
-	private List<String> fileList = new ArrayList<String>();
+	private final List<String> fileList = new ArrayList<String>();
 	public String path = "testPath";
 	public String methodName = "methodName";
 
@@ -50,7 +50,7 @@ public class BundleMethodStub extends BundleMethod
 	}
 
 	@Override
-	String getMethodName()
+	public String getMethodName()
 	{
 		return methodName;
 	}

@@ -22,6 +22,7 @@ package org.imagebundler.wicket.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -29,6 +30,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 
 import org.imagebundler.wicket.ImageNotFoundException;
+import org.imagebundler.wicket.ImageBundleBuilder.ImageRect;
 
 /**
  * used to create a Bundle class.
@@ -164,7 +166,7 @@ public class BundleClass
 	 * 
 	 * @return String representation of the class
 	 */
-	public String toCode()
+	public String toCode(Map<String, Map<String, ImageRect>> imagePos)
 	{
 
 		RichString str = new RichString();
@@ -182,7 +184,7 @@ public class BundleClass
 		// method declaration
 		for (BundleMethod method : methods)
 		{
-			str.append(method.toCode(str.getTabCount()));
+			str.append(method.toCode(str.getTabCount(), imagePos.get(method.getMethodName())));
 		}
 		// close the class
 		str.close();

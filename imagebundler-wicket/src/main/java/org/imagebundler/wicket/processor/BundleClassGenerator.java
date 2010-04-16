@@ -27,7 +27,9 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import javax.lang.model.element.Element;
@@ -36,9 +38,11 @@ import javax.tools.Diagnostic.Kind;
 
 import org.imagebundler.wicket.ImageBundle;
 import org.imagebundler.wicket.ImageBundleBuilder;
+import org.imagebundler.wicket.ImageBundleBuilder.ImageRect;
 import org.imagebundler.wicket.util.BundleClass;
 import org.imagebundler.wicket.util.BundleMethod;
 import org.imagebundler.wicket.util.FileLogger;
+import org.imagebundler.wicket.util.ImageURL;
 
 /**
  * generates the ImageBundle class
@@ -48,11 +52,15 @@ import org.imagebundler.wicket.util.FileLogger;
  */
 public class BundleClassGenerator
 {
-	private Element element;
+	private final Element element;
 	private static final String BUNDLE_TYPE = "png";
 	private final FileLogger logger = CurrentEnv.getLogger();
 	private final String[] locales;
 	private BundleClass bundleClass;
+
+	// <methodname <imageurl , imagepos>>
+	private final Map<String, Map<String, ImageRect>> imagePos = new HashMap<String, Map<String, ImageRect>>();
+
 
 	/**
 	 * constructor
@@ -76,7 +84,6 @@ public class BundleClassGenerator
 
 		this.bundleClass = new BundleClass(element.asType().toString(), locales);
 		bundleClass.addMethods(element.getEnclosedElements());
-		// TODO create css file
 		writeBundleImage(bundleClass);
 		writeBundleClass(bundleClass);
 	}
@@ -89,15 +96,27 @@ public class BundleClassGenerator
 	 */
 	private void writeBundleImage(BundleClass bundleClass) throws Exception
 	{
+
+
 		// handle the default first
 		List<String> localeList = new ArrayList<String>(Arrays.asList(locales));
 		localeList.add(0, "default");
+
+		for (BundleMethod method : bundleClass.methods)
+		{
+			imagePos.put(method.getMethodName(), new HashMap<String, ImageRect>());
+		}
+
+
 		for (String locale : localeList)
 		{
 			ImageBundleBuilder imageBuilder = new ImageBundleBuilder();
 			for (BundleMethod method : bundleClass.methods)
 			{
-				imageBuilder.assimilate(method.getImageURL(locale));
+				ImageURL imageURL = method.getImageURL(locale);
+				imageBuilder.assimilate(imageURL);
+				imagePos.get(method.getMethodName()).put(locale,
+						imageBuilder.getMapping(imageURL.getMethodName()));
 			}
 
 			try
@@ -150,7 +169,7 @@ public class BundleClassGenerator
 		{
 			Writer writer = getFiler().createSourceFile(bundleClass.getBinaryName(), element)
 					.openWriter();
-			writer.write(bundleClass.toCode());
+			writer.write(bundleClass.toCode(imagePos));
 			writer.close();
 			getMessager().printMessage(Kind.NOTE, bundleClass.getClassName() + " class created");
 		}
