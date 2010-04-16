@@ -19,9 +19,14 @@
 
 package org.imagebundler.wicket;
 
+import org.imagebundler.wicket.util.BundleMethodTest;
+import org.imagebundler.wicket.util.UtilsTest;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-//@RunWith(Suite.class)
-//@Suite.SuiteClasses( {  })
+
+@RunWith(Suite.class)
+@Suite.SuiteClasses( { UtilsTest.class,BundleMethodTest.class})
 public class AllTests
 {
 
