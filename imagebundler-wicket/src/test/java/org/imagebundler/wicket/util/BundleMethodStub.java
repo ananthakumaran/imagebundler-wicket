@@ -19,10 +19,10 @@ public class BundleMethodStub extends BundleMethod
 	public String path = "testPath";
 	public String methodName = "methodName";
 
-	public BundleMethodStub(Element methodElement, String packageName, String[] locales)
-			throws Exception
+	public BundleMethodStub(Element methodElement, String packageName, String className,
+			String[] locales) throws Exception
 	{
-		super(methodElement, packageName, locales);
+		super(methodElement, packageName, className, locales);
 	}
 
 	@Override

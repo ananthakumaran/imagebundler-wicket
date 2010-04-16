@@ -17,6 +17,10 @@ public class Utils
 	 */
 	public static String insertLocale(String value, String locale)
 	{
+		if ("default".equals(locale))
+		{
+			return value;
+		}
 		int lastIndex = value.lastIndexOf('.');
 		if (lastIndex == -1)
 		{

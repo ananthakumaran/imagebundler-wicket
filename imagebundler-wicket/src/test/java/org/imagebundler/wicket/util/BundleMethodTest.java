@@ -25,7 +25,7 @@ public class BundleMethodTest
 	{
 		String[] locales = new String[] { "en", "en_US" };
 		Element mockElement = createMock(Element.class);
-		bundleMethod = new BundleMethodStub(mockElement, "org.test", locales);
+		bundleMethod = new BundleMethodStub(mockElement, "org.test", "testclass", locales);
 	}
 
 	@Test

@@ -19,6 +19,8 @@
 
 package org.imagebundler.wicket.util;
 
+import static org.imagebundler.wicket.util.Utils.insertLocale;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,7 +43,7 @@ import org.imagebundler.wicket.ImageBundleBuilder.ImageRect;
 import org.imagebundler.wicket.processor.CurrentEnv;
 
 /**
- * used to create a bundle method
+ * USED to create a bundle method
  * 
  * @author Ananth
  */
@@ -49,10 +51,12 @@ public class BundleMethod
 {
 
 	private final FileLogger logger = CurrentEnv.getLogger();
-	/** list of image urls */
+	/** list of image urls <locale , imageurl > */
 	private final Map<String, ImageURL> imageURLs = new HashMap<String, ImageURL>();
 	/** package name */
 	private final String packageName;
+	/** class name */
+	private final String className;
 	/** list of locale */
 	private final String[] locales;
 	/** method element */
@@ -63,13 +67,14 @@ public class BundleMethod
 	 * 
 	 * @throws ImageNotFoundException
 	 */
-	public BundleMethod(Element methodElement, String packageName, String[] locales)
-			throws Exception
+	public BundleMethod(Element methodElement, String packageName, String className,
+			String[] locales) throws Exception
 	{
 		checkMethodSignature(methodElement);
 		this.packageName = packageName;
 		this.locales = locales;
 		this.methodElement = methodElement;
+		this.className = className;
 	}
 
 	/**
@@ -117,7 +122,9 @@ public class BundleMethod
 	 *            tabCount
 	 * @return String representation of the method
 	 */
-	public RichString toCode(int tabCount, Map<String, ImageRect> /* <locale , pos> */ imagePos)
+	public RichString toCode(int tabCount, Map<String, ImageRect> imagePos) // <locale
+	// ,
+	// imagepo>
 	{
 		RichString str = new RichString(tabCount);
 		str.line();
@@ -127,7 +134,7 @@ public class BundleMethod
 		// method signature
 		str.append("public Image ").append(getMethodName()).append("(String id)").open();
 		// locale
-		str.append(" String locale = RequestCycle.get().getSession().getLocale().toString()")
+		str.append("String locale = RequestCycle.get().getSession().getLocale().toString()")
 				.semicolon();
 		// declare the image
 		str.append("Image image = new Image(id)").semicolon();
@@ -135,9 +142,21 @@ public class BundleMethod
 		// set the src
 		str.append("image.add(new SimpleAttributeModifier(\"src\", \"").append(
 				getProperty("image.clear")).append("\"))").semicolon();
-		// TODO add the CSS styles here
-		str.append("image.add(new SimpleAttributeModifier(\"class\",").append("locale")
-				.append("))").semicolon();
+
+		str.append("String style = \"").append(getStyle("default", imagePos.get("default")))
+				.append("\"").semicolon();
+
+		for (String locale : imagePos.keySet())
+		{
+			if (!locale.equals("default"))
+			{
+				str.ifBlock("locale == \"" + locale + "\"", "style = \""
+						+ getStyle(locale, imagePos.get(locale)) + "\";");
+			}
+		}
+
+		str.append("image.add(new SimpleAttributeModifier(\"style\", style))").semicolon();
+
 		str.append("return image").semicolon().close();
 		return str;
 	}
@@ -329,5 +348,18 @@ public class BundleMethod
 	public String getMethodName()
 	{
 		return methodElement.getSimpleName().toString();
+	}
+
+
+	public String getStyle(String locale, ImageRect imageRect)
+	{
+		ImageURL imageURL = imageURLs.get(locale);
+		String rule = String
+				.format(
+						" background-image :url(resources/%s.%s/%s.png) ; background-position:-%dpx -%dpx; width:%dpx; height:%dpx;  ",
+						imageURL.getPackageName(), className, insertLocale(className, locale),
+						imageRect.getLeft(), imageRect.getTop(), imageRect.getWidth(), imageRect
+								.getHeight());
+		return rule;
 	}
 }

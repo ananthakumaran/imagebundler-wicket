@@ -231,4 +231,46 @@ public final class RichString
 		}
 		return this;
 	}
+
+
+	/**
+	 * helper to create a if block
+	 * 
+	 * @param condition
+	 * @param body
+	 * @return
+	 */
+	public RichString ifBlock(String condition, String body)
+	{
+		block("if", condition, body);
+		return this;
+	}
+
+	/**
+	 * helper to create a if else block
+	 * 
+	 * @param condition
+	 * @param body
+	 * @return
+	 */
+	public RichString ifElseBlock(String condition, String body)
+	{
+		block("if else", condition, body);
+		return this;
+	}
+
+	/**
+	 * helper to create a conditional block
+	 * 
+	 * @param keyword
+	 * @param condition
+	 * @param body
+	 * @return
+	 */
+	public RichString block(String keyword, String condition, String body)
+	{
+		append(keyword).append("(").append(condition).append(")").open().append(body).line()
+				.close();
+		return this;
+	}
 }
