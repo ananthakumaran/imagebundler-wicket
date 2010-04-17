@@ -21,7 +21,8 @@ package org.imagebundler.wicket;
 
 /**
  * The method signature should be of the form
- * <code>Image methodName(String arg)</code>
+ * <code>Image methodName(String arg)</code> or
+ * <code>ImageItem methodName()</code>
  * 
  * @author Ananth
  */
@@ -41,6 +42,7 @@ public class MethodSignatureException extends Exception
 	 */
 	public MethodSignatureException()
 	{
-		super("The signature of the method should be public Image methodName(String arg)");
+		super(
+				"The signature of the method should be public Image methodName(String arg) or public ImageItem methodName()");
 	}
 }
