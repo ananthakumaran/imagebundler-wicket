@@ -79,7 +79,8 @@ public class BundleMethod
 
 	/**
 	 * checks the method signature and throws exception if it is not of type
-	 * <code>public Image methodName(String arg1)</code>
+	 * <code>public Image methodName(String arg1)</code> or
+	 * <code>public ImageItem methodName()</code>
 	 * 
 	 * @param methodElement
 	 *            method element
