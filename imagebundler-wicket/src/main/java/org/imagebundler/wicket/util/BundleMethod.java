@@ -99,20 +99,19 @@ public class BundleMethod
 
 		ExecutableElement execMethodElement = (ExecutableElement)methodElement;
 
-		// check return Type
-		if (!execMethodElement.getReturnType().toString().equals(
-				"org.apache.wicket.markup.html.image.Image"))
-		{
-			throw new MethodSignatureException();
-		}
 
-
+		String returnType = execMethodElement.getReturnType().toString();
 		List<VariableElement> params = (List<VariableElement>)execMethodElement.getParameters();
-		// check parameters
-		if (!(params.size() == 1 && params.get(0).asType().toString().equals("java.lang.String")))
+
+		// check return Type
+		if (!((returnType.equals("org.apache.wicket.markup.html.image.Image") && (params.size() == 1 && params
+				.get(0).asType().toString().equals("java.lang.String"))) || (returnType
+				.equals("org.imagebundler.wicket.ImageItem") && (params.size() == 0))))
 		{
 			throw new MethodSignatureException();
 		}
+
+
 	}
 
 
