@@ -21,6 +21,7 @@ package org.imagebundler.wicket.examples;
 
 import org.apache.wicket.markup.html.image.Image;
 import org.imagebundler.wicket.ImageBundle;
+import org.imagebundler.wicket.ImageItem;
 import org.imagebundler.wicket.Resource;
 
 @ImageBundle(locale = { "en", "en_US" })
@@ -28,7 +29,7 @@ public interface SampleImage
 {
 
 	@Resource("buttons.png")
-	public Image buttons(String id);
+	public ImageItem buttons();
 
 	public Image course(String id);
 

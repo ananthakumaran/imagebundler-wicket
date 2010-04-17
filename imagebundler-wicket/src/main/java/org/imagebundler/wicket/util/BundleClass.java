@@ -78,6 +78,10 @@ public class BundleClass
 		addImports("org.apache.wicket.markup.html.image.Image");
 		addImports("org.apache.wicket.behavior.SimpleAttributeModifier");
 		addImports("org.apache.wicket.RequestCycle");
+		// TODO should not add this if there none of the method
+		// is declared with this return type
+		addImports("org.imagebundler.wicket.ImageItem");
+		addImports("org.imagebundler.wicket.AbstractImageItem");
 		buildImageBundlePath();
 	}
 

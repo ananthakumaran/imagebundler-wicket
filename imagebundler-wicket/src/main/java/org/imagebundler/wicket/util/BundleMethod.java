@@ -61,6 +61,8 @@ public class BundleMethod
 	private final String[] locales;
 	/** method element */
 	private final Element methodElement;
+	/** return type of the method */
+	private String returnType;
 
 	/**
 	 * constructor
@@ -110,6 +112,10 @@ public class BundleMethod
 		{
 			throw new MethodSignatureException();
 		}
+		else
+		{
+			this.returnType = returnType;
+		}
 
 
 	}
@@ -126,38 +132,57 @@ public class BundleMethod
 	// ,
 	// imagepo>
 	{
-		RichString str = new RichString(tabCount);
-		str.line();
-		// override annotation
-		str.append("@Override").line();
 
-		// method signature
-		str.append("public Image ").append(getMethodName()).append("(String id)").open();
-		// locale
-		str.append("String locale = RequestCycle.get().getSession().getLocale().toString()")
-				.semicolon();
-		// declare the image
-		str.append("Image image = new Image(id)").semicolon();
+		String returnType = this.returnType.equals("org.imagebundler.wicket.ImageItem")
+				? "ImageItem"
+				: "Image";
 
-		// set the src
-		str.append("image.add(new SimpleAttributeModifier(\"src\", \"").append(
-				getProperty("image.clear")).append("\"))").semicolon();
-
-		str.append("String style = \"").append(getStyle("default", imagePos.get("default")))
+		String imageSrc = getProperty("image.clear");
+		String localeString = "String locale = RequestCycle.get().getSession().getLocale().toString()";
+		// TODO set the tab indent correctly
+		RichString style = new RichString(4);
+		style.append("String style = \"").append(getStyle("default", imagePos.get("default")))
 				.append("\"").semicolon();
 
+
+		RichString localeBlock = new RichString();
 		for (String locale : imagePos.keySet())
 		{
 			if (!locale.equals("default"))
 			{
-				str.ifBlock("locale == \"" + locale + "\"", "style = \""
+				localeBlock.ifBlock("locale == \"" + locale + "\"", "style = \""
 						+ getStyle(locale, imagePos.get(locale)) + "\";");
 			}
 		}
 
-		str.append("image.add(new SimpleAttributeModifier(\"style\", style))").semicolon();
+		RichString str = new RichString(tabCount);
+		str.line();
+		str.append("@Override").line();
+		str.append("public ").append(returnType + " ").append(getMethodName());
 
-		str.append("return image").semicolon().close();
+		if (returnType.endsWith("ImageItem"))
+		{
+			str.append("()").open();
+			str.append("return new AbstractImageItem(\"" + imageSrc + "\")").open();
+			str.append("public String getSrc()").open();
+			str.append(localeString).semicolon();
+			str.append(style);
+			str.append(localeBlock).line();
+			str.append("return style").semicolon().close().close().semicolon().close();
+
+		}
+		else
+		{
+			str.append("(String id)").open();
+			str.append("Image image = new Image(id)").semicolon();
+			str.append("image.add(new SimpleAttributeModifier(\"src\", \"").append(imageSrc)
+					.append("\"))").semicolon();
+			str.append(localeString).semicolon();
+			str.append(style);
+			str.append(localeBlock).line();
+			str.append("image.add(new SimpleAttributeModifier(\"style\", style))").semicolon();
+			str.append("return image").semicolon().close();
+		}
 		return str;
 	}
 
