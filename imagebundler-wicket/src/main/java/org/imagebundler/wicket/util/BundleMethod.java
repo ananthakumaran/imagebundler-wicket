@@ -139,13 +139,13 @@ public class BundleMethod
 
 		String imageSrc = getProperty("image.clear");
 		String localeString = "String locale = RequestCycle.get().getSession().getLocale().toString()";
-		// TODO set the tab indent correctly
-		RichString style = new RichString(4);
+		RichString style = new RichString();
 		style.append("String style = \"").append(getStyle("default", imagePos.get("default")))
 				.append("\"").semicolon();
 
-
-		RichString localeBlock = new RichString();
+		// TODO set the tab indent correctly
+		RichString localeBlock = new RichString(4);
+		localeBlock.line();
 		for (String locale : imagePos.keySet())
 		{
 			if (!locale.equals("default"))
@@ -164,7 +164,8 @@ public class BundleMethod
 		{
 			str.append("()").open();
 			str.append("return new AbstractImageItem(\"" + imageSrc + "\")").open();
-			str.append("public String getSrc()").open();
+			str.append("@Override").line();
+			str.append("public String getStyle()").open();
 			str.append(localeString).semicolon();
 			str.append(style);
 			str.append(localeBlock).line();
