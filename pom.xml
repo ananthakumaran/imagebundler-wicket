@@ -29,10 +29,16 @@
 		</developer>
 		</developers>
 		<scm>
-		<connection>scm:git:ssh://github.com:443/ananthakumaran/imagebundler-wicket.git</connection>
-        <developerConnection>scm:git:ssh://github.com:443/ananthakumaran/imagebundler-wicket.git</developerConnection>
-        <url>scm:git:ssh://github.com:443/ananthakumaran/imagebundler-wicket.git</url>
-    </scm>
+		  <connection>
+		    scm:git:http://github.com/ananthakumaran/imagebundler-wicket.git
+		  </connection>
+		  <developerConnection>
+		    scm:git:http://github.com/ananthakumaran/imagebundler-wicket.git
+		  </developerConnection>
+		  <url>
+		    http://github.com/ananthakumaran/imagebundler-wicket
+		  </url>
+		</scm>
   <modules>
     <module>imagebundler-wicket</module>
     <module>imagebundler-wicket-examples</module>
@@ -72,24 +78,19 @@
 		</plugins>
 		
 	</build>
-	
 	<repositories>
-        <repository>
-            <id>maven2-repository.dev.java.net</id>
-            <name>Java.net Repository for Maven</name>
-            <url>http://download.java.net/maven/2/</url>
-        </repository>
     </repositories>
 	<distributionManagement>
         <repository>
             <uniqueVersion>false</uniqueVersion>
-            <id>googlecode</id>
-            <url>svn:https://imagebundler-wicket.googlecode.com/svn/maven2</url>
+            <id>github</id>
+	    <!-- TODO make it relative to the project dir -->
+           <url>file:////media/Studies/temp/maven2</url>
         </repository>
-		<snapshotRepository>
+	<snapshotRepository>
             <uniqueVersion>false</uniqueVersion>
-            <id>googlecode</id>
-            <url>svn:https://imagebundler-wicket.googlecode.com/svn/maven2</url>
+            <id>github</id>
+           <url>file:////media/Studies/temp/maven2</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
