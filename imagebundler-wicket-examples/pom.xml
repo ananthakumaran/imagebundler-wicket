@@ -4,11 +4,11 @@
 	<parent>
 		<groupId>org.imagebundler.wicket</groupId>
 		<artifactId>imagebundler-wicket-parent</artifactId>
-		<version>1.1</version>
+		<version>1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>imagebundler-wicket-examples</artifactId>
-	<version>1.1</version>
+	<version>1.2-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>imagebundler-wicket-examples</name>
 	<description />
@@ -202,7 +202,7 @@ org.eclipse.jdt.core.compiler.processAnnotations=enabled]]>
 		</dependency>
 	</dependencies>
 	<properties>
-		<imagebundler.version>1.1</imagebundler.version>
+		<imagebundler.version>1.2-SNAPSHOT</imagebundler.version>
 		<jetty.version>6.1.4</jetty.version>
 		<wicket.version>1.4.5</wicket.version>
 	</properties>
