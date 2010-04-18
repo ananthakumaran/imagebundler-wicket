@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.imagebundler.wicket</groupId>
+		<artifactId>imagebundler-wicket-parent</artifactId>
+		<version>1.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>imagebundler-wicket</artifactId>
+	<version>1.1-SNAPSHOT</version>
+	<name>imagebundler-wicket</name>
+	<url>http://maven.apache.org</url>
+	<inceptionYear>2010</inceptionYear>
+	<developers>
+		<developer>
+			<id>ananth</id>
+			<name>Anantha Kumaran</name>
+			<email>ananthakumaran@gmail.com</email>
+			<url>http://ananthakumaran.wordpress.com</url>
+			<timezone>(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi</timezone>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<downloadsources>true</downloadsources>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<compilerArgument>-proc:none</compilerArgument>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<!-- For Testing -->
+		<dependency>
+			<groupId>net.java.dev.hickory</groupId>
+			<artifactId>hickory</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>2.5.2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>jolira-tools-repo</id>
+			<name>Jolira-Tools Maven Repository</name>
+			<url>http://jolira-tools.googlecode.com/svn/maven/repo</url>
+		</repository>
+	</repositories>
+</project>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+		<groupId>org.imagebundler.wicket</groupId>
+		<version>1.1-SNAPSHOT</version>
+	<artifactId>imagebundler-wicket-parent</artifactId>
+	<packaging>pom</packaging>
+	<name>imagebundler-wicket-Parent</name>
+	<description>
+	</description>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<inceptionYear>2010</inceptionYear>
+	<developers>
+		<developer>
+			<id>ananth</id>
+			<name>Anantha Kumaran</name>
+			<email>ananthakumaran@gmail.com</email>
+			<url>http://ananthakumaran.wordpress.com</url>
+			<timezone>(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi</timezone>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		</developers>
+		<scm>
+		  <connection>
+		    scm:git:http://github.com/ananthakumaran/imagebundler-wicket.git
+		  </connection>
+		  <developerConnection>
+		    scm:git:http://github.com/ananthakumaran/imagebundler-wicket.git
+		  </developerConnection>
+		  <url>
+		    http://github.com/ananthakumaran/imagebundler-wicket
+		  </url>
+		</scm>
+  <modules>
+    <module>imagebundler-wicket</module>
+    <module>imagebundler-wicket-examples</module>
+  </modules>
+  <build>
+  <extensions>
+            <extension>
+                <groupId>org.jvnet.wagon-svn</groupId>
+                <artifactId>wagon-svn</artifactId>
+                <version>1.8</version>
+            </extension>
+        </extensions>
+		<pluginManagement>
+   <plugins>
+    <plugin>
+     <artifactId>maven-release-plugin</artifactId>
+     <configuration>
+      <autoVersionSubmodules>true</autoVersionSubmodules>
+     </configuration>
+    </plugin>
+   </plugins>
+  </pluginManagement>
+  <plugins>
+  <!-- license header plugin -->
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<configuration>
+					<header>etc/license.txt</header>
+					<properties>
+						<year>${project.inceptionYear}</year>
+						<name>Anantha Kumaran</name>
+						<email>ananthakumaran@gmail.com</email>
+					</properties>
+				</configuration>
+			</plugin>
+		</plugins>
+		
+	</build>
+	<repositories>
+    </repositories>
+	<distributionManagement>
+        <repository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>github</id>
+	    <!-- TODO make it relative to the project dir -->
+           <url>file:////media/Studies/temp/maven2</url>
+        </repository>
+	<snapshotRepository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>github</id>
+           <url>file:////media/Studies/temp/maven2</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.imagebundler.wicket</groupId>
+		<artifactId>imagebundler-wicket-parent</artifactId>
+		<version>1.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>imagebundler-wicket-examples</artifactId>
+	<version>1.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>imagebundler-wicket-examples</name>
+	<description />
+	<inceptionYear>2010</inceptionYear>
+	<developers>
+		<developer>
+			<id>ananth</id>
+			<name>Anantha Kumaran</name>
+			<email>ananthakumaran@gmail.com</email>
+			<url>http://ananthakumaran.wordpress.com</url>
+			<timezone>(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi</timezone>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		</developers>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>target/generated-sources/apt/main/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+		<plugins>
+			<plugin>
+				<!--
+					set source compliance level to 1.6, do not use javac to run
+					annotation processors, we will use the maven-processor-plugin to do
+					this
+				-->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<compilerArgument>-proc:none</compilerArgument>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>process</id>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<phase>generate-sources</phase>
+						<configuration>
+							<!--
+								maven annotation processor doesn't set the -d option which makes
+								the StandardLocation.CLASS_OUTPUT to point to the project root
+								directory. Note please make sure that the path doesn't contain
+								any spaces(again that breaks everything)
+							-->
+							<compilerArguments>-d ${project.build.outputDirectory}</compilerArguments>
+							 <outputDirectory>target/generated-sources/apt/main/java</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies />
+			</plugin>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<additionalConfig>
+						<file>
+							<name>.factorypath</name>
+							<content>
+<![CDATA[<factorypath>
+  <factorypathentry kind="VARJAR" id="M2_REPO/org/imagebundler/wicket/imagebundler-wicket/${imagebundler.version}/imagebundler-wicket-${imagebundler.version}.jar" enabled="true" runInBatchMode="false" />
+  </factorypath>]]>
+							</content>
+						</file>
+						<file>
+							<name>.settings/org.eclipse.jdt.apt.core.prefs</name>
+							<content>
+<![CDATA[
+eclipse.preferences.version=1
+org.eclipse.jdt.apt.aptEnabled=true
+org.eclipse.jdt.apt.genSrcDir=target/generated-sources/apt/main/java
+org.eclipse.jdt.apt.reconcileEnabled=true]]>
+							</content>
+						</file>
+						<file>
+							<name>.settings/org.eclipse.jdt.core.prefs</name>
+							<!-- don't know why the  processAnnotations in not enabled by default -->
+							<content>
+						<![CDATA[
+org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6
+eclipse.preferences.version=1
+org.eclipse.jdt.core.compiler.source=1.6
+org.eclipse.jdt.core.compiler.compliance=1.6
+org.eclipse.jdt.core.compiler.processAnnotations=enabled]]>
+							</content>
+						</file>
+					</additionalConfig>
+				</configuration>
+
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.imagebundler.wicket</groupId>
+			<artifactId>imagebundler-wicket</artifactId>
+			<version>${imagebundler.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket</artifactId>
+			<version>${wicket.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.4.2</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty</artifactId>
+			<version>${jetty.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty-util</artifactId>
+			<version>${jetty.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty-management</artifactId>
+			<version>${jetty.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	<properties>
+		<imagebundler.version>1.1-SNAPSHOT</imagebundler.version>
+		<jetty.version>6.1.4</jetty.version>
+		<wicket.version>1.4.5</wicket.version>
+	</properties>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>maven-annotation-plugin</id>
+			<name>maven-annotation-processor Repository</name>
+			<url>http://maven-annotation-plugin.googlecode.com/svn/trunk/mavenrepo</url>
+		</pluginRepository>
+	</pluginRepositories>
+</project>
