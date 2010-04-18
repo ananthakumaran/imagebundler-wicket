@@ -45,7 +45,7 @@ public class HomePage extends WebPage
 	 */
 	public HomePage()
 	{
-	    /*		EditorButton editorButtons = new EditorButtonBundle();
+	    		EditorButton editorButtons = new EditorButtonBundle();
 
 
 		this.add(editorButtons.h1("h1"));
@@ -77,7 +77,7 @@ public class HomePage extends WebPage
 				this.getSession().setLocale(new Locale("ta", "IN"));
 				this.setResponsePage(new HomePage());
 			}
-		}); */
+		}); 
 	}
 
 	public Image getImage(ImageItem imageItem, String id)
