@@ -142,7 +142,7 @@ public class BundleMethod
 
 		if (imagePos.size() > 1)
 		{
-			localeString = "String locale = RequestCycle.get().getSession().getLocale().toString();\n";
+			localeString = "String locale = RequestCycle.get().getSession().getLocale().toString();";
 		}
 		RichString style = new RichString();
 		style.append("String style = \"").append(getStyle("default", imagePos.get("default")))
@@ -171,9 +171,9 @@ public class BundleMethod
 			str.append("return new AbstractImageItem(\"" + imageSrc + "\")").open();
 			str.append("@Override").line();
 			str.append("public String getStyle()").open();
-			str.append(localeString);
+			str.append(localeString).line();
 			str.append(style);
-			str.append(localeBlock).line();
+			str.append(localeBlock);
 			str.append("return style").semicolon().close().close().semicolon().close();
 
 		}
@@ -183,9 +183,9 @@ public class BundleMethod
 			str.append("Image image = new Image(id)").semicolon();
 			str.append("image.add(new SimpleAttributeModifier(\"src\", \"").append(imageSrc)
 					.append("\"))").semicolon();
-			str.append(localeString);
+			str.append(localeString).line();
 			str.append(style);
-			str.append(localeBlock).line();
+			str.append(localeBlock);
 			str.append("image.add(new SimpleAttributeModifier(\"style\", style))").semicolon();
 			str.append("return image").semicolon().close();
 		}
