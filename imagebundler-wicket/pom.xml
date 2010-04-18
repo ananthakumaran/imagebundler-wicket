@@ -4,11 +4,11 @@
 	<parent>
 		<groupId>org.imagebundler.wicket</groupId>
 		<artifactId>imagebundler-wicket-parent</artifactId>
-		<version>1.1-SNAPSHOT</version>
+		<version>1.1</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>imagebundler-wicket</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.1</version>
 	<name>imagebundler-wicket</name>
 	<url>http://maven.apache.org</url>
 	<inceptionYear>2010</inceptionYear>
