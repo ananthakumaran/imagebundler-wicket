@@ -122,6 +122,6 @@ Configure Maven2 Eclipse plugin to setup the project to use ImageBundler annotat
 </plugin>
 
 <properties>
-  <imagebundler.version>1.0</imagebundler.version>
+  <imagebundler.version>1.1</imagebundler.version>
 </properties>
 {% endhighlight %}

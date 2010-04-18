@@ -64,7 +64,7 @@ Using an Image Bundle
 
 Localization
 ------------
-ImageBundler provides support for using different image for different locale.
+ImageBundler provides support for using different images for different locales.
 
 {% highlight java %}
   // localization eg
@@ -79,7 +79,7 @@ ImageBundler provides support for using different image for different locale.
 {% endhighlight java %}
 
 For each method there should be a image file without any locale(default). so for
-the above eg, there should be three images namely `a.*,b.*,c.png`
+the above eg. there should be three images namely `a.*,b.*,c.png`.
 
 The image file for the Tamil locale should be named as `a_ta_IN.*,b_ta_IN.*,c_ta_IN.png`.
 If you leave any of the image file for Tamil locale then the default image will be used instead.
@@ -95,10 +95,64 @@ public ImageItem methodName();
 
 How it Works
 ------------
-JDK 6 Annotation processor is used to generate source files. eg generated file
+JDK 6 Annotation processor is used to generate source files.A  sample generated file.
 
 {% highlight java %}
 
+public class SampleImageBundle implements SampleImage
+{
+	@Override
+	public ImageItem a()
+	{
+		return new AbstractImageItem("images/clear.gif")
+		{
+			@Override
+			public String getStyle()
+			{
+				String locale = RequestCycle.get().getSession().getLocale().toString();
+				String style = " background-image :url(resources/org.imagebundler.wicket.examples.SampleImageBundle/SampleImageBundle.png) ; background-position:-48px -0px; width:24px; height:24px;  ";
+				if(locale.equals("ta_IN"))
+				{
+					style = " background-image :url(resources/org.imagebundler.wicket.examples.SampleImageBundle/SampleImageBundle_ta_IN.png) ; background-position:-50px -0px; width:25px; height:25px;  ";
+				}
+				return style;
+			}
+		}
+	}
+	
+	@Override
+	public ImageItem b()
+	{
+		return new AbstractImageItem("images/clear.gif")
+		{
+			@Override
+			public String getStyle()
+			{
+				String locale = RequestCycle.get().getSession().getLocale().toString();
+				String style = " background-image :url(resources/org.imagebundler.wicket.examples.SampleImageBundle/SampleImageBundle.png) ; background-position:-24px -0px; width:24px; height:24px;  ";
+				if(locale.equals("ta_IN"))
+				{
+					style = " background-image :url(resources/org.imagebundler.wicket.examples.SampleImageBundle/SampleImageBundle_ta_IN.png) ; background-position:-25px -0px; width:25px; height:25px;  ";
+				}
+				return style;
+			}
+		}
+	}
+	
+	@Override
+	public Image sample(String id)
+	{
+		Image image = new Image(id);
+		image.add(new SimpleAttributeModifier("src", "images/clear.gif"));
+		String locale = RequestCycle.get().getSession().getLocale().toString();
+		String style = " background-image :url(resources/org.imagebundler.wicket.examples.SampleImageBundle/SampleImageBundle.png) ; background-position:-0px -0px; width:24px; height:24px;  ";
+				if(locale.equals("ta_IN"))
+				{
+					style = " background-image :url(resources/org.imagebundler.wicket.examples.SampleImageBundle/SampleImageBundle_ta_IN.png) ; background-position:-0px -0px; width:25px; height:25px;  ";
+				}
+				image.add(new SimpleAttributeModifier("style", style));
+		return image;
+	}
 }
 
 {% endhighlight %}
@@ -121,3 +175,8 @@ public ImageItem methodName()
 # [default images/clear.gif]
 image.clear=path/relativeto/webapp
 {% endhighlight %}
+
+Example
+-------
+see here for a [sample](http://github.com/ananthakumaran/imagebundler-wicket/tree/master/imagebundler-wicket-examples/)
+project.
