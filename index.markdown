@@ -25,25 +25,22 @@ Defining an Image Bundle
 	// bundle class
 @ImageBundle
 interface WordProcessorImage {
-
   /**
    * Would match either file 'newFileIcon.gif' or 'newFileIcon.png'
    * in the same package as this type.
    * Note that other file extensions may also be recognized.
    */
   public Image newFileIcon(String id);
-
   /**
    * Would bundle the file 'open-file-icon.gif' residing in the same package as this type.
    */
   @Resource("open-file-icon.gif")
   public Image openFileIcon(String id);
-
   /**
    * Would bundle the file 'savefile.gif' residing in the folder icons relative to this package.
    */
   @Resource("icons/savefile.gif")
-  public Image saveFileIcon(String id);
+  public ImageItem saveFileIcon();
 }
 
 {% endhighlight %}
@@ -57,72 +54,70 @@ Using an Image Bundle
    */
   WordProcessorImage bundle = new WordProcessorImageBundle();
   add(bundle.openFileIcon("openfile"));
-  add(bundle.saveFileIcon("savefile"));
+  ImageItem imageItem = bundle.saveFileIcon();
+  Image img = new Image(id);
+  img.add(new SimpleAttributeModifier("src", imageItem.getSrc()));
+  img.add(new SimpleAttributeModifier("style", imageItem.getStyle()));
+  add(img);
 
 {% endhighlight %}
+
+Localization
+------------
+ImageBundler provides support for using different image for different locale.
+
+{% highlight java %}
+  // localization eg
+  @ImageBundle(locale = { "ta_IN" })
+  public interface SampleImage
+  {
+	public ImageItem a();
+	public ImageItem b();
+	@Resource("c.png")
+	public Image sample(String id);
+  }
+{% endhighlight java %}
+
+For each method there should be a image file without any locale(default). so for
+the above eg, there should be three images namely `a.*,b.*,c.png`
+
+The image file for the Tamil locale should be named as `a_ta_IN.*,b_ta_IN.*,c_ta_IN.png`.
+If you leave any of the image file for Tamil locale then the default image will be used instead.
+
+ImageItem
+---------
+The style and src of the image is available through the ImageItem interface. To get 
+the `ImageItem` change the method signature as follows
+
+{% highlight java %}
+public ImageItem methodName();
+{% endhighlight %}
+
 How it Works
 ------------
-JDK 6 Annotation processor is used to generate source files.For the above example the generated class will
-be like this
+JDK 6 Annotation processor is used to generate source files. eg generated file
+
 {% highlight java %}
-public class WordProcessorImageBundle implements WordProcessorImage
-{
-	
-	@Override
-	public Image newFileIcon(String id)
-	{
-		Image image = new Image(id);
-		image.add(new SimpleAttributeModifier("src", "images/clear.gif"));
-		image.add(new SimpleAttributeModifier("style", "background-image: "+
-		+"url(resources/org.imagebundler.wicket.examples.WordProcessorImageBundle/WordProcessorImageBundle.png);"
-		+"background-position:-Xpx -Xpx; width:Xpx; height:Xpx;"));
-		return image;
-	}
-	
-	@Override
-	public Image openFileIcon(String id)
-	{
-		Image image = new Image(id);
-		image.add(new SimpleAttributeModifier("src", "images/clear.gif"));
-		image.add(new SimpleAttributeModifier("style", "background-image: "+
-		+"url(resources/org.imagebundler.wicket.examples.WordProcessorImageBundle/WordProcessorImageBundle.png);"
-		+"background-position:-Xpx -Xpx; width:Xpx; height:Xpx;"));
-		return image;
-	}
-	@Override
-	public Image saveFileIcon(String id);
-		Image image = new Image(id);
-		image.add(new SimpleAttributeModifier("src", "images/clear.gif"));
-		image.add(new SimpleAttributeModifier("style", "background-image: "+
-		+"url(resources/org.imagebundler.wicket.examples.WordProcessorImageBundle/WordProcessorImageBundle.png);"
-		+"background-position:-Xpx -Xpx; width:Xpx; height:Xpx;"));
-		return image;
-	}
+
 }
 
 {% endhighlight %}
 ##Configuration##
+
 ###Interface###
-*	Annotate your interface with @ImageBundle
-*	All the methods in the interface should have the following signature 
+*	Annotate your interface with @ImageBundle and pass the array of the locales if needed
+*	All the methods in the interface should have any of the following signature 
 {% highlight java %}
 public Image methodName(String id)
+public ImageItem methodName()
 {% endhighlight %}
-*	By default the image that have the same name as method name residing in the same package as this type will be bundled. for example for a method
-sample, anyone of the following file sample.gif , sample.png  , sample.jpg in the same package will be bundled
+
 ###imagebundler.properties###
 
 *	For the image bundler to work a 1px transparent gif image namely clear.gif should be placed in  images/clear.gif (relative to the webapp). This can be changed by proper configuration
-*	By default all the generated imagebundle will be placed in the same package.
 *	This file is not needed if you follow the defaults
-{% highlight java %}
-# [default the folder that contains the imagebundler.properties will be considered as the basedir]
-basedir=full/pathto/base/directory
-# [default src/main/webapp]
-webapp=path/relativeto/basedir
+{% highlight ini %}
 # This needs a 1px transparent gif to work.
 # [default images/clear.gif]
 image.clear=path/relativeto/webapp
-# [default same package] note that the generated image bundles will be placed at basedir+webapp+image.output folder
-image.output=path/for/generated/images/relativeto/webapp
 {% endhighlight %}

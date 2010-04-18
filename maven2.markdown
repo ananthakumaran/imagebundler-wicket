@@ -13,7 +13,7 @@ Repository
  <repository>
   <id>org.imagebundler.wicket</id>
   <name>imagebundler Maven Repository</name>
-  <url>http://imagebundler-wicket.googlecode.com/svn/maven2</url>
+  <url>http://ananthakumaran.github.com/imagebundler-wicket/maven2</url>
  </repository>
 </repositories>
 <pluginRepositories>
@@ -69,6 +69,7 @@ Configuring Maven to process annotations
 	   http://code.google.com/p/maven-annotation-plugin/issues/detail?id=12
 	   -->
 	  <compilerArguments>-d ${project.build.outputDirectory}</compilerArguments>
+	  <outputDirectory>target/generated-sources/apt/main/java</outputDirectory>
 	  </configuration>
 	 </execution>
  </executions>
