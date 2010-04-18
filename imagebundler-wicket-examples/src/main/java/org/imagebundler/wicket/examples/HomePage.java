@@ -19,8 +19,13 @@
 
 package org.imagebundler.wicket.examples;
 
-import org.apache.wicket.PageParameters;
+import java.util.Locale;
+
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.Link;
+import org.imagebundler.wicket.ImageItem;
 
 
 /**
@@ -38,12 +43,51 @@ public class HomePage extends WebPage
 	 * @param parameters
 	 *            Page parameters
 	 */
-	public HomePage(final PageParameters parameters)
+	public HomePage()
 	{
-		//
-		// EditorButton editorBundle = new EditorButtonBundle();
-		// this.add(editorBundle.italic("italic"));
-		// this.add(editorBundle.bold("bold"));
-		// this.add(editorBundle.italic("anotheritalic"));
+		EditorButton editorButtons = new EditorButtonBundle();
+
+
+		this.add(editorButtons.h1("h1"));
+		SampleImage sampleImage = new SampleImageBundle();
+		this.add(this.getImage(sampleImage.a(), "a"));
+
+		this.add(new Link<Void>("default")
+		{
+
+			@Override
+			public void onClick()
+			{
+				this.getSession().setLocale(Locale.ENGLISH);
+				this.setResponsePage(new HomePage());
+
+			}
+
+		});
+
+		this.add(new Link<Void>("tamil")
+		{
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick()
+			{
+				this.getSession().setLocale(new Locale("ta", "IN"));
+				this.setResponsePage(new HomePage());
+			}
+		});
+	}
+
+	public Image getImage(ImageItem imageItem, String id)
+	{
+		Image img = new Image(id);
+		img.add(new SimpleAttributeModifier("src", imageItem.getSrc()));
+		img.add(new SimpleAttributeModifier("style", imageItem.getStyle()));
+		return img;
+
 	}
 }

@@ -100,6 +100,7 @@
 								any spaces(again that breaks everything)
 							-->
 							<compilerArguments>-d ${project.build.outputDirectory}</compilerArguments>
+							 <outputDirectory>target/generated-sources/apt/main/java</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>

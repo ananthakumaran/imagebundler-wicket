@@ -2,22 +2,16 @@ package org.imagebundler.wicket.examples;
 
 import org.apache.wicket.markup.html.image.Image;
 import org.imagebundler.wicket.ImageBundle;
+import org.imagebundler.wicket.ImageItem;
 import org.imagebundler.wicket.Resource;
 
 @ImageBundle
 public interface EditorButton
 {
-
-	public Image bold(String id);
-
-	public Image code(String id);
-
 	public Image h1(String id);
 
-	public Image hr(String id);
-
 	@Resource("icon/img.png")
-	public Image img(String id);
+	public ImageItem img();
 
 	@Resource("icon/italic.png")
 	public Image italic(String id);

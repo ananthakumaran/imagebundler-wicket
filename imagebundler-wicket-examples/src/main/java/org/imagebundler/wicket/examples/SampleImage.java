@@ -24,13 +24,15 @@ import org.imagebundler.wicket.ImageBundle;
 import org.imagebundler.wicket.ImageItem;
 import org.imagebundler.wicket.Resource;
 
-@ImageBundle(locale = { "en", "en_US" })
+@ImageBundle(locale = { "ta_IN" })
 public interface SampleImage
 {
 
-	@Resource("buttons.png")
-	public ImageItem buttons();
+	public ImageItem a();
 
-	public Image course(String id);
+	public ImageItem b();
+
+	@Resource("c.png")
+	public Image sample(String id);
 
 }
