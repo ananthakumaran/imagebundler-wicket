@@ -8,6 +8,10 @@ package org.imagebundler.wicket;
  */
 public abstract class AbstractImageItem implements ImageItem
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final String imageSrc;
 
 

@@ -1,5 +1,8 @@
 package org.imagebundler.wicket;
 
+import java.util.Locale;
+
+import org.apache.wicket.IClusterable;
 
 /**
  * provides a way to access the style and source of a image
@@ -7,7 +10,7 @@ package org.imagebundler.wicket;
  * @author Ananth
  * 
  */
-public interface ImageItem
+public interface ImageItem extends IClusterable
 {
 	/**
 	 * gets the src of the image Note: this actually contains the src of the
@@ -25,9 +28,9 @@ public interface ImageItem
 	 * <code>
 	 * 	background-image:url(resources/org.imagebundler.wicket.examples.EditorButtonBundle/EditorButtonBundle.png);
 	 *  background-position:-148px -0px; width:16px; height:16px;  
-	 * 	</code
+	 * 	</code>
 	 * 
 	 * @return style of the image
 	 */
-	String getStyle();
+	String getStyle(Locale locale);
 }

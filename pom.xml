@@ -76,8 +76,14 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		
-	</build>
+	</build>	
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket</artifactId>
+			<version>${wicket.version}</version>
+		</dependency>
+	</dependencies>
 	<repositories>
     </repositories>
 	<distributionManagement>
@@ -93,4 +99,7 @@
            <url>file:////media/Studies/temp/maven2</url>
         </snapshotRepository>
     </distributionManagement>
+	<properties>
+		<wicket.version>1.4.5</wicket.version>
+	</properties>
 </project>
