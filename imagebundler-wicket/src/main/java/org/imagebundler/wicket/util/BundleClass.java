@@ -76,12 +76,9 @@ public class BundleClass
 		this.locale = locale;
 		// add import for the wicket image class
 		addImports("org.apache.wicket.markup.html.image.Image");
-		addImports("org.apache.wicket.behavior.SimpleAttributeModifier");
-		addImports("org.apache.wicket.RequestCycle");
-		// TODO should not add this if there none of the method
-		// is declared with this return type
 		addImports("org.imagebundler.wicket.ImageItem");
-		addImports("org.imagebundler.wicket.AbstractImageItem");
+		addImports("org.imagebundler.wicket.SimpleImageItem");
+		addImports("org.imagebundler.wicket.ImageItemModifier");
 		buildImageBundlePath();
 	}
 

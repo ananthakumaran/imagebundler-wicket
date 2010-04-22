@@ -138,58 +138,47 @@ public class BundleMethod
 				: "Image";
 
 		String imageSrc = getProperty("image.clear");
-		String localeString = "";
-
-		if (imagePos.size() > 1)
-		{
-			localeString = "String locale = RequestCycle.get().getSession().getLocale().toString();";
-		}
-		RichString style = new RichString();
-		style.append("String style = \"").append(getStyle("default", imagePos.get("default")))
-				.append("\"").semicolon();
-
-		// TODO set the tab indent correctly
-		RichString localeBlock = new RichString(4);
-		localeBlock.line();
-		for (String locale : imagePos.keySet())
-		{
-			if (!locale.equals("default"))
-			{
-				localeBlock.ifBlock("locale.equals(\"" + locale + "\")", "style = \""
-						+ getStyle(locale, imagePos.get(locale)) + "\";");
-			}
-		}
+		String defaultStyle = getStyle("default", imagePos.get("default"));
 
 		RichString str = new RichString(tabCount);
 		str.line();
 		str.append("@Override").line();
-		str.append("public ").append(returnType + " ").append(getMethodName());
+		str.append("public ").append(returnType + " ").append(getMethodName()).append("(");
 
-		if (returnType.endsWith("ImageItem"))
+		if ("ImageItem".equals(returnType))
 		{
-			str.append("()").open();
-			str.append("return new AbstractImageItem(\"" + imageSrc + "\")").open();
-			str.append("@Override").line();
-			str.append("public String getStyle()").open();
-			str.append(localeString).line();
-			str.append(style);
-			str.append(localeBlock);
-			str.append("return style").semicolon().close().close().semicolon().close();
-
+			str.append(")");
 		}
 		else
 		{
-			str.append("(String id)").open();
-			str.append("Image image = new Image(id)").semicolon();
-			str.append("image.add(new SimpleAttributeModifier(\"src\", \"").append(imageSrc)
-					.append("\"))").semicolon();
-			str.append(localeString).line();
-			str.append(style);
-			str.append(localeBlock);
-			str.append("image.add(new SimpleAttributeModifier(\"style\", style))").semicolon();
-			str.append("return image").semicolon().close();
+			str.append("String id)");
 		}
-		return str;
+
+
+		str.open();
+		str.append("SimpleImageItem imageItem = new SimpleImageItem(\"").append(imageSrc).append(
+				"\",\"").append(defaultStyle).append("\")").semicolon();
+
+		for (String locale : imagePos.keySet())
+		{
+			if (!"default".equals(locale))
+			{
+				str.append("imageItem.addLocalizedStyle(\"").append(locale).append("\",\"").append(
+						getStyle(locale, imagePos.get(locale))).append("\")").semicolon();
+			}
+		}
+
+		if ("ImageItem".equals(returnType))
+		{
+			str.append("return imageItem").semicolon();
+		}
+		else
+		{
+			str.append("Image image = new Image(id)").semicolon();
+			str.append("image.add(new ImageItemModifier(imageItem))").semicolon();
+			str.append("return image").semicolon();
+		}
+		return str.close();
 	}
 
 	/**
